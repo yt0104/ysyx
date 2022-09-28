@@ -1,5 +1,6 @@
 VSRC = $(wildcard ./vsrc/sw.v)
 CSRC = $(wildcard ./csrc/sw_main.cpp)
+ELF  = $(wildcard ./obj_dir/Vsw)
 
 all:
 	@echo "Write this Makefile by your self."
@@ -8,7 +9,7 @@ sim:
 	$(call git_commit, "sim RTL") # DO NOT REMOVE THIS LINE!!!
 	verilator -Wall $(VSRC) $(CSRC) --cc --trace --exe --build
 	#make -C obj_dir -f Vsw.mk Vsw
-	./obj_dir/Vsw
+	$(ELF)
 	gtkwave wave.vcd
 	@echo "Write this Makefile by your self."
 
