@@ -6,7 +6,7 @@ all:
 
 sim:
 	$(call git_commit, "sim RTL") # DO NOT REMOVE THIS LINE!!!
-	verilator -Wall sw.v sw_main.cpp --cc --trace --exe --build
+	verilator -Wall VSRC CSRC --cc --trace --exe --build
 	#make -C obj_dir -f Vsw.mk Vsw
 	./obj_dir/Vsw
 	gtkwave wave.vcd
