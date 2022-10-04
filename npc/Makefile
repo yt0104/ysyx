@@ -13,7 +13,7 @@ ver:
 	
 	@echo "Write this Makefile by your self."
 
-vcd:
+sim:
 	$(ELF)
 
 
@@ -27,4 +27,4 @@ clean:
 include ../Makefile
 
 
- .PHONY:clean sim all
+ .PHONY:clean sim all ver gtk

@@ -3,6 +3,11 @@
 
 #include "verilated_vcd_c.h" //可选，如果要导出vcd则需要加上
 
+#include <nvboard.h>	     //调用nvboard
+
+void nvboard_bind_all_pins(Vop* top);	//绑定引脚
+
+
       int main(int argc, char** argv, char** env) {
  
   	VerilatedContext* contextp = new VerilatedContext;
@@ -14,10 +19,10 @@
   	top->trace(tfp, 0); //
   	tfp->open("wave.vcd"); //设置输出的文件wave.vcd
 
-	        int main_time = 0;     // 仿真时间戳
-	  	int sim_time = 50;   // 最大仿真时间戳
+	        //int main_time = 0;     // 仿真时间戳
+	  	//int sim_time = 50;   // 最大仿真时间戳
 	  
-		while (!Verilated::gotFinish() && main_time < sim_time) {
+		while (!Verilated::gotFinish()/* && main_time < sim_time*/) {
 		  int a = rand() & 1;
 		  int b = rand() & 1;
 		  top->a = a;
@@ -32,7 +37,7 @@
 		  
 		  assert(top->f == (a ^ b));
 		  
-		  main_time ++;
+		  //main_time ++;
 		}
 		
           delete top;
