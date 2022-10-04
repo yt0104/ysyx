@@ -1,5 +1,5 @@
 VSRC = $(wildcard ./vsrc/sw.v)
-CSRC = $(wildcard ./csrc/sw_main.cpp)
+CSRC = $(wildcard ./csrc/main.cpp)
 ELF  = $(wildcard ./obj_dir/Vsw)
 
 all:
