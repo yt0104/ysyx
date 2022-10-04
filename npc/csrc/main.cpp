@@ -3,9 +3,9 @@
 
 #include "verilated_vcd_c.h" //可选，如果要导出vcd则需要加上
 
-#include <nvboard.h>	     //调用nvboard
+//#include <nvboard.h>	     //调用nvboard
 
-void nvboard_bind_all_pins(Vop* top);	//绑定引脚
+//void nvboard_bind_all_pins(Vop* top);	//绑定引脚
 
 
       int main(int argc, char** argv, char** env) {
