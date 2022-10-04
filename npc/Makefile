@@ -16,7 +16,7 @@ sim:
 
 
 
-gtkwave:
+gtk:
 	gtkwave wave.vcd
 
 clean:
