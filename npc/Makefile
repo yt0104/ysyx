@@ -10,9 +10,14 @@ sim:
 	verilator -Wall $(VSRC) $(CSRC) --cc --trace --exe --build
 	#make -C obj_dir -f Vsw.mk Vsw
 	$(ELF)
-	gtkwave wave.vcd
+	
 	@echo "Write this Makefile by your self."
 
+
+
+
+gtkwave:
+	gtkwave wave.vcd
 
 clean:
 	rm -rf obj_dir wave.vcd	
