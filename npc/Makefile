@@ -13,9 +13,12 @@ sim:
 	gtkwave wave.vcd
 	@echo "Write this Makefile by your self."
 
- .PHONY:clean
+
 clean:
 	rm -rf obj_dir wave.vcd	
 
 
 include ../Makefile
+
+
+ .PHONY:clean sim all
