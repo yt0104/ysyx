@@ -60,12 +60,13 @@ static int cmd_q(char *args) {
 static int cmd_si(char *args) {
   printf("EXEC ONCE\n");
   if(para==NULL){
-  	printf("Invalid command\n");
+  	printf("error command\n");
   	return 0;
   }
   else{
   	uint64_t size = strtol( para, NULL, 10 ); 
-  	cpu_exec(size);
+  	if(size > 0)	cpu_exec(size);
+  	else printf("error command\n");
   }
   return 0;
 }
