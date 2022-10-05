@@ -95,16 +95,16 @@ void assert_fail_msg() {
 /* Simulate how the CPU works. */
 void cpu_exec(uint64_t n) {
   g_print_step = (n < MAX_INST_TO_PRINT);
-  switch (nemu_state.state) {
+  switch (nemu_state.state) {  //state=1
     case NEMU_END: case NEMU_ABORT:
       printf("Program execution has ended. To restart the program, exit NEMU and run again.\n");
       return;
-    default: nemu_state.state = NEMU_RUNNING;	//n=-1 state=2
+    default: nemu_state.state = NEMU_RUNNING;	//state=2
   }
 
   uint64_t timer_start = get_time();
 
-  execute(n);
+  execute(n); //state=2
 
   uint64_t timer_end = get_time();
   g_timer += timer_end - timer_start;
