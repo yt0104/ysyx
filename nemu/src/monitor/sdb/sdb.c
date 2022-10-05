@@ -95,8 +95,10 @@ static int cmd_info(char *args) {
 
 
 static int cmd_x(char *args) {
-  //int n;
-  //char* addr;
+  uint64_t n = strtol( subcmd1, NULL, 10 );
+  uint64_t maddr = strtol( &subcmd2[2], NULL, 16 );
+  
+  printf("%ld,%lx",n,maddr);
 
   return 0;
 }
