@@ -50,6 +50,7 @@ static int cmd_c(char *args) {
 
 static int cmd_q(char *args) {
   printf("QUIT NEMU\n");
+  nemu_state.state = NEMU_QUIT;
   return -1;
 }
 

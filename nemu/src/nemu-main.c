@@ -31,5 +31,5 @@ int main(int argc, char *argv[]) {
   /* Start engine. */
   engine_start();		// src/engine/interpreter/init.c
 
-  return is_exit_status_bad();
+  return is_exit_status_bad();	// good: state = NEMU_END or NEMU_QUIT or halt_ret == 0
 }
