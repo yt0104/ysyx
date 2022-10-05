@@ -66,11 +66,11 @@ static int cmd_si(char *args) {
   }
   else{
   	n = strtol( subcmd1, NULL, 10 ); 
-  	if(n <= 1 || n > 4){
+  	if(n <= 0 || n > 4){
   		printf("EXEC ONCE\n");
   		n = 1;
   	}
-  	else printf("EXEC N\n");
+  	else printf("EXEC %ld\n",n);
   }
   cpu_exec(n);
   return 0;
