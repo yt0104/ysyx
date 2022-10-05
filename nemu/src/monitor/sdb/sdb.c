@@ -102,12 +102,12 @@ static int cmd_x(char *args) {
   	return 0;
   }
   uint64_t n = strtol( subcmd1, NULL, 10 );
-  //uint64_t maddr = strtol( &subcmd2[2], NULL, 16 );
+  uint64_t maddr = strtol( &subcmd2[2], NULL, 16 );
   
-  uint64_t raddr;
-  raddr=0x100000;
+  uint64_t* raddr;
+  raddr=(uint64_t*)maddr;
   for(int i=0;i<n;i++){
-  	printf("0x%lx\t\t0x%x",raddr,*(uint32_t*)raddr);
+  	printf("0x%ln\t\t0x%lx",raddr,*raddr);
   	raddr += 4;
   }
   
