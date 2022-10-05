@@ -21,7 +21,8 @@
 
 static int is_batch_mode = false;
 
-static char* subcmd;
+static char* subcmd1;
+static char* subcmd2;
 
 void init_regex();
 void init_wp_pool();
@@ -59,12 +60,12 @@ static int cmd_q(char *args) {
 
 static int cmd_si(char *args) {
   uint64_t n;
-  if(subcmd==NULL){
+  if(subcmd1==NULL){
   	n = 1;
   	printf("EXEC ONCE\n");
   }
   else{
-  	n = strtol( subcmd, NULL, 10 ); 
+  	n = strtol( subcmd1, NULL, 10 ); 
   	if(n <= 1 || n > 4){
   		printf("EXEC ONCE\n");
   		n = 1;
@@ -77,10 +78,10 @@ static int cmd_si(char *args) {
 
 static int cmd_info(char *args) {
   char* str = "r";
-  if(subcmd == NULL){
+  if(subcmd1 == NULL){
   	printf("Invalid command\n");
   }
-  else if(strcmp(str, subcmd) == 0){
+  else if(strcmp(str, subcmd1) == 0){
   	printf("PRINT REG\n");
   	isa_reg_display();
   }
@@ -159,7 +160,8 @@ void sdb_mainloop() {
     /* treat the remaining string as the arguments,
      * which may need further parsing
      */
-    subcmd = strtok(NULL," ");
+    subcmd1 = strtok(NULL," ");
+    subcmd2 = strtok(NULL," ");
      
     char *args = cmd + strlen(cmd) + 1;
     if (args >= str_end) {
