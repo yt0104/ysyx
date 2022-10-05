@@ -65,6 +65,12 @@ static struct {
   { "help", "Display information about all supported commands", cmd_help },
   { "c", "Continue the execution of the program", cmd_c },
   { "q", "Exit NEMU", cmd_q },
+  /*{ "si", "exec once", cmd_si },
+  { "info", "print", cmd_info },
+  { "x", "scan memory", cmd_x },
+  { "p", "calulate expr", cmd_p },
+  { "w", "watch expr", cmd_w },
+  { "d", "delete watch", cmd_d },*/
 
   /* TODO: Add more commands */
 
@@ -126,14 +132,14 @@ void sdb_mainloop() {
 #endif
 
     int i;
-    for (i = 0; i < NR_CMD; i ++) {
-      if (strcmp(cmd, cmd_table[i].name) == 0) {
-        if (cmd_table[i].handler(args) < 0) { return; }
+    for (i = 0; i < NR_CMD; i ++) {	//NR_CMD=3
+      if (strcmp(cmd, cmd_table[i].name) == 0) {	//cmd与3个table中的命令匹配
+        if (cmd_table[i].handler(args) < 0) { return; }	//执行命令
         break;
       }
     }
 
-    if (i == NR_CMD) { printf("Unknown command '%s'\n", cmd); }
+    if (i == NR_CMD) { printf("Unknown command '%s'\n", cmd); }	//匹配不到命令
   }
 }
 
