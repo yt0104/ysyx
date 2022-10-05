@@ -60,12 +60,15 @@ static int cmd_q(char *args) {
 static int cmd_si(char *args) {
   printf("EXEC ONCE\n");
   uint64_t n;
-
+  if(para==NULL){
+  	n = 1;
+  }
+  else{
   	n = strtol( para, NULL, 10 ); 
   	if(n <= 0 || n > 4){
   		printf("Invalid command\n");
   		n = 1;
-
+  	}
   }
   cpu_exec(n);
   
