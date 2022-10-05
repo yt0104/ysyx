@@ -1,8 +1,16 @@
 module sw(
+  input clk,
+  input rst,
   input a,
   input b,
-  output f
+  output reg f
 );
-  assign f = a ^ b;
+
+always@(posedge clk )
+if(rst) f <= 0;
+else f <= a^b;
+
+	
+
 endmodule
 
