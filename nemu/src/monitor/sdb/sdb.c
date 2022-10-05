@@ -21,6 +21,8 @@
 
 static int is_batch_mode = false;
 
+static char* para;
+
 void init_regex();
 void init_wp_pool();
 
@@ -55,6 +57,15 @@ static int cmd_q(char *args) {
   return -1;
 }
 
+static int cmd_si(char *args) {
+  printf("exec once\n");
+  uint64_t size = strtol( para, NULL, 10 ); 
+  cpu_exec(size);
+  return 0;
+}
+
+
+
 static int cmd_help(char *args);
 
 static struct {
@@ -65,8 +76,8 @@ static struct {
   { "help", "Display information about all supported commands", cmd_help },
   { "c", "Continue the execution of the program", cmd_c },
   { "q", "Exit NEMU", cmd_q },
-  /*{ "si", "exec once", cmd_si },
-  { "info", "print", cmd_info },
+  { "si", "exec once", cmd_si }
+  /*{ "info", "print", cmd_info },
   { "x", "scan memory", cmd_x },
   { "p", "calulate expr", cmd_p },
   { "w", "watch expr", cmd_w },
@@ -121,6 +132,8 @@ void sdb_mainloop() {
     /* treat the remaining string as the arguments,
      * which may need further parsing
      */
+     para = strtok(NULL," ");
+     
     char *args = cmd + strlen(cmd) + 1;
     if (args >= str_end) {
       args = NULL;
@@ -134,7 +147,8 @@ void sdb_mainloop() {
     int i;
     for (i = 0; i < NR_CMD; i ++) {	//NR_CMD=3
       if (strcmp(cmd, cmd_table[i].name) == 0) {	//cmd与3个table中的命令匹配
-        if (cmd_table[i].handler(args) < 0) { return; }	//执行命令
+        if (cmd_table[i].handler(args) < 0) { return; }      	//执行命令
+        //else { if (cmd_table[i].handler(args,para) < 0) { return; }   }
         break;
       }
     }
