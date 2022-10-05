@@ -77,7 +77,10 @@ static int cmd_si(char *args) {
 
 static int cmd_info(char *args) {
   char* str = "r";
-  if(strcmp(str, subcmd) == 0){
+  if(subcmd == NULL){
+  	printf("Invalid command\n");
+  }
+  else if(strcmp(str, subcmd) == 0){
   	printf("PRINT REG\n");
   	isa_reg_display();
   }
