@@ -21,7 +21,7 @@
 
 static int is_batch_mode = false;
 
-static char* para;
+static char* subcmd;
 
 void init_regex();
 void init_wp_pool();
@@ -59,22 +59,36 @@ static int cmd_q(char *args) {
 
 static int cmd_si(char *args) {
   uint64_t n;
-  if(para==NULL){
+  if(subcmd==NULL){
   	n = 1;
   	printf("EXEC ONCE\n");
   }
   else{
-  	n = strtol( para, NULL, 10 ); 
-  	if(n <= 0 || n > 4){
+  	n = strtol( subcmd, NULL, 10 ); 
+  	if(n <= 1 || n > 4){
   		printf("EXEC ONCE\n");
   		n = 1;
   	}
   	else printf("EXEC N\n");
   }
   cpu_exec(n);
-  
   return 0;
 }
+
+static int cmd_info(char *args) {
+  char* str = "r";
+  if(strcmp(str, subcmd) == 0){
+  	printf("PRINT REG\n");
+  	isa_reg_display();
+  }
+  else{
+	printf("Invalid command\n");
+  }
+  return 0;
+}
+
+
+
 
 
 
@@ -88,8 +102,8 @@ static struct {
   { "help", "Display information about all supported commands", cmd_help },
   { "c", "Continue the execution of the program", cmd_c },
   { "q", "Exit NEMU", cmd_q },
-  { "si", "exec once", cmd_si }
-  /*{ "info", "print", cmd_info },
+  { "si", "exec once", cmd_si },
+  { "info", "print", cmd_info }/*,
   { "x", "scan memory", cmd_x },
   { "p", "calulate expr", cmd_p },
   { "w", "watch expr", cmd_w },
@@ -144,7 +158,7 @@ void sdb_mainloop() {
     /* treat the remaining string as the arguments,
      * which may need further parsing
      */
-     para = strtok(NULL," ");
+    subcmd = strtok(NULL," ");
      
     char *args = cmd + strlen(cmd) + 1;
     if (args >= str_end) {
