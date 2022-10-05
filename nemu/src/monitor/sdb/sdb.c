@@ -82,23 +82,36 @@ static int cmd_info(char *args) {
 
   if(subcmd1 == NULL){
   	printf("Invalid command\n");
+  	return 0;
   }
-  else if(strcmp("r", subcmd1) == 0){
-  	printf("PRINT REG\n");
-  	isa_reg_display();
-  }
-  else{
+  if(strcmp("r", subcmd1) != 0){
 	printf("Invalid command\n");
+	return 0;
   }
+  
+  printf("PRINT REG\n");
+  isa_reg_display();
   return 0;
+  
 }
 
 
 static int cmd_x(char *args) {
+  if(subcmd1==NULL || subcmd2==NULL){
+  	printf("Invalid command\n");
+  	return 0;
+  }
   uint64_t n = strtol( subcmd1, NULL, 10 );
   uint64_t maddr = strtol( &subcmd2[2], NULL, 16 );
   
-  printf("%ld,%lx",n,maddr);
+  uint64_t raddr;
+  raddr=maddr;
+  for(int i=0;i<n;i++){
+  	printf("0x%lx\t\t0x%x",raddr,*(uint32_t*)raddr);
+  	raddr += 4;
+  }
+  
+  
 
   return 0;
 }
