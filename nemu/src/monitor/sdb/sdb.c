@@ -58,6 +58,7 @@ static int cmd_q(char *args) {
   return -1;
 }
 
+
 static int cmd_si(char *args) {
   uint64_t n;
   if(subcmd1==NULL){
@@ -76,6 +77,7 @@ static int cmd_si(char *args) {
   return 0;
 }
 
+
 static int cmd_info(char *args) {
   char* str = "r";
   if(subcmd1 == NULL){
@@ -92,6 +94,12 @@ static int cmd_info(char *args) {
 }
 
 
+static int cmd_x(char *args) {
+  //int n;
+  //char* addr;
+
+  return 0;
+}
 
 
 static int cmd_help(char *args);
@@ -105,8 +113,8 @@ static struct {
   { "c", "Continue the execution of the program", cmd_c },
   { "q", "Exit NEMU", cmd_q },
   { "si", "exec once", cmd_si },
-  { "info", "print", cmd_info }/*,
-  { "x", "scan memory", cmd_x },
+  { "info", "print", cmd_info },
+  { "x", "scan memory", cmd_x }/*,
   { "p", "calulate expr", cmd_p },
   { "w", "watch expr", cmd_w },
   { "d", "delete watch", cmd_d },*/
