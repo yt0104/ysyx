@@ -108,7 +108,7 @@ static int cmd_x(char *args) {
   raddr=maddr;
   for(int i=0;i<n;i++){
   	printf("0x%lx\t",raddr);
-  	//printf("0x%lx\n",*raddr);
+  	printf("0x%x\n",*(uint32_t*)raddr);
   	raddr += 4;
   }
   
