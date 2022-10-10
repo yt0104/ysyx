@@ -43,20 +43,20 @@ static struct rule {
 
 #define NR_REGEX ARRLEN(rules)
 
-static regex_t re[NR_REGEX] = {};
+static regex_t re[NR_REGEX] = {};	//存放编译后的正则表达式
 
 /* Rules are used for many times.
  * Therefore we compile them only once before any usage.
  */
-void init_regex() {
+void init_regex() {		//初始化：编译成一些用于进行pattern匹配的内部信息
   int i;
   char error_msg[128];
   int ret;
 
   for (i = 0; i < NR_REGEX; i ++) {
-    ret = regcomp(&re[i], rules[i].regex, REG_EXTENDED);
+    ret = regcomp(&re[i], rules[i].regex, REG_EXTENDED);	//把正则表达式编译成特定数据格式re
     if (ret != 0) {
-      regerror(ret, &re[i], error_msg, 128);
+      regerror(ret, &re[i], error_msg, 128);			//返回一个包含错误信息的字符串
       panic("regex compilation failed: %s\n%s", error_msg, rules[i].regex);
     }
   }
@@ -70,17 +70,17 @@ typedef struct token {
 static Token tokens[32] __attribute__((used)) = {};
 static int nr_token __attribute__((used))  = 0;
 
-static bool make_token(char *e) {
-  int position = 0;
+static bool make_token(char *e) {	
+  int position = 0;			//当前处理的位置
   int i;
-  regmatch_t pmatch;
+  regmatch_t pmatch;			//结构体数据类型，存放匹配文本串在目标串中的开始、结束位置
 
-  nr_token = 0;
+  nr_token = 0;				//指示已经被识别出的token数目
 
   while (e[position] != '\0') {
     /* Try all rules one by one. */
     for (i = 0; i < NR_REGEX; i ++) {
-      if (regexec(&re[i], e + position, 1, &pmatch, 0) == 0 && pmatch.rm_so == 0) {
+      if (regexec(&re[i], e + position, 1, &pmatch, 0) == 0 && pmatch.rm_so == 0) {	//正则匹配
         char *substr_start = e + position;
         int substr_len = pmatch.rm_eo;
 

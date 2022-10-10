@@ -112,10 +112,27 @@ static int cmd_x(char *args) {
   	raddr += 4;
   }
   
-  
-
   return 0;
 }
+
+
+static int cmd_p(char *args) {
+  if(subcmd1==NULL || subcmd2==NULL){
+  	printf("Invalid command\n");
+  	return 0;
+  }
+  bool success;
+  expr(subcmd2,&success);
+  if(success) printf("expr success\n");
+  else printf("expr failed\n");
+  
+  return 0;
+}
+
+
+
+
+
 
 
 static int cmd_help(char *args);
@@ -130,8 +147,8 @@ static struct {
   { "q", "Exit NEMU", cmd_q },
   { "si", "exec once", cmd_si },
   { "info", "print", cmd_info },
-  { "x", "scan memory", cmd_x }/*,
-  { "p", "calulate expr", cmd_p },
+  { "x", "scan memory", cmd_x },
+  { "p", "calulate expr", cmd_p }/*,
   { "w", "watch expr", cmd_w },
   { "d", "delete watch", cmd_d },*/
 
