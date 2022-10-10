@@ -117,12 +117,12 @@ static int cmd_x(char *args) {
 
 
 static int cmd_p(char *args) {
-  if(subcmd1==NULL || subcmd2==NULL){
+  if(subcmd1==NULL){
   	printf("Invalid command\n");
   	return 0;
   }
   bool success;
-  expr(subcmd2,&success);
+  expr(subcmd1,&success);
   if(success) printf("expr success\n");
   else printf("expr failed\n");
   
