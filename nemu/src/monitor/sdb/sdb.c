@@ -21,6 +21,7 @@
 
 static int is_batch_mode = false;
 
+static char* subcmd_p;
 static char* subcmd1;
 static char* subcmd2;
 
@@ -97,7 +98,7 @@ static int cmd_info(char *args) {
 
 
 static int cmd_x(char *args) {
-  subcmd2 = strtok(NULL," ");
+
   if(subcmd1==NULL || subcmd2==NULL){
   	printf("Invalid command\n");
   	return 0;
@@ -118,12 +119,13 @@ static int cmd_x(char *args) {
 
 
 static int cmd_p(char *args) {
-  if(subcmd1==NULL){
+  
+  if(subcmd_p==NULL){
   	printf("Invalid command\n");
   	return 0;
   }
   bool success;
-  expr(subcmd1,&success);
+  expr(subcmd_p,&success);
   if(success) printf("expr success\n");
   else printf("expr failed\n");
   
@@ -202,8 +204,9 @@ void sdb_mainloop() {
     /* treat the remaining string as the arguments,
      * which may need further parsing
      */
-    //subcmd1 = strtok(NULL," ");
-    subcmd1 = str;
+     subcmd1 = strtok(NULL," ");
+     subcmd2 = strtok(NULL," ");
+     subcmd_p = &cmd[2];
      
     char *args = cmd + strlen(cmd) + 1;
     if (args >= str_end) {
