@@ -38,10 +38,13 @@ static struct rule {
 
   {" +", TK_NOTYPE},    // spaces
   {"\\+", '+'},         // plus
-  {"==", TK_EQ},        // equal
-  {"[0-9]+", TK_NUM},    // num
+  {"\\-", '-'},         // sub
+  {"\\*", '*'},         // mult
+  {"\\/", '/'},         // div
+  {"[0-9]+", TK_NUM},   // num
   {"\\(", '('},         // left
   {"\\)", ')'},         // right
+  {"==", TK_EQ},        // equal
 };
 
 #define NR_REGEX ARRLEN(rules)
@@ -100,10 +103,13 @@ static bool make_token(char *e) {
         switch (rules[i].token_type) {
           case TK_NOTYPE:	printf("NUTYPE\n");	break;
           case '+':	printf("+\n");	break;
-          case TK_EQ:	printf("==\n");	break;
+          case '-':	printf("-\n");	break;
+          case '*':	printf("*\n");	break;
+          case '/':	printf("/\n");	break;
           case TK_NUM:	printf("num\n");break;
           case '(':	printf("(\n");	break;
-          case ')':	printf(")\n");	break;         
+          case ')':	printf(")\n");	break;    
+          case TK_EQ:	printf("==\n");	break;     
           default: TODO();
         }
 
