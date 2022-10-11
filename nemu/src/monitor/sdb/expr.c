@@ -192,9 +192,12 @@ static uint32_t eval(int p, int q){
     
     }
     
-    int op_type = tokens[op].type;
-    uint32_t val1 = eval(p , op - 1);
-    uint32_t val2 = eval(op + 1 , q);  
+    int 	op_type = tokens[op].type;
+    
+    uint32_t 	val1;
+    if(p==op)	val1 = 0;	//no main operator
+    else 	val1 = eval(p , op - 1);
+    uint32_t 	val2 = eval(op + 1 , q);  
     
     switch(op_type) {
     	case '+':return val1+val2;
