@@ -162,7 +162,7 @@ static int eval(int p, int q){
     /*find main signal*/
     int op=p;	
     int sub_p = 0;	
-    for(int i=p;i<q;i++){
+    for(int i=p;i<=q;i++){
     	if(tokens[i].type=='(' ) sub_p++;
     	else if(tokens[i].type==')' ) sub_p--;
     	else if(sub_p == 0 && tokens[i].type !=TK_NUM){		//token outside "()"
@@ -197,6 +197,7 @@ word_t expr(char *e, bool *success) {
     *success = false;
     return 0;
   }
+  *success = true;
   return eval(0,nr_token-1);
   /* TODO: Insert codes to evaluate the expression. */
   TODO();
