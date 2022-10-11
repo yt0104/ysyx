@@ -97,6 +97,7 @@ static int cmd_info(char *args) {
 
 
 static int cmd_x(char *args) {
+  subcmd2 = strtok(NULL," ");
   if(subcmd1==NULL || subcmd2==NULL){
   	printf("Invalid command\n");
   	return 0;
@@ -202,7 +203,7 @@ void sdb_mainloop() {
      * which may need further parsing
      */
     subcmd1 = strtok(NULL," ");
-    subcmd2 = strtok(NULL," ");
+    
      
     char *args = cmd + strlen(cmd) + 1;
     if (args >= str_end) {
