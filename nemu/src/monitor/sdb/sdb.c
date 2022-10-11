@@ -62,6 +62,7 @@ static int cmd_q(char *args) {
 
 static int cmd_si(char *args) {
   uint64_t n;
+  subcmd1 = strtok(NULL," ");
   if(subcmd1==NULL){
   	n = 1;
   	printf("EXEC ONCE\n");
@@ -80,7 +81,7 @@ static int cmd_si(char *args) {
 
 
 static int cmd_info(char *args) {
-
+  subcmd1 = strtok(NULL," ");
   if(subcmd1 == NULL){
   	printf("Invalid command\n");
   	return 0;
@@ -98,7 +99,8 @@ static int cmd_info(char *args) {
 
 
 static int cmd_x(char *args) {
-
+  subcmd1 = strtok(NULL," ");
+  subcmd2 = strtok(NULL," ");
   if(subcmd1==NULL || subcmd2==NULL){
   	printf("Invalid command\n");
   	return 0;
@@ -204,8 +206,6 @@ void sdb_mainloop() {
     /* treat the remaining string as the arguments,
      * which may need further parsing
      */
-     subcmd1 = strtok(NULL," ");
-     subcmd2 = strtok(NULL," ");
      subcmd_p = &cmd[2];
      
     char *args = cmd + strlen(cmd) + 1;
