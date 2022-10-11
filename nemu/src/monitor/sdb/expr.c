@@ -140,7 +140,7 @@ static bool check_parentheses(int p, int q){
 		for(int i=p;i<=q;i++){
 	    		if(tokens[i].type=='(' ) p_count++;
 	    		else if(tokens[i].type==')' ) p_count--;
-	    		if(p_count==0) return false;	//首尾括号不是一对
+	    		if(p_count==0 && i!=q) return false;	//首尾括号不是一对
 		
 		}
 		return true;
