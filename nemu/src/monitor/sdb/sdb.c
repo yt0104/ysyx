@@ -202,8 +202,8 @@ void sdb_mainloop() {
     /* treat the remaining string as the arguments,
      * which may need further parsing
      */
-    subcmd1 = strtok(NULL," ");
-    
+    //subcmd1 = strtok(NULL," ");
+    subcmd1 = str;
      
     char *args = cmd + strlen(cmd) + 1;
     if (args >= str_end) {
