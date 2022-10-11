@@ -21,8 +21,9 @@
 #include <regex.h>
 
 enum {
-  TK_NOTYPE = 256, TK_EQ,
-  TK_NUM = 255
+  TK_NOTYPE = 256,
+  TK_NUM = 257,
+  TK_EQ = 258
   /* TODO: Add more token types */
 
 };
@@ -73,18 +74,19 @@ typedef struct token {
   char str[32];
 } Token;
 
-static Token tokens[32] __attribute__((used)) = {};
+static Token tokens[32] __attribute__((used)) = {};	//该函数或变量可能不使用，避免编译器产生警告信息
 static int nr_token __attribute__((used))  = 0;
 
 static bool make_token(char *e) {	
   int position = 0;			//当前处理的位置
   int i;
+  
   regmatch_t pmatch;			//结构体数据类型，存放匹配文本串在目标串中的开始、结束位置
 
   nr_token = 0;				//指示已经被识别出的token数目
 
   while (e[position] != '\0') {
-    /* Try all rules one by one. */
+    /* Try all rules one by one.x */
     for (i = 0; i < NR_REGEX; i ++) {
       if (regexec(&re[i], e + position, 1, &pmatch, 0) == 0 && pmatch.rm_so == 0) {	//正则匹配
         char *substr_start = e + position;
@@ -101,15 +103,17 @@ static bool make_token(char *e) {
          */
 
         switch (rules[i].token_type) {
-          case TK_NOTYPE:	printf("NUTYPE\n");	break;
-          case '+':	printf("+\n");	break;
-          case '-':	printf("-\n");	break;
-          case '*':	printf("*\n");	break;
-          case '/':	printf("/\n");	break;
-          case TK_NUM:	printf("num\n");break;
-          case '(':	printf("(\n");	break;
-          case ')':	printf(")\n");	break;    
-          case TK_EQ:	printf("==\n");	break;     
+          case TK_NOTYPE: 	break;
+          case '+':	tokens[nr_token++].type=rules[i].token_type;	break;
+          case '-':	tokens[nr_token++].type=rules[i].token_type;	break;
+          case '*':	tokens[nr_token++].type=rules[i].token_type;	break;
+          case '/':	tokens[nr_token++].type=rules[i].token_type;	break;
+          case TK_NUM:	strcpy(tokens[nr_token].str,substr_start); 
+          		tokens[nr_token++].type =rules[i].token_type;
+          		break;
+          case '(':	tokens[nr_token++].type=rules[i].token_type;	break;
+          case ')':	tokens[nr_token++].type=rules[i].token_type;	break;    
+          case TK_EQ:	tokens[nr_token++].type=rules[i].token_type;	break;     
           default: TODO();
         }
 
