@@ -177,7 +177,7 @@ static int eval(int p, int q){
     bool num_status = 0;
     for(int i=p;i<=q;i++){
     	if(tokens[i].type=='(' ) sub_p++;
-    	else if(tokens[i].type==')' ) sub_p--;
+    	else if(tokens[i].type==')' ) { sub_p--; num_status = true;}
     	else if(sub_p == 0){			//token outside "()"
     	  	if(tokens[i].type !=TK_NUM){	//operator	
     	  		if(num_status){		//main operator
