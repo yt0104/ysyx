@@ -151,7 +151,7 @@ static bool check_parentheses(int p, int q){
 
 }
 
-static int eval(int p, int q){
+static uint32_t eval(int p, int q){
   if(p > q){
     /* Bad expression */
   	assert(0);
@@ -186,8 +186,8 @@ static int eval(int p, int q){
     }
     
     int op_type = tokens[op].type;
-    int val1 = eval(p , op - 1);
-    int val2 = eval(op + 1 , q);  
+    uint32_t val1 = eval(p , op - 1);
+    uint32_t val2 = eval(op + 1 , q);  
     
     switch(op_type) {
     	case '+':return val1+val2;
