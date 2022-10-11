@@ -40,6 +40,8 @@ static struct rule {
   {"\\+", '+'},         // plus
   {"==", TK_EQ},        // equal
   {"[0-9]+", TK_NUM},    // num
+  {"\\(", '('},         // left
+  {"\\)", ')'},         // right
 };
 
 #define NR_REGEX ARRLEN(rules)
@@ -100,7 +102,8 @@ static bool make_token(char *e) {
           case '+':	printf("+\n");	break;
           case TK_EQ:	printf("==\n");	break;
           case TK_NUM:	printf("num\n");break;
-          
+          case '(':	printf("(\n");	break;
+          case ')':	printf(")\n");	break;         
           default: TODO();
         }
 
