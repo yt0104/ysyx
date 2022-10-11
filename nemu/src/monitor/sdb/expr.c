@@ -167,7 +167,8 @@ static int eval(int p, int q){
     	else if(tokens[i].type==')' ) sub_p--;
     	else if(sub_p == 0 && tokens[i].type !=TK_NUM){		//token outside "()"
     		if(tokens[i].type=='*' || tokens[i].type=='/') op = i;
-    		else if(tokens[op].type=='+' || tokens[op].type=='-') op = i;
+    		else if(tokens[op].type=='*' || tokens[op].type=='/') op = op;
+    		else op = i;
     		
     	}
     
