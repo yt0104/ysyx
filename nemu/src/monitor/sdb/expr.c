@@ -96,6 +96,11 @@ static bool make_token(char *e) {
          */
 
         switch (rules[i].token_type) {
+          case TK_NOTYPE:	printf("NUTYPE\n");	break;
+          case '+':	printf("+\n");	break;
+          case TK_EQ:	printf("==\n");	break;
+          case TK_NUM:	printf("num\n");break;
+          
           default: TODO();
         }
 
