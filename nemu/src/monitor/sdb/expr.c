@@ -21,9 +21,9 @@
 #include <regex.h>
 
 enum {
-  TK_NOTYPE = 256,
-  TK_NUM = 257,
-  TK_EQ = 258
+  TK_NUM = 256,
+  TK_NOTYPE = 257,
+  //TK_EQ = 258
   /* TODO: Add more token types */
 
 };
@@ -45,7 +45,7 @@ static struct rule {
   {"[0-9]+", TK_NUM},   // num
   {"\\(", '('},         // left
   {"\\)", ')'},         // right
-  {"==", TK_EQ},        // equal
+  //{"==", TK_EQ},        // equal
 };
 
 #define NR_REGEX ARRLEN(rules)
@@ -114,7 +114,7 @@ static bool make_token(char *e) {
           		break;
           case '(':	tokens[nr_token++].type=rules[i].token_type;	break;
           case ')':	tokens[nr_token++].type=rules[i].token_type;	break;    
-          case TK_EQ:	tokens[nr_token++].type=rules[i].token_type;	break;     
+          //case TK_EQ:	tokens[nr_token++].type=rules[i].token_type;	break;     
           default: TODO();
         }
 
@@ -132,14 +132,76 @@ static bool make_token(char *e) {
 }
 
 
+
+static bool check_parentheses(int p, int q){
+
+	if(tokens[p].type=='(' && tokens[q].type==')') return true;
+	else return false;
+
+}
+
+static int eval(int p, int q){
+  if(p > q){
+    /* Bad expression */
+  	assert(0);
+  }
+  else if(p == q){	
+    /* Single token.
+     * For now this token should be a number.
+     * Return the value of the number.
+     */
+    return strtol( tokens[p].str, NULL, 10 );
+  }
+  else if (check_parentheses(p, q) == true) {
+    /* The expression is surrounded by a matched pair of parentheses.
+     * If that is the case, just throw away the parentheses.
+     */
+    return eval(p + 1, q - 1);
+  }
+  else {
+    /*find main signal*/
+    int op=p;	
+    int sub_p = 0;	
+    for(int i=p;i<q;i++){
+    	if(tokens[i].type=='(' ) sub_p++;
+    	else if(tokens[i].type==')' ) sub_p--;
+    	else if(sub_p == 0 && tokens[i].type !=TK_NUM){		//token outside "()"
+    		if(tokens[i].type=='*' || tokens[i].type=='/') op = i;
+    		else if(tokens[op].type=='+' || tokens[op].type=='-') op = i;
+    		
+    	}
+    
+    }
+    
+    int op_type = tokens[op].type;
+    int val1 = eval(p , op - 1);
+    int val2 = eval(op + 1 , q);  
+    
+    switch(op_type) {
+    	case '+':return val1+val2;
+    	case '-':return val1-val2;
+    	case '*':return val1*val2;
+    	case '/':return val1/val2;
+    	default: assert(0);
+    	
+    }
+
+  }
+
+}
+
+
 word_t expr(char *e, bool *success) {
   if (!make_token(e)) {
     *success = false;
     return 0;
   }
-
+  return eval(0,nr_token-1);
   /* TODO: Insert codes to evaluate the expression. */
   TODO();
 
   return 0;
 }
+
+
+
