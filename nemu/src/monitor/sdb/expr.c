@@ -169,17 +169,25 @@ static uint32_t eval(int p, int q){
     return eval(p + 1, q - 1);
   }
   else {
-    /* find main operator */
+    /*
+     * find main operator : op
+     */
     int op=p;	
     int sub_p = 0;	
+    bool num_status = 0;
     for(int i=p;i<=q;i++){
     	if(tokens[i].type=='(' ) sub_p++;
     	else if(tokens[i].type==')' ) sub_p--;
-    	else if(sub_p == 0 && tokens[i].type !=TK_NUM){		//token outside "()"
-    		if(tokens[i].type=='+' || tokens[i].type=='-') op = i;
-    		else if(tokens[op].type=='+' || tokens[op].type=='-') op = op;
-    		else op = i;
-    		
+    	else if(sub_p == 0){			//token outside "()"
+    	  	if(tokens[i].type !=TK_NUM){	//operator	
+    	  		if(num_status){		//main operator
+	    			if(tokens[i].type=='+' || tokens[i].type=='-') op = i;
+	    			else if(tokens[op].type=='+' || tokens[op].type=='-') op = op;
+	    			else op = i;	
+	    		}
+	    		num_status = false;	//+num -num is not main operator
+    		}
+    		else num_status = true;		//num
     	}
     
     }
