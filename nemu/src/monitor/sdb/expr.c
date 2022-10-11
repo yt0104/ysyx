@@ -135,8 +135,19 @@ static bool make_token(char *e) {
 
 static bool check_parentheses(int p, int q){
 
-	if(tokens[p].type=='(' && tokens[q].type==')') return true;
-	else return false;
+	if(tokens[p].type=='(' && tokens[q].type==')') {
+		int p_count = 0;
+		for(int i=p;i<=q;i++){
+	    		if(tokens[i].type=='(' ) p_count++;
+	    		else if(tokens[i].type==')' ) p_count--;
+	    		if(p_count==0) return false;	//首尾括号不是一对
+		
+		}
+		return true;
+	
+	}
+
+	return false;
 
 }
 
@@ -159,7 +170,7 @@ static int eval(int p, int q){
     return eval(p + 1, q - 1);
   }
   else {
-    /*find main signal*/
+    /* find main operator */
     int op=p;	
     int sub_p = 0;	
     for(int i=p;i<=q;i++){
