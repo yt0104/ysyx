@@ -69,7 +69,7 @@ word_t isa_reg_str2val(const char *s, bool *success) {
   *success = true;
   for(int i=0;i<32;i++){
   	printf("%s\n",regs[i]);	//$0
-  	if(strcmp(s,(char*)&regs[i])==0) return *regs[i];
+  	if(strcmp(s,regs[i])==0) return *regs[i];
   
   }
   
