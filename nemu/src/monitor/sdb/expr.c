@@ -53,7 +53,7 @@ static struct rule {
   {"!=", TK_UEQ},       // unequal
   {"&&", TK_AND},       // and
   {"0x[0-9]+", TK_HEX}, //hex_num
-  {"\\$[0-9A-Za-z]+", TK_REG},//reg
+  {"\\$[$0-9a-z]+", TK_REG},//reg
 };
 
 #define NR_REGEX ARRLEN(rules)
