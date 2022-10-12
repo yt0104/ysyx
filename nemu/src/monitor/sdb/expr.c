@@ -185,7 +185,8 @@ static int eval(int p, int q){
     	else if(sub_p == 0){			//token outside "()"
     	  	if(tokens[i].type !=TK_NUM){	//this token is operator	
     	  		if(num_status){		//main operator
-    	  			if(tokens[i].type==TK_AND) op = i;
+    	  			if(op==p) op = i;
+    	  			else if(tokens[i].type==TK_AND) op = i;
     	  			else if(tokens[i].type==TK_EQ || tokens[i].type==TK_UEQ)
     	  				if(tokens[op].type==TK_AND) op = op;
     	  				else op = i;
@@ -193,11 +194,10 @@ static int eval(int p, int q){
 	    				if(tokens[op].type==TK_AND || tokens[op].type==TK_EQ || tokens[op].type==TK_UEQ) op = op;
 	    				else op = i;
 	    			else if(tokens[i].type=='*' || tokens[i].type=='/' ) 
-	    				if(tokens[op].type=='*' || tokens[op].type=='/') op = i;
-	    				else op = op;
-	    			else 
-	    				if(op==0) op = i;	//first main operator
-	    				else assert(0);
+	    				if(tokens[op].type=='*' || tokens[op].type=='/' ) op = i;	
+	    				else op = op;	
+	    			else assert(0);
+
 	    		}
 	    		num_status = false;	//*num/+num/-num is not main operator
     		}
