@@ -22,8 +22,10 @@
 
 enum {
   TK_NUM = 256,
-  TK_NOTYPE = 257,
-  //TK_EQ = 258
+  TK_NOTYPE = 257,	
+  TK_EQ = 258,		
+  TK_UEQ = 259,	  
+  TK_AND = 260		
   /* TODO: Add more token types */
 
 };
@@ -45,7 +47,9 @@ static struct rule {
   {"[0-9]+", TK_NUM},   // num
   {"\\(", '('},         // left
   {"\\)", ')'},         // right
-  //{"==", TK_EQ},        // equal
+  {"==", TK_EQ},        // equal
+  {"!=", TK_UEQ},       // unequal
+  {"&&", TK_AND},       // and
 };
 
 #define NR_REGEX ARRLEN(rules)
@@ -113,7 +117,9 @@ static bool make_token(char *e) {
           		break;
           case '(':	tokens[nr_token++].type=rules[i].token_type;	break;
           case ')':	tokens[nr_token++].type=rules[i].token_type;	break;    
-          //case TK_EQ:	tokens[nr_token++].type=rules[i].token_type;	break;     
+          case TK_EQ:	tokens[nr_token++].type=rules[i].token_type;	break; 
+          case TK_UEQ:	tokens[nr_token++].type=rules[i].token_type;	break; 
+          case TK_AND:	tokens[nr_token++].type=rules[i].token_type;	break;     
           default: TODO();
         }
 
@@ -131,7 +137,6 @@ static bool make_token(char *e) {
 }
 
 
-
 static bool check_parentheses(int p, int q){
 
 	if(tokens[p].type=='(' && tokens[q].type==')') {
@@ -145,17 +150,16 @@ static bool check_parentheses(int p, int q){
 		return true;
 	
 	}
-
 	return false;
-
 }
+
 
 static int eval(int p, int q){
   if(p > q){
     /* Bad expression */
   	assert(0);
   }
-  else if(p == q){	
+  else if(p == q){		
     /* Single token.
      * For now this token should be a number.
      * Return the value of the number.
@@ -174,24 +178,37 @@ static int eval(int p, int q){
      */
     int op=p;	
     int sub_p = 0;	
-    bool num_status = 0;
+    bool num_status = false;
     for(int i=p;i<=q;i++){
     	if(tokens[i].type=='(' ) sub_p++;
     	else if(tokens[i].type==')' ) { sub_p--; num_status = true;}
     	else if(sub_p == 0){			//token outside "()"
-    	  	if(tokens[i].type !=TK_NUM){	//operator	
+    	  	if(tokens[i].type !=TK_NUM){	//this token is operator	
     	  		if(num_status){		//main operator
-	    			if(tokens[i].type=='+' || tokens[i].type=='-') op = i;
-	    			else if(tokens[op].type=='+' || tokens[op].type=='-') op = op;
-	    			else op = i;	
+    	  			if(tokens[i].type==TK_AND) op = i;
+    	  			else if(tokens[i].type==TK_EQ || tokens[i].type==TK_UEQ)
+    	  				if(tokens[op].type==TK_AND) op = op;
+    	  				else op = i;
+	    			else if(tokens[i].type=='+' || tokens[i].type=='-') 
+	    				if(tokens[op].type==TK_AND || tokens[op].type==TK_EQ || tokens[op].type==TK_UEQ) op = op;
+	    				else op = i;
+	    			else if(tokens[i].type=='*' || tokens[i].type=='/') 
+	    				if(tokens[op].type=='*' || tokens[op].type=='/') op = i;
+	    				else op = op;
+	    			else 
+	    				assert(0);
 	    		}
-	    		num_status = false;	//+num -num is not main operator
+	    		num_status = false;	//*num/+num/-num is not main operator
     		}
-    		else num_status = true;		//num
+    		else num_status = true;		//this token is num
     	}
     
     }
     
+    /*
+     * return expr value
+     */
+     
     int 	op_type = tokens[op].type;
     
     int 	val1;
