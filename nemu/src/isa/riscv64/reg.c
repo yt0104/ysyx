@@ -65,9 +65,10 @@ void isa_reg_display() {
 }
 
 word_t isa_reg_str2val(const char *s, bool *success) {
-  *success = true;
+  
   
   for(int i=0;i<32;i++){
+  	*success = true;
   	if(strcmp(s,regs[i])) return *regs[i];
   
   }
