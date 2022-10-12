@@ -65,11 +65,56 @@ void isa_reg_display() {
 }
 
 word_t isa_reg_str2val(const char *s, bool *success) {
-  /*for(int i=0;regs[i]!='\0';i++){
-  	if( strcmp( &regs[i], s) ) return *regs[i];
-  	*success = true;
+  *success = true;
+  
+  for(int i=0;i<32;i++){
+  	if(strcmp(s,regs[i])) return *regs[i];
+  
   }
-*/
+  
+  /*
+  switch(*s){
+  	
+	case "$0": return *regs[0];
+	case "ra": return *regs[1];
+	case "sp": return *regs[2];
+	case "gp": return *regs[3];
+	case "tp": return *regs[4];
+	case "t0": return *regs[5];
+	case "t1": return *regs[6];
+	case "t2": return *regs[7];
+	
+	case "s0": return *regs[8];
+	case "s1": return *regs[9];
+	case "a0": return *regs[10];
+	case "a1": return *regs[11];
+	case "a2": return *regs[12];
+	case "a3": return *regs[13];
+	case "a4": return *regs[14];
+	case "a5": return *regs[15];
+	
+	case "a6": return *regs[16];
+	case "a7": return *regs[17];
+	case "s2": return *regs[18];
+	case "s3": return *regs[19];
+	case "s4": return *regs[20];
+	case "s5": return *regs[21];
+	case "s6": return *regs[22];
+	case "s7": return *regs[23];
+	
+	case "s8": return *regs[24];
+	case "s9": return *regs[25];
+	case "s10":return *regs[26];
+	case "s11":return *regs[27];
+	case "t3": return *regs[28];
+	case "t4": return *regs[29];
+	case "t5": return *regs[30];
+	case "t6": return *regs[31];
+	default:assert(0);
+  
+  }*/
+  
   *success = false;
   return 0;
+  
 }
