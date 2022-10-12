@@ -192,11 +192,12 @@ static int eval(int p, int q){
 	    			else if(tokens[i].type=='+' || tokens[i].type=='-') 
 	    				if(tokens[op].type==TK_AND || tokens[op].type==TK_EQ || tokens[op].type==TK_UEQ) op = op;
 	    				else op = i;
-	    			else if(tokens[i].type=='*' || tokens[i].type=='/') 
+	    			else if(tokens[i].type=='*' || tokens[i].type=='/' ) 
 	    				if(tokens[op].type=='*' || tokens[op].type=='/') op = i;
 	    				else op = op;
 	    			else 
-	    				assert(0);
+	    				if(i==0) op = i;
+	    				else assert(0);
 	    		}
 	    		num_status = false;	//*num/+num/-num is not main operator
     		}
