@@ -200,7 +200,7 @@ static uint64_t eval(int p, int q){
     	if(tokens[i].type=='(' ) sub_p++;
     	else if(tokens[i].type==')' ) { sub_p--; num_status = true;}
     	else if(sub_p == 0){							//token outside "()"
-    	  	if(tokens[i].type !=TK_NUM ||tokens[i].type !=TK_HEX ||tokens[i].type !=TK_REG){ //this token is operator	
+    	  	if(tokens[i].type !=TK_NUM && tokens[i].type !=TK_HEX && tokens[i].type !=TK_REG){ //this token is operator	
     	  		if(num_status){						//main operator
     	  			if(op==p) op = i;
     	  			else if(tokens[i].type==TK_AND) op = i;
