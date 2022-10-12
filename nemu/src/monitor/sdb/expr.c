@@ -238,7 +238,7 @@ static uint64_t eval(int p, int q){
     	val2 = eval(op + 1 , q);
  	switch(op_type) {
 	    case '-':return 0-val2;
-	    case '*':return 0;
+	    case '*':return *(char*)val2;
 	    default: assert(0);	
 	    }
     }
