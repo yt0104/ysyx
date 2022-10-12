@@ -127,8 +127,8 @@ static int cmd_p(char *args) {
   	return 0;
   }
   bool success;
-  uint32_t result = expr(subcmd_p,&success);
-  if(success) printf("expr success! result is %d\n",result);
+  uint64_t result = expr(subcmd_p,&success);
+  if(success) printf("expr success! result is %ld\n",result);
   else printf("expr failed\n");
   
   return 0;

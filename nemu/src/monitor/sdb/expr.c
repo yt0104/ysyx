@@ -25,7 +25,9 @@ enum {
   TK_NOTYPE = 257,	
   TK_EQ = 258,		
   TK_UEQ = 259,	  
-  TK_AND = 260		
+  TK_AND = 260,
+  TK_HEX = 261,
+  TK_REG = 262		
   /* TODO: Add more token types */
 
 };
@@ -50,6 +52,8 @@ static struct rule {
   {"==", TK_EQ},        // equal
   {"!=", TK_UEQ},       // unequal
   {"&&", TK_AND},       // and
+  {"0x[0-9]+", TK_HEX}, //hex_num
+  {"\\$[0-9A-Za-z]+", TK_REG},//reg
 };
 
 #define NR_REGEX ARRLEN(rules)
@@ -119,7 +123,13 @@ static bool make_token(char *e) {
           case ')':	tokens[nr_token++].type=rules[i].token_type;	break;    
           case TK_EQ:	tokens[nr_token++].type=rules[i].token_type;	break; 
           case TK_UEQ:	tokens[nr_token++].type=rules[i].token_type;	break; 
-          case TK_AND:	tokens[nr_token++].type=rules[i].token_type;	break;     
+          case TK_AND:	tokens[nr_token++].type=rules[i].token_type;	break;
+          case TK_HEX:	strncpy(tokens[nr_token].str,substr_start+2,substr_len-2); 
+          		tokens[nr_token++].type =rules[i].token_type;
+          		break;  
+          case TK_REG:	strncpy(tokens[nr_token].str,substr_start+1,substr_len-1); 
+          		tokens[nr_token++].type =rules[i].token_type;	
+          		break;  
           default: TODO();
         }
 
@@ -154,7 +164,7 @@ static bool check_parentheses(int p, int q){
 }
 
 
-static int eval(int p, int q){
+static uint64_t eval(int p, int q){
   if(p > q){
     /* Bad expression */
   	assert(0);
@@ -164,7 +174,14 @@ static int eval(int p, int q){
      * For now this token should be a number.
      * Return the value of the number.
      */
-    return strtol( tokens[p].str, NULL, 10 );
+     switch(tokens[p].type){
+     	case TK_NUM: return strtol( tokens[p].str, NULL, 10 );
+     	case TK_HEX: return strtol( tokens[p].str, NULL, 16 );
+     	case TK_REG: return 1;
+     	default : assert(0);
+     
+     }
+     
   }
   else if (check_parentheses(p, q) == true) {
     /* The expression is surrounded by a matched pair of parentheses.
@@ -182,9 +199,9 @@ static int eval(int p, int q){
     for(int i=p;i<=q;i++){
     	if(tokens[i].type=='(' ) sub_p++;
     	else if(tokens[i].type==')' ) { sub_p--; num_status = true;}
-    	else if(sub_p == 0){			//token outside "()"
-    	  	if(tokens[i].type !=TK_NUM){	//this token is operator	
-    	  		if(num_status){		//main operator
+    	else if(sub_p == 0){							//token outside "()"
+    	  	if(tokens[i].type !=TK_NUM ||tokens[i].type !=TK_HEX ||tokens[i].type !=TK_REG){ //this token is operator	
+    	  		if(num_status){						//main operator
     	  			if(op==p) op = i;
     	  			else if(tokens[i].type==TK_AND) op = i;
     	  			else if(tokens[i].type==TK_EQ || tokens[i].type==TK_UEQ)
@@ -211,22 +228,29 @@ static int eval(int p, int q){
      */
      
     int 	op_type = tokens[op].type;
+    uint64_t 	val1,val2;
     
-    int 	val1;
-    if(p==op)	val1 = 0;	//no main operator
-    else 	val1 = eval(p , op - 1);
-    int 	val2 = eval(op + 1 , q);  
-    
-    switch(op_type) {
-    	case '+':return val1+val2;
-    	case '-':return val1-val2;
-    	case '*':return val1*val2;
-    	case '/':return val1/val2;
-    	case TK_EQ: return (val1==val2);
-    	case TK_UEQ:return (val1!=val2);
-    	case TK_AND:return (val1&&val2);
-    	default: assert(0);
-    	
+    if(p==op){	 	//no main operator
+    	val2 = eval(op + 1 , q);
+ 	switch(op_type) {
+	    case '-':return 0-val2;
+	    case '*':return 0;
+	    default: assert(0);	
+	    }
+    }
+    else {
+    	val1 = eval(p , op - 1);
+    	val2 = eval(op + 1 , q);
+	switch(op_type) {
+	    case '+':return val1+val2;
+	    case '-':return val1-val2;
+	    case '*':return val1*val2;
+	    case '/':return val1/val2;
+	    case TK_EQ: return (val1==val2);
+	    case TK_UEQ:return (val1!=val2);
+	    case TK_AND:return (val1&&val2);
+	    default: assert(0);	
+	    }
     }
 
   }
