@@ -196,7 +196,7 @@ static int eval(int p, int q){
 	    				if(tokens[op].type=='*' || tokens[op].type=='/') op = i;
 	    				else op = op;
 	    			else 
-	    				if(i==0) op = i;
+	    				if(op==0) op = i;	//first main operator
 	    				else assert(0);
 	    		}
 	    		num_status = false;	//*num/+num/-num is not main operator
