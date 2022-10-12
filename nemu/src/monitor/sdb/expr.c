@@ -174,13 +174,14 @@ static uint64_t eval(int p, int q){
      * For now this token should be a number.
      * Return the value of the number.
      */
+     uint64_t reg;
      bool reg_success;
      switch(tokens[p].type){
      	case TK_NUM: return strtol( tokens[p].str, NULL, 10 );
      	case TK_HEX: return strtol( tokens[p].str, NULL, 16 );
-     	case TK_REG: uint64_t r = isa_reg_str2val(tokens[p].str,&reg_success);  
-     			if(reg_success)return r;
-     			else return 0;
+     	case TK_REG: reg = isa_reg_str2val(tokens[p].str,&reg_success);  
+     			if(reg_success)return reg;
+     			else assert(0);
      	default : assert(0);
      
      }
