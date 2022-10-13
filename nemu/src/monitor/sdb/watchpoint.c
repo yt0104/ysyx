@@ -111,5 +111,26 @@ void print_point(){
 }
 
 
-
+bool check_point(int* NO, char* e, word_t* val1, word_t* val2){
+  WP* wp = head;
+  word_t new_val = 0;
+  bool success;
+  while(wp != NULL){
+    new_val = expr(wp->expr, &success);
+    if(new_val != wp->val) break;
+    wp = wp->next;
+  }
+  *NO = wp->NO;
+  e = wp->expr;
+  *val1 = wp->val;
+  *val2 = new_val;
+  
+  wp->val = new_val;
+  
+  if(wp == NULL) return false;
+  else return true;
+  
+  
+  
+}
 
