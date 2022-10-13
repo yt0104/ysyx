@@ -143,6 +143,7 @@ static int cmd_w(char *args) {
   }
   int NO = set_point(subcmd_p);
   printf("set watchpoint %d:%s success! \n",NO,subcmd_p );
+  print_point();
   return 0;
 }
 

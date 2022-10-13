@@ -21,5 +21,6 @@
 word_t expr(char *e, bool *success);
 int set_point(char *e);
 char* del_point(int no);
+void print_point();
 
 #endif

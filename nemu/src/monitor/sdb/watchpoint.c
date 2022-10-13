@@ -74,6 +74,7 @@ static void free_wp(WP *wp){
 }
 
 
+
 int set_point(char *e){
   WP* wp = new_wp();
   strcpy(wp->expr, e);
@@ -98,7 +99,16 @@ char* del_point(int no){
 }
 
 
-
+void print_point(){
+  WP* wp = head;
+  int i = 0;
+  while(wp != NULL){
+    printf("watchpoint %d: %s is %ld\n", wp->NO, wp->expr, wp->val );
+    wp = wp->next;
+    i++;
+  }
+  printf("All(%d) points has printed!\n", i);
+}
 
 
 
