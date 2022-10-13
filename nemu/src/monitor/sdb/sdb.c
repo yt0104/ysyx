@@ -135,6 +135,30 @@ static int cmd_p(char *args) {
 }
 
 
+static int cmd_w(char *args) {
+  
+  if(subcmd_p==NULL){
+  	printf("Invalid command\n");
+  	return 0;
+  }
+  int NO = set_point(subcmd_p);
+  printf("set watchpoint %d success! \n",NO );
+  return 0;
+}
+
+
+static int cmd_d(char *args) {
+  if(subcmd_p==NULL){
+  	printf("Invalid command\n");
+  	return 0;
+  }
+  
+  uint64_t no = strtol( subcmd_p, NULL, 10 ); 
+  char *e = del_point(no);
+  
+  printf("delete watchpoint %s success! \n",e );
+  return 0;
+}
 
 
 
@@ -153,9 +177,9 @@ static struct {
   { "si", "exec once", cmd_si },
   { "info", "print", cmd_info },
   { "x", "scan memory", cmd_x },
-  { "p", "calulate expr", cmd_p }/*,
+  { "p", "calulate expr", cmd_p },
   { "w", "watch expr", cmd_w },
-  { "d", "delete watch", cmd_d },*/
+  { "d", "delete watch", cmd_d },
 
   /* TODO: Add more commands */
 
