@@ -20,7 +20,7 @@
 typedef struct watchpoint {
   int NO;
   struct watchpoint *next;
-  char *expr;
+  char expr[32];
   word_t val;
 
   /* TODO: Add more members if necessary */
@@ -76,7 +76,7 @@ static void free_wp(WP *wp){
 
 int set_point(char *e){
   WP* wp = new_wp();
-  wp->expr = e;
+  strcpy(wp->expr, e);
   bool success;
   wp->val = expr(e,&success);
   
