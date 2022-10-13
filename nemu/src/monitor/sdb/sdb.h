@@ -22,6 +22,6 @@ word_t expr(char *e, bool *success);
 int set_point(char *e);
 char* del_point(int no);
 void print_point();
-bool check_point(int* NO, char* e, word_t* val1, word_t* val2);
+bool trace_point(int* NO, char* e, word_t* val1, word_t* val2);
 
 #endif

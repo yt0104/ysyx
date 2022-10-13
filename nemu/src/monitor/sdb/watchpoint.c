@@ -111,7 +111,8 @@ void print_point(){
 }
 
 
-bool check_point(int* NO, char* e, word_t* val1, word_t* val2){
+bool trace_point(int* NO, char* e, word_t* val1, word_t* val2){
+  if(head == NULL) return false;
   WP* wp = head;
   word_t new_val = 0;
   bool success;

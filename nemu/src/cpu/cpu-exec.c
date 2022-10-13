@@ -38,6 +38,15 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
 #endif
   if (g_print_step) { IFDEF(CONFIG_ITRACE, puts(_this->logbuf)); }
   IFDEF(CONFIG_DIFFTEST, difftest_step(_this->pc, dnpc));
+
+//#ifdef CONFIG_WATCHPOINT
+//  if (WATCHPOINT) { 
+//    int NO; char* expr; word_t val1,val2;
+//    if ( trace_point(&NO, expr, &val1, &val2) )
+//      printf("watchpoint %d: %s has changed from %ld to %ld",NO,expr,val1,val2 ); 
+//    }
+//#endif
+
 }
 
 static void exec_once(Decode *s, vaddr_t pc) {
