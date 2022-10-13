@@ -49,7 +49,7 @@ static WP* new_wp(){
     WP *wp = free_;
     free_ = free_->next;
     
-    if(head == NULL) head = wp;
+    if(head == NULL) { wp->next = NULL;  head = wp;}
     else {wp->next = head;  head = wp;}
     
     return wp; 
