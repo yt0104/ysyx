@@ -142,7 +142,7 @@ static int cmd_w(char *args) {
   	return 0;
   }
   int NO = set_point(subcmd_p);
-  printf("set watchpoint %d success! \n",NO );
+  printf("set watchpoint %d:%s success! \n",NO,subcmd_p );
   return 0;
 }
 
@@ -153,10 +153,10 @@ static int cmd_d(char *args) {
   	return 0;
   }
   
-  uint64_t no = strtol( subcmd_p, NULL, 10 ); 
-  char *e = del_point(no);
+  int NO = strtol( subcmd_p, NULL, 10 ); 
+  char *e = del_point(NO);
   
-  printf("delete watchpoint %s success! \n",e );
+  printf("delete watchpoint %d:%s success! \n",NO,e );
   return 0;
 }
 
