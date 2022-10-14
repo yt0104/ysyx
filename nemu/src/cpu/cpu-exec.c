@@ -44,7 +44,9 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
 //  if (WATCHPOINT) { 
     int NO; char expr[32]; word_t val1,val2;
     if ( trace_point(&NO, expr, &val1, &val2) )
-      printf("watchpoint %d: %s has changed from %ld to %ld",NO,expr,val1,val2 ); 
+      printf("watchpoint %d: %s has changed from %ld to %ld\n",NO,expr,val1,val2 ); 
+    else 
+      printf("watchpoint has no changed\n");
 //    }
 //#endif
 
