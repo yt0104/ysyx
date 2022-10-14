@@ -122,7 +122,7 @@ bool trace_point(int* NO, char* e, word_t* val1, word_t* val2){
     wp = wp->next;
   }
   *NO = wp->NO;
-  e = wp->expr;
+  strcpy(e,wp->expr);
   *val1 = wp->val;
   *val2 = new_val;
   
