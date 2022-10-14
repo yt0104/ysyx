@@ -112,7 +112,7 @@ void print_point(){
 
 
 bool trace_point(int* NO, char* e, word_t* val1, word_t* val2){
-  if(head == NULL) return false;
+  if(head == NULL) return false;	// no watchpoint
   WP* wp = head;
   word_t new_val = 0;
   bool success;
@@ -126,10 +126,10 @@ bool trace_point(int* NO, char* e, word_t* val1, word_t* val2){
   *val1 = wp->val;
   *val2 = new_val;
   
-  wp->val = new_val;
+  
   
   if(wp == NULL) return false;
-  else return true;
+  else {wp->val = new_val; return true;}
   
   
   
