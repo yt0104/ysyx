@@ -120,16 +120,17 @@ bool trace_point(int* NO, char* e, word_t* val1, word_t* val2){
     new_val = expr(wp->expr, &success);
     if(new_val != wp->val) break;
     wp = wp->next;
-  }
-  *NO = wp->NO;
-  strcpy(e,wp->expr);
-  *val1 = wp->val;
-  *val2 = new_val;
-  
-  
+  } 
   
   if(wp == NULL) return false;
-  else {wp->val = new_val; return true;}
+  else {
+    *NO = wp->NO;
+    strcpy(e,wp->expr);
+    *val1 = wp->val;
+    *val2 = new_val;
+    wp->val = new_val; 
+    return true;
+    }
   
   
   
