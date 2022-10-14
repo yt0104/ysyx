@@ -17,6 +17,7 @@
 #include <cpu/decode.h>
 #include <cpu/difftest.h>
 #include <locale.h>
+#include <sdb.h>
 
 /* The assembly code of instructions executed is only output to the screen
  * when the number of instructions executed is less than this value.
@@ -41,9 +42,9 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
 
 //#ifdef CONFIG_WATCHPOINT
 //  if (WATCHPOINT) { 
-//    int NO; char* expr; word_t val1,val2;
-//    if ( trace_point(&NO, expr, &val1, &val2) )
-//      printf("watchpoint %d: %s has changed from %ld to %ld",NO,expr,val1,val2 ); 
+    int NO; char expr[32]; word_t val1,val2;
+    if ( trace_point(&NO, expr, &val1, &val2) )
+      printf("watchpoint %d: %s has changed from %ld to %ld",NO,expr,val1,val2 ); 
 //    }
 //#endif
 
