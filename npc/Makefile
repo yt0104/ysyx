@@ -7,15 +7,13 @@ all:
 
 sim:
 	$(call git_commit, "sim RTL") # DO NOT REMOVE THIS LINE!!!
-	
 	#make -C obj_dir -f Vsw.mk Vsw
-	$(ELF)
 	verilator -Wall $(VSRC) $(CSRC) --cc --trace --exe --build
 	
 	@echo "Write this Makefile by your self."
 
-gtk:
-	
+wave:sim
+	$(ELF)
 	gtkwave wave.vcd
 
 clean:
