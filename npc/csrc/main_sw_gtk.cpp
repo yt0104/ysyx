@@ -32,7 +32,7 @@
 		  contextp->timeInc(1); //推动仿真时间
 		  
 		  
-		  assert(top->f == (a ^ b));
+		  //assert(top->f == (a ^ b));
 		  
 		  main_time ++;
 		}
