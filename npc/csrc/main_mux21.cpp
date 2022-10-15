@@ -23,7 +23,10 @@ void sim_init(){
 
 void sim_exit(){
   step_and_dump_wave();
+  delete top;
   tfp->close();
+  delete contextp;
+  exit(0);
 }
 
 int main() {
