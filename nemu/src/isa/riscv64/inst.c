@@ -35,9 +35,9 @@ enum {
 
 static void decode_operand(Decode *s, int *dest, word_t *src1, word_t *src2, word_t *imm, int type) {
   uint32_t i = s->isa.inst.val;
-  int rd  = BITS(i, 11, 7);
-  int rs1 = BITS(i, 19, 15);
-  int rs2 = BITS(i, 24, 20);
+  int rd  = BITS(i, 11, 7);	// ./include/macro.h
+  int rs1 = BITS(i, 19, 15);	//---BITS: 位抽取
+  int rs2 = BITS(i, 24, 20);	//---SEXT:符号扩展
   *dest = rd;
   switch (type) {
     case TYPE_I: src1R();          immI(); break;
@@ -54,11 +54,19 @@ static int decode_exec(Decode *s) {
 #define INSTPAT_INST(s) ((s)->isa.inst.val)
 #define INSTPAT_MATCH(s, name, type, ... /* execute body */ ) { \
   decode_operand(s, &dest, &src1, &src2, &imm, concat(TYPE_, type)); \
-  __VA_ARGS__ ; /*excute*/ }  
+  __VA_ARGS__ ;  }  
 
 
-  //defined in ./include/cpu/decode.h
+  // defined in ./include/cpu/decode.h
+  //INSTPAT: 
+  //---do{
+  //---pattern_decode : pattern -> key:01 mask:掩码 shift:bits from opcode to lsb
+  //---if( (s->isa.inst.val>>shift)&mask == key) decode_operand : dest src1 src2 imm
+  //---R(dest) = imm;
+  //---}while(0)
+  
   INSTPAT_START();
+  INSTPAT("??????? ????? ????? ??? ????? 00100 11", li     , U, R(dest) = imm);
   INSTPAT("??????? ????? ????? ??? ????? 00101 11", auipc  , U, R(dest) = s->pc + imm);
   INSTPAT("??????? ????? ????? 011 ????? 00000 11", ld     , I, R(dest) = Mr(src1 + imm, 8));
   INSTPAT("??????? ????? ????? 011 ????? 01000 11", sd     , S, Mw(src1 + imm, 8, src2));
