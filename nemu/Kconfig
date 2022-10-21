@@ -148,7 +148,7 @@ config ITRACE_COND
 
 
 config WATCHPOINT
-  depends on TRACE 
+  depends on ITRACE 
   bool "Enable Watchpoint"
   default n
 
