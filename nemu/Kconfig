@@ -147,10 +147,7 @@ config ITRACE_COND
   default "true"
 
 
-config WATCHPOINT
 
-  bool "Enable Watchpoint"
-  default n
 
 
 config DIFFTEST
