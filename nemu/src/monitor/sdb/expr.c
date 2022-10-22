@@ -167,7 +167,7 @@ static bool check_parentheses(int p, int q){
 }
 
 
-static uint64_t eval(int p, int q){
+static word_t eval(int p, int q){
   if(p > q){
     /* Bad expression */
   	assert(0);
@@ -177,7 +177,7 @@ static uint64_t eval(int p, int q){
      * For now this token should be a number.
      * Return the value of the number.
      */
-     uint64_t reg;
+     word_t reg;
      bool reg_success;
      switch(tokens[p].type){
      	case TK_NUM: return strtol( tokens[p].str, NULL, 10 );
