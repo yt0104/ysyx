@@ -24,9 +24,9 @@ const char *regs[] = {
 };
 
 void isa_reg_display() {
-	printf("$0 \t\t 0x%x \t\t %d\n",*regs[0],*regs[0]);
-	printf("ra \t\t 0x%x \t\t %d\n",*regs[1],*regs[1]);
-	printf("sp \t\t 0x%x \t\t %d\n",*regs[2],*regs[2]);
+	printf("$0 \t\t 0x%lx \t\t %d\n",gpr(0),*regs[0]);
+	printf("ra \t\t 0x%lx \t\t %d\n",gpr(1),*regs[1]);
+	printf("sp \t\t 0x%lx \t\t %d\n",gpr(2),*regs[2]);
 	printf("gp \t\t 0x%x \t\t %d\n",*regs[3],*regs[3]);
 	printf("tp \t\t 0x%x \t\t %d\n",*regs[4],*regs[4]);
 	printf("t0 \t\t 0x%x \t\t %d\n",*regs[5],*regs[5]);
