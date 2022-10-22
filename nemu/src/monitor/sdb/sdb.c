@@ -69,7 +69,7 @@ static int cmd_si(char *args) {
   }
   else{
   	n = strtol( subcmd1, NULL, 10 ); 
-  	if(n <= 0 || n > 4){
+  	if(n <= 0){
   		printf("EXEC ONCE\n");
   		n = 1;
   	}
