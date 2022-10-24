@@ -37,16 +37,15 @@ enum {
 #define immB() do { *imm = (SEXT(BITS(i, 31, 31), 1) << 12) | (BITS(i, 7, 7) << 11) \
   | (BITS(i, 30, 25) << 5) | (BITS(i, 11, 8) << 1); } while(0)
 
-#define immuI() do { *immu = BITS(i, 31, 20); } while(0)	//抽取unsigned立即数
 
-static void decode_operand(Decode *s, int *dest, word_t *src1, word_t *src2, word_t *imm, word_t *immu, int type) {
+static void decode_operand(Decode *s, int *dest, word_t *src1, word_t *src2, word_t *imm, int type) {
   uint32_t i = s->isa.inst.val;
   int rd  = BITS(i, 11, 7);	// ./include/macro.h
   int rs1 = BITS(i, 19, 15);	//---BITS: 位抽取
   int rs2 = BITS(i, 24, 20);	//---SEXT:符号扩展
   *dest = rd;
   switch (type) {
-    case TYPE_I: src1R(); 	   immI(); immuI(); break;
+    case TYPE_I: src1R(); 	   immI(); break;
     case TYPE_U:                   immU(); break;
     case TYPE_S: src1R(); src2R(); immS(); break;
     case TYPE_J:		   immJ(); break;
@@ -57,12 +56,12 @@ static void decode_operand(Decode *s, int *dest, word_t *src1, word_t *src2, wor
 
 static int decode_exec(Decode *s) {
   int dest = 0;
-  word_t src1 = 0, src2 = 0, imm = 0, immu = 0;
+  word_t src1 = 0, src2 = 0, imm = 0;
   s->dnpc = s->snpc;
 
 #define INSTPAT_INST(s) ((s)->isa.inst.val)
 #define INSTPAT_MATCH(s, name, type, ... /* execute body */ ) { \
-  decode_operand(s, &dest, &src1, &src2, &imm, &immu, concat(TYPE_, type)); \
+  decode_operand(s, &dest, &src1, &src2, &imm, concat(TYPE_, type)); \
   __VA_ARGS__ ;  }  
 
 
