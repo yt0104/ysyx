@@ -28,6 +28,11 @@ VL_INLINE_OPT void Vtop___024root___combo__TOP__2(Vtop___024root* vlSelf) {
         vlSelf->top__DOT__op = ((0x100073U == vlSelf->inst)
                                  ? 2U : 0U);
     }
+    if ((1U != vlSelf->top__DOT__op)) {
+        if ((2U != vlSelf->top__DOT__op)) {
+            vlSelf->end_state = 1U;
+        }
+    }
 }
 
 VL_INLINE_OPT void Vtop___024root___sequent__TOP__3(Vtop___024root* vlSelf) {

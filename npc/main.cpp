@@ -1,7 +1,7 @@
 #include "verilated.h"
 #include "verilated_vcd_c.h"
 #include "Vtop.h"
-#include <svdpi.h> // 引入数据类型的声明
+///#include <svdpi.h>
 
 VerilatedContext* contextp = NULL;
 VerilatedVcdC* tfp = NULL;
@@ -12,6 +12,13 @@ void step_and_dump_wave(){
   top->eval();
   contextp->timeInc(1);
   tfp->dump(contextp->time());
+}
+
+void step_one_clk(Vtop* top){
+    top->clk = 0;
+    step_and_dump_wave();
+    top->clk = 1;
+    step_and_dump_wave();
 }
 
 
@@ -32,17 +39,6 @@ void sim_exit(){
   //exit(0);
 }
 
-
-
-void step_one_clk(Vtop* top){
-    top->clk = 1;
-    step_and_dump_wave();
-    top->clk = 0;
-    step_and_dump_wave();
-    if(top->end_state) sim_exit();
-}
-
-
 int main() {
   sim_init();
 
@@ -55,5 +51,5 @@ int main() {
   top->inst=0x00100073;   //ebreak 
     step_one_clk(top); 
 
-  //sim_exit();
+  sim_exit();
 }
