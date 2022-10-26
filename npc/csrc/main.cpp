@@ -1,7 +1,6 @@
 #include "verilated.h"
 #include "verilated_vcd_c.h"
 #include "Vtop.h"
-#include <svdpi.h> // 引入数据类型的声明
 
 VerilatedContext* contextp = NULL;
 VerilatedVcdC* tfp = NULL;
