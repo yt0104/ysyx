@@ -4,31 +4,31 @@
 // Internal details; most calling programs do not need this header,
 // unless using verilator public meta comments.
 
-#ifndef VERILATED_VSW__SYMS_H_
-#define VERILATED_VSW__SYMS_H_  // guard
+#ifndef VERILATED_VLIGHT__SYMS_H_
+#define VERILATED_VLIGHT__SYMS_H_  // guard
 
 #include "verilated_heavy.h"
 
 // INCLUDE MODEL CLASS
 
-#include "Vsw.h"
+#include "Vlight.h"
 
 // INCLUDE MODULE CLASSES
-#include "Vsw___024root.h"
+#include "Vlight___024root.h"
 
 // SYMS CLASS (contains all model state)
-class Vsw__Syms final : public VerilatedSyms {
+class Vlight__Syms final : public VerilatedSyms {
   public:
     // INTERNAL STATE
-    Vsw* const __Vm_modelp;
+    Vlight* const __Vm_modelp;
     bool __Vm_didInit = false;
 
     // MODULE INSTANCE STATE
-    Vsw___024root                  TOP;
+    Vlight___024root               TOP;
 
     // CONSTRUCTORS
-    Vsw__Syms(VerilatedContext* contextp, const char* namep, Vsw* modelp);
-    ~Vsw__Syms();
+    Vlight__Syms(VerilatedContext* contextp, const char* namep, Vlight* modelp);
+    ~Vlight__Syms();
 
     // METHODS
     const char* name() { return TOP.name(); }
