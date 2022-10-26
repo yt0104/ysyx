@@ -1,8 +1,8 @@
 // Verilated -*- C++ -*-
 // DESCRIPTION: Verilator output: Design implementation internals
-// See Vinst.h for the primary calling header
+// See Vtop.h for the primary calling header
 
-#include "Vinst___024unit.h"
-#include "Vinst__Syms.h"
+#include "Vtop___024unit.h"
+#include "Vtop__Syms.h"
 
 //==========

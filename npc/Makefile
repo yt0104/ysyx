@@ -1,6 +1,6 @@
-VSRC = $(wildcard ./vsrc/IDU.sv)
+VSRC = $(wildcard ./vsrc/top.sv)
 CSRC = $(wildcard ./csrc/main.cpp)
-ELF  = $(wildcard ./obj_dir/VIDU)
+ELF  = $(wildcard ./obj_dir/Vtop)
 
 all:
 	@echo "verilator!"

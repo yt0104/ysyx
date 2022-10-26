@@ -1,21 +1,30 @@
 #include "verilated.h"
 #include "verilated_vcd_c.h"
-#include "VIDU.h"
+#include "Vtop.h"
 
 VerilatedContext* contextp = NULL;
 VerilatedVcdC* tfp = NULL;
 
-static VIDU* top;
+static Vtop* top;
 
 void step_and_dump_wave(){
   top->eval();
   contextp->timeInc(1);
   tfp->dump(contextp->time());
 }
+
+void step_one_clk(Vtop* top){
+    top->clk = 0;
+    step_and_dump_wave();
+    top->clk = 1;
+    step_and_dump_wave();
+}
+
+
 void sim_init(){
   contextp = new VerilatedContext;
   tfp = new VerilatedVcdC;
-  top = new VIDU;
+  top = new Vtop;
   contextp->traceEverOn(true);
   top->trace(tfp, 0);
   tfp->open("wave.vcd");
@@ -33,13 +42,13 @@ int main() {
   sim_init();
 
   top->inst=0xff010113;   //addi	sp,sp,-16
-    step_and_dump_wave();      
+    step_one_clk(top);      
   top->inst=0x00100513;   //li	    a0,1
-    step_and_dump_wave();   
+    step_one_clk(top);    
   top->inst=0xfb010113;   //addi	sp,sp,-80   
-    step_and_dump_wave();
+    step_one_clk(top); 
   top->inst=0x00100073;   //ebreak 
-    step_and_dump_wave();
+    step_one_clk(top); 
 
   sim_exit();
 }

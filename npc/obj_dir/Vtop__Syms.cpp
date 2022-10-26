@@ -1,17 +1,17 @@
 // Verilated -*- C++ -*-
 // DESCRIPTION: Verilator output: Symbol table implementation internals
 
-#include "VIDU__Syms.h"
-#include "VIDU.h"
-#include "VIDU___024root.h"
-#include "VIDU___024unit.h"
+#include "Vtop__Syms.h"
+#include "Vtop.h"
+#include "Vtop___024root.h"
+#include "Vtop___024unit.h"
 
 // FUNCTIONS
-VIDU__Syms::~VIDU__Syms()
+Vtop__Syms::~Vtop__Syms()
 {
 }
 
-VIDU__Syms::VIDU__Syms(VerilatedContext* contextp, const char* namep,VIDU* modelp)
+Vtop__Syms::Vtop__Syms(VerilatedContext* contextp, const char* namep,Vtop* modelp)
     : VerilatedSyms{contextp}
     // Setup internal state of the Syms class
     , __Vm_modelp(modelp)
