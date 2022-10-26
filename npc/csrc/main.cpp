@@ -53,6 +53,7 @@ int main() {
     step_one_clk(top); 
   top->inst=0x00100073;   //ebreak 
     step_one_clk(top); 
-
+  top->inst=0xff010113;   //addi	sp,sp,-16
+    step_one_clk(top);      
   sim_exit();
 }
