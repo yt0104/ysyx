@@ -29,7 +29,7 @@ VL_INLINE_OPT void Vtop___024root___combo__TOP__2(Vtop___024root* vlSelf) {
                                  ? 2U : 0U);
     }
     if ((1U != vlSelf->top__DOT__op)) {
-        if ((2U != vlSelf->top__DOT__op)) {
+        if ((2U == vlSelf->top__DOT__op)) {
             vlSelf->end_state = 1U;
         }
     }
@@ -71,7 +71,7 @@ VL_INLINE_OPT void Vtop___024root___combo__TOP__4(Vtop___024root* vlSelf) {
         vlSelf->top__DOT__u_EXU__DOT__dest = (vlSelf->top__DOT__u_EXU__DOT__u_reg__DOT__rf
                                               [vlSelf->top__DOT__rs1] 
                                               + vlSelf->top__DOT__imm);
-    } else if ((2U == vlSelf->top__DOT__op)) {
+    } else if ((2U != vlSelf->top__DOT__op)) {
         vlSelf->top__DOT__u_EXU__DOT__dest = vlSelf->top__DOT__u_EXU__DOT__u_reg__DOT__rf
             [vlSelf->top__DOT__rs2];
     }
