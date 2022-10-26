@@ -1,6 +1,7 @@
 #include "verilated.h"
 #include "verilated_vcd_c.h"
 #include "Vtop.h"
+//#include "svdpi.h"
 
 VerilatedContext* contextp = NULL;
 VerilatedVcdC* tfp = NULL;
@@ -60,4 +61,11 @@ int main() {
   top->inst=0xff010113;   //addi	sp,sp,-16
     step_one_clk(top);        
   sim_exit();
+}
+
+
+int test(){
+
+
+  return 0;
 }

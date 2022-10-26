@@ -1,10 +1,11 @@
 VSRC = $(wildcard ./vsrc/top.sv)
-CSRC = $(wildcard ./csrc/main.cpp)
+CSRC = $(wildcard ./vsrc/main.cpp)
 ELF  = $(wildcard ./obj_dir/Vtop)
+TOPNAME = top
 
 all:
 	@echo "verilator!"
-	verilator -Wall $(VSRC) $(CSRC)  --cc --trace --exe --build
+	verilator -Wall $(VSRC) $(CSRC) --top-module $(TOPNAME) --cc --trace --exe --build
 	
 sim:all
 	$(call git_commit, "sim RTL") # DO NOT REMOVE THIS LINE!!!
