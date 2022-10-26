@@ -54,5 +54,5 @@ int main() {
   top->inst=0x00100073;   //ebreak 
     step_one_clk(top); 
 
-  //sim_exit();
+  sim_exit();
 }
