@@ -99,6 +99,7 @@ void Vtop___024root___ctor_var_reset(Vtop___024root* vlSelf) {
     vlSelf->inst = VL_RAND_RESET_I(32);
     vlSelf->exit_flag = VL_RAND_RESET_I(1);
     vlSelf->pc = VL_RAND_RESET_Q(64);
+    vlSelf->top__DOT__cpu = 0;
     vlSelf->top__DOT__rd = VL_RAND_RESET_I(5);
     vlSelf->top__DOT__rs1 = VL_RAND_RESET_I(5);
     vlSelf->top__DOT__rs2 = VL_RAND_RESET_I(5);

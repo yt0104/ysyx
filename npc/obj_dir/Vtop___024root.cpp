@@ -36,11 +36,13 @@ VL_INLINE_OPT void Vtop___024root___sequent__TOP__3(Vtop___024root* vlSelf) {
     VL_DEBUG_IF(VL_DBG_MSGF("+    Vtop___024root___sequent__TOP__3\n"); );
     // Body
     if (vlSelf->rst_n) {
-        if ((1U & (~ (IData)(vlSelf->exit_flag)))) {
-            vlSelf->pc = (4ULL + vlSelf->pc);
-        }
+        vlSelf->pc = ((0U == vlSelf->top__DOT__cpu)
+                       ? (4ULL + vlSelf->pc) : vlSelf->pc);
+        vlSelf->top__DOT__cpu = ((IData)(vlSelf->exit_flag)
+                                  ? 1U : vlSelf->top__DOT__cpu);
     } else {
         vlSelf->pc = 0x80000000ULL;
+        vlSelf->top__DOT__cpu = 0U;
     }
 }
 
