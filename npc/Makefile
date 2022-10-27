@@ -1,5 +1,5 @@
 VSRC = $(wildcard ./vsrc/top.sv)
-CSRC = $(wildcard ./vsrc/main.cpp)
+CSRC = $(wildcard ./csrc/main.cpp)
 ELF  = $(wildcard ./obj_dir/Vtop)
 TOPNAME = top
 

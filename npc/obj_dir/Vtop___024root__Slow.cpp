@@ -50,11 +50,8 @@ void Vtop___024root___settle__TOP__1(Vtop___024root* vlSelf) {
                                  ? 2U : 0U);
         vlSelf->top__DOT__rd = 0U;
     }
-    if ((1U != vlSelf->top__DOT__op)) {
-        if ((2U == vlSelf->top__DOT__op)) {
-            vlSelf->end_state = 1U;
-        }
-    }
+    vlSelf->exit_flag = ((1U != vlSelf->top__DOT__op) 
+                         & (2U == vlSelf->top__DOT__op));
     vlSelf->top__DOT__u_EXU__DOT__wenR = (1U == vlSelf->top__DOT__op);
     if ((1U == vlSelf->top__DOT__op)) {
         vlSelf->top__DOT__u_EXU__DOT__dest = (vlSelf->top__DOT__u_EXU__DOT__u_reg__DOT__rf
@@ -98,7 +95,7 @@ void Vtop___024root___ctor_var_reset(Vtop___024root* vlSelf) {
     // Body
     vlSelf->clk = VL_RAND_RESET_I(1);
     vlSelf->inst = VL_RAND_RESET_I(32);
-    vlSelf->end_state = VL_RAND_RESET_I(1);
+    vlSelf->exit_flag = VL_RAND_RESET_I(1);
     vlSelf->top__DOT__rd = VL_RAND_RESET_I(5);
     vlSelf->top__DOT__rs1 = VL_RAND_RESET_I(5);
     vlSelf->top__DOT__rs2 = VL_RAND_RESET_I(5);
