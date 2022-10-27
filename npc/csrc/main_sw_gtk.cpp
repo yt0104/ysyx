@@ -16,7 +16,7 @@
   	top->trace(tfp, 0); //
   	tfp->open("wave.vcd"); //设置输出的文件wave.vcd
 
-	        int main_time = 0;     // 仿真时间戳
+	    int main_time = 0;     // 仿真时间戳
 	  	int sim_time = 50;   // 最大仿真时间戳
 	  
 		while (!Verilated::gotFinish() && main_time < sim_time) {

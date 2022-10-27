@@ -20,8 +20,10 @@ VL_MODULE(Vtop___024root) {
 
     // PORTS
     VL_IN8(clk,0,0);
+    VL_IN8(rst_n,0,0);
     VL_OUT8(exit_flag,0,0);
     VL_IN(inst,31,0);
+    VL_OUT64(pc,63,0);
 
     // LOCAL SIGNALS
     CData/*4:0*/ top__DOT__rd;
@@ -35,6 +37,7 @@ VL_MODULE(Vtop___024root) {
 
     // LOCAL VARIABLES
     CData/*0:0*/ __Vclklast__TOP__clk;
+    CData/*0:0*/ __Vclklast__TOP__rst_n;
     VlUnpacked<CData/*0:0*/, 3> __Vm_traceActivity;
 
     // INTERNAL VARIABLES

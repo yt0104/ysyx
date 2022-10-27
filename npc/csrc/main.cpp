@@ -34,7 +34,22 @@ extern void sim_exit(){
 
 
 
+uint64_t pmemread(uint64_t pc){
+  switch (pc)
+  {
+  case 0x80000000: return 0xff010113;//addi	sp,sp,-16
+  case 0x80000004: return 0x00100513;//li	    a0,1
+  case 0x80000008: return 0xfb010113;//addi	sp,sp,-80 
+  case 0x8000000b: return 0x00100073;//ebreak 
+  case 0x80000010: return 0xff010113;//addi	sp,sp,-16
+  
+  default: return 0x00100073;//ebreak 
+  }
+
+}
+
 void step_one_clk(Vtop* top){
+    top->inst = pmemread(top->pc);
     top->clk = 1;
     step_and_dump_wave();
     top->clk = 0;
@@ -45,7 +60,21 @@ void step_one_clk(Vtop* top){
 
 int main() {
   sim_init();
+  top->clk = 0;
+  top->inst = 0;
+  top->rst_n = 1; step_and_dump_wave();
+  top->rst_n = 0; step_and_dump_wave();
+  top->rst_n = 1; step_and_dump_wave();
 
+  int main_time = 0;     // 仿真时间戳
+  int sim_time = 50;   // 最大仿真时间戳
+  while (!Verilated::gotFinish() && main_time < sim_time) {
+
+    step_one_clk(top);
+    //printf("#time = %d, a = %d, b = %d, f = %d\n", main_time, a, b, top->f);
+  }
+
+  /*
   top->inst=0xff010113;   //addi	sp,sp,-16
     step_one_clk(top);      
   top->inst=0x00100513;   //li	    a0,1
@@ -63,7 +92,7 @@ int main() {
     step_one_clk(top); 
   top->inst=0x00100073;   //ebreak 
     step_one_clk(top); 
-    
+*/
   sim_exit();
 }
 
