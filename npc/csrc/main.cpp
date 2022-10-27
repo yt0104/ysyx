@@ -70,11 +70,11 @@ int main() {
 
   int main_time = 0;     // 仿真时间戳
   int sim_time = 50;   // 最大仿真时间戳
-  while (!Verilated::gotFinish() && main_time < sim_time && top->exit_flag==0) {
+  while (!Verilated::gotFinish() && main_time < sim_time) {
     top->inst = pmemread(top->pc);
     printf("#time = %d \t pc = 0x%8.0lx, inst = 0x%8.0x\n", main_time, top->pc, top->inst);
     step_one_clk(top);
-    //if(top->exit_flag) sim_exit();
+    if(top->exit_flag) sim_exit();
     main_time ++;
   }
 
