@@ -54,8 +54,8 @@ $(shell mkdir -p $(DST_DIR))
 
 ### Compilation targets (a binary image or archive)
 IMAGE_REL = build/$(NAME)-$(ARCH)
-IMAGE     = $(abspath $(IMAGE_REL))               #/.../build/am-riscv64-nemu
-ARCHIVE   = $(WORK_DIR)/build/$(NAME)-$(ARCH).a   # ./build/am-riscv64-nemu.a
+IMAGE     = $(abspath $(IMAGE_REL))
+ARCHIVE   = $(WORK_DIR)/build/$(NAME)-$(ARCH).a
 
 ### Collect the files to be linked: object files (`.o`) and libraries (`.a`)
 OBJS      = $(addprefix $(DST_DIR)/, $(addsuffix .o, $(basename $(SRCS))))
@@ -146,12 +146,24 @@ $(ARCHIVE): $(OBJS)
 
 ### Build order control
 image: image-dep
+# + LD -> build/amtest-riscv64-nemu.elf
+# + OBJCOPY -> build/amtest-riscv64-nemu.bin
+# $image-dep
 
 archive: $(ARCHIVE)
+# 
+# # Building amtest-archive [riscv64-nemu]
+# + AR -> build/amtest-riscv64-nemu.a
 
 image-dep: $(OBJS) am $(LIBS)
 	@echo \# Creating image [$(ARCH)]
 .PHONY: image image-dep archive run $(LIBS)
+# # Building amtest-image-dep [riscv64-nemu]
+# # Building am-archive [riscv64-nemu]
+# + CC src/platform/nemu/trm.c
+# + AR -> build/am-riscv64-nemu.a
+# # Building klib-archive [riscv64-nemu]
+# # Creating image [riscv64-nemu]
 
 ### Clean a single project (remove `build/`)
 clean:
