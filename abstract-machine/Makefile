@@ -78,6 +78,8 @@ READELF   = $(CROSS_COMPILE)readelf
 INC_PATH += $(WORK_DIR)/include $(addsuffix /include/, $(addprefix $(AM_HOME)/, $(LIBS)))
 INCFLAGS += $(addprefix -I, $(INC_PATH))
 
+CFLAGS += -D CONFIG_TARGET_AM
+
 CFLAGS   += -O2 -MMD -Wall -Werror $(INCFLAGS) \
             -D__ISA__=\"$(ISA)\" -D__ISA_$(shell echo $(ISA) | tr a-z A-Z)__ \
             -D__ARCH__=$(ARCH) -D__ARCH_$(shell echo $(ARCH) | tr a-z A-Z | tr - _) \
@@ -139,9 +141,6 @@ $(ARCHIVE): $(OBJS)
 -include $(addprefix $(DST_DIR)/, $(addsuffix .d, $(basename $(SRCS))))
 
 
-#-include $(NEMU_HOME)/configs/am_config 
-#auto exec(-1)
-CFLAGS += -D CONFIG_TARGET_AM=y
 ## 6. Miscellaneous
 
 
