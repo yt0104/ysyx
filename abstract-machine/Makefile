@@ -7,6 +7,8 @@ html:
 
 ## 1. Basic Setup and Checks
 
+ARCH = riscv64-nemu
+
 ### Default to create a bare-metal kernel image
 ifeq ($(MAKECMDGOALS),)
   MAKECMDGOALS  = image
@@ -149,6 +151,7 @@ image: image-dep
 # $image-dep
 
 archive: $(ARCHIVE)
+# 
 # # Building amtest-archive [riscv64-nemu]
 # + AR -> build/amtest-riscv64-nemu.a
 
