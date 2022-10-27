@@ -74,7 +74,7 @@ int main() {
   while (!Verilated::gotFinish() && main_time < sim_time) {
 
     step_one_clk(top);
-    printf("#time = %d, pc = %lx, inst = %x\n", main_time, top->pc, top->inst);
+    printf("#time = %d /t pc = 0x%8.0lx, inst = %x\n", main_time, top->pc, top->inst);
     main_time ++;
   }
 
