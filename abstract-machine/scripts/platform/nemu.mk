@@ -24,7 +24,7 @@ image: $(IMAGE).elf
 	@$(OBJCOPY) -S --set-section-flags .bss=alloc,contents -O binary $(IMAGE).elf $(IMAGE).bin
 
 run: image
-	$(MAKE) -C $(NEMU_HOME) -l $(NEMU_HOME)/configs/am_config  ISA=$(ISA) run ARGS="$(NEMUFLAGS)" IMG=$(IMAGE).bin 
+	$(MAKE) -C $(NEMU_HOME) $(NEMU_HOME)/configs/am_config  ISA=$(ISA) run ARGS="$(NEMUFLAGS)" IMG=$(IMAGE).bin 
 
 gdb: image
 	$(MAKE) -C $(NEMU_HOME) ISA=$(ISA) gdb ARGS="$(NEMUFLAGS)" IMG=$(IMAGE).bin
