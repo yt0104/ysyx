@@ -72,6 +72,7 @@ int main() {
 
     step_one_clk(top);
     //printf("#time = %d, a = %d, b = %d, f = %d\n", main_time, a, b, top->f);
+    main_time ++;
   }
 
   /*
