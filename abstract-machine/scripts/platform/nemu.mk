@@ -17,7 +17,7 @@ CFLAGS += -DMAINARGS=\"$(mainargs)\"
 CFLAGS += -I$(AM_HOME)/am/src/platform/nemu/include
 .PHONY: $(AM_HOME)/am/src/platform/nemu/trm.c
 
-#-include $(NEMU_HOME)/configs/riscv64-am_defconfig 
+-include $(NEMU_HOME)/configs/am_config 
 #auto exec
 
 
