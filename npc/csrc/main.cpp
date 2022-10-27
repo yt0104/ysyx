@@ -50,7 +50,6 @@ uint64_t pmemread(uint64_t pc){
 }
 
 void step_one_clk(Vtop* top){
-    top->inst = pmemread(top->pc);
     top->clk = 1;
     step_and_dump_wave();
     top->clk = 0;
@@ -72,7 +71,7 @@ int main() {
   int main_time = 0;     // 仿真时间戳
   int sim_time = 50;   // 最大仿真时间戳
   while (!Verilated::gotFinish() && main_time < sim_time) {
-
+    top->inst = pmemread(top->pc);
     printf("#time = %d \t pc = 0x%8.0lx, inst = 0x%8.0x\n", main_time, top->pc, top->inst);
     step_one_clk(top);
     main_time ++;
