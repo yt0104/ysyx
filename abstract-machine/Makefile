@@ -141,7 +141,7 @@ $(ARCHIVE): $(OBJS)
 
 #-include $(NEMU_HOME)/configs/am_config 
 #auto exec(-1)
-CONFIG_TARGET_AM=y
+CFLAGS += -D CONFIG_TARGET_AM
 ## 6. Miscellaneous
 
 
