@@ -139,9 +139,9 @@ $(ARCHIVE): $(OBJS)
 -include $(addprefix $(DST_DIR)/, $(addsuffix .d, $(basename $(SRCS))))
 
 
--include $(NEMU_HOME)/configs/am_config 
+#-include $(NEMU_HOME)/configs/am_config 
 #auto exec(-1)
-
+CONFIG_TARGET_AM=y
 ## 6. Miscellaneous
 
 
