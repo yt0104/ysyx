@@ -54,7 +54,7 @@ void step_one_clk(Vtop* top){
     step_and_dump_wave();
     top->clk = 0;
     step_and_dump_wave();
-    if(top->exit_flag) sim_exit();
+    
 }
 
 
@@ -74,6 +74,7 @@ int main() {
     top->inst = pmemread(top->pc);
     printf("#time = %d \t pc = 0x%8.0lx, inst = 0x%8.0x\n", main_time, top->pc, top->inst);
     step_one_clk(top);
+    if(top->exit_flag) sim_exit();
     main_time ++;
   }
 
