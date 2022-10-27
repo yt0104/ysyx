@@ -42,7 +42,8 @@ uint64_t pmemread(uint64_t pc){
   case 0x80000008: return 0xfb010113;//addi	sp,sp,-80 
   case 0x8000000b: return 0x00100073;//ebreak 
   case 0x80000010: return 0xff010113;//addi	sp,sp,-16
-  
+  case 0x80000014: return 0x00100513;//li	    a0,1
+  case 0x80000018: return 0xfb010113;//addi	sp,sp,-80 
   default: return 0x00100073;//ebreak 
   }
 
@@ -60,18 +61,20 @@ void step_one_clk(Vtop* top){
 
 int main() {
   sim_init();
+
   top->clk = 0;
   top->inst = 0;
   top->rst_n = 1; step_and_dump_wave();
   top->rst_n = 0; step_and_dump_wave();
   top->rst_n = 1; step_and_dump_wave();
+  step_and_dump_wave();   //4s reset
 
   int main_time = 0;     // 仿真时间戳
   int sim_time = 50;   // 最大仿真时间戳
   while (!Verilated::gotFinish() && main_time < sim_time) {
 
     step_one_clk(top);
-    //printf("#time = %d, a = %d, b = %d, f = %d\n", main_time, a, b, top->f);
+    printf("#time = %d, pc = %lx, inst = %x\n", main_time, top->pc, top->inst);
     main_time ++;
   }
 
