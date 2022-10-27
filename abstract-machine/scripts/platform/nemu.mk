@@ -19,6 +19,7 @@ CFLAGS += -I$(AM_HOME)/am/src/platform/nemu/include
 
 #-include $(NEMU_HOME)/configs/riscv64-am_defconfig 
 #auto exec
+CFLAGS += -D CONFIG_TARGET_AM
 
 image: $(IMAGE).elf
 	@$(OBJDUMP) -d $(IMAGE).elf > $(IMAGE).txt
