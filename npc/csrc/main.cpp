@@ -70,33 +70,14 @@ int main() {
 
   int main_time = 0;     // 仿真时间戳
   int sim_time = 50;   // 最大仿真时间戳
-  while (!Verilated::gotFinish() && main_time < sim_time) {
+  while (!Verilated::gotFinish() && main_time < sim_time && top->exit_flag==0) {
     top->inst = pmemread(top->pc);
     printf("#time = %d \t pc = 0x%8.0lx, inst = 0x%8.0x\n", main_time, top->pc, top->inst);
     step_one_clk(top);
-    if(top->exit_flag) sim_exit();
+    //if(top->exit_flag) sim_exit();
     main_time ++;
   }
 
-  /*
-  top->inst=0xff010113;   //addi	sp,sp,-16
-    step_one_clk(top);      
-  top->inst=0x00100513;   //li	    a0,1
-    step_one_clk(top);    
-  top->inst=0xfb010113;   //addi	sp,sp,-80   
-    step_one_clk(top); 
-  top->inst=0x00100073;   //ebreak 
-    step_one_clk(top); 
-
-  top->inst=0xff010113;   //addi	sp,sp,-16
-    step_one_clk(top);      
-  top->inst=0x00100513;   //li	    a0,1
-    step_one_clk(top);    
-  top->inst=0xfb010113;   //addi	sp,sp,-80   
-    step_one_clk(top); 
-  top->inst=0x00100073;   //ebreak 
-    step_one_clk(top); 
-*/
   sim_exit();
 }
 
