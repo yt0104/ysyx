@@ -139,7 +139,7 @@ $(ARCHIVE): $(OBJS)
 -include $(addprefix $(DST_DIR)/, $(addsuffix .d, $(basename $(SRCS))))
 
 
-#-include $(NEMU_HOME)/configs/riscv64-am_defconfig 
+-include $(NEMU_HOME)/configs/am_config 
 #auto exec(-1)
 
 ## 6. Miscellaneous
