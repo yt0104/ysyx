@@ -140,6 +140,9 @@ $(ARCHIVE): $(OBJS)
 
 ## 6. Miscellaneous
 
+-include $(NEMU_HOME)/configs/riscv64-am_defconfig 
+#auto exec(-1)
+
 ### Build order control
 image: image-dep
 # + LD -> build/amtest-riscv64-nemu.elf

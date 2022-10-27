@@ -17,9 +17,6 @@ CFLAGS += -DMAINARGS=\"$(mainargs)\"
 CFLAGS += -I$(AM_HOME)/am/src/platform/nemu/include
 .PHONY: $(AM_HOME)/am/src/platform/nemu/trm.c
 
-include $(NEMU_HOME)/configs/riscv64-am_defconfig 
-#auto exec(-1)
-
 image: $(IMAGE).elf
 	@$(OBJDUMP) -d $(IMAGE).elf > $(IMAGE).txt
 	@echo + OBJCOPY "->" $(IMAGE_REL).bin
