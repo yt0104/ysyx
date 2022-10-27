@@ -40,7 +40,7 @@ uint64_t pmemread(uint64_t pc){
   case 0x80000000: return 0xff010113;//addi	sp,sp,-16
   case 0x80000004: return 0x00100513;//li	    a0,1
   case 0x80000008: return 0xfb010113;//addi	sp,sp,-80 
-  case 0x8000000b: return 0x00100073;//ebreak 
+  case 0x8000000c: return 0x00100073;//ebreak 
   case 0x80000010: return 0xff010113;//addi	sp,sp,-16
   case 0x80000014: return 0x00100513;//li	    a0,1
   case 0x80000018: return 0xfb010113;//addi	sp,sp,-80 
