@@ -7,7 +7,7 @@ CFLAGS  += -fPIC
 LDFLAGS += -rdynamic -shared -fPIC
 endif
 
-ifeq ($(ARGS), )
+ifneq ($(ARGS), )
 CFLAGS  += -D CONFIG_AUTO_C
 endif
 
