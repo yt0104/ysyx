@@ -7,6 +7,11 @@ CFLAGS  += -fPIC
 LDFLAGS += -rdynamic -shared -fPIC
 endif
 
+ifeq ($(ARGS), )
+CFLAGS  += -D CONFIG_AUTO_C
+endif
+
+
 WORK_DIR  = $(shell pwd)
 BUILD_DIR = $(WORK_DIR)/build
 
