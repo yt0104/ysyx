@@ -22,10 +22,8 @@ image: $(IMAGE).elf
 	@echo + OBJCOPY "->" $(IMAGE_REL).bin
 	@$(OBJCOPY) -S --set-section-flags .bss=alloc,contents -O binary $(IMAGE).elf $(IMAGE).bin
 
-CONFIG_AUTO_C = 1
-
 run: image
-	$(MAKE) -C $(NEMU_HOME)  ISA=$(ISA) run ARGS="$(NEMUFLAGS)" IMG=$(IMAGE).bin  
+	$(MAKE) -C $(NEMU_HOME)  ISA=$(ISA) run ARGS="$(NEMUFLAGS)" IMG=$(IMAGE).bin  -d CONFIG_AUTO_C 
 
 gdb: image
 	$(MAKE) -C $(NEMU_HOME) ISA=$(ISA) gdb ARGS="$(NEMUFLAGS)" IMG=$(IMAGE).bin
