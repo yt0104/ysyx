@@ -8,7 +8,7 @@ LDFLAGS += -rdynamic -shared -fPIC
 endif
 
 ifneq ($(ARGS), )
-CFLAGS  += -D CONFIG_AUTO_C
+CFLAGS  += -D CONFIG_AUTO_C=1
 endif
 
 
