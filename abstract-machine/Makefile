@@ -156,7 +156,6 @@ image-dep: $(OBJS) am $(LIBS)
 ### Clean a single project (remove `build/`)
 clean:
 	rm -rf Makefile.html $(WORK_DIR)/build/
-	$(MAKE) -C $(NEMU_HOME)  ISA=$(ISA) clean
 .PHONY: clean
 
 ### Clean all sub-projects within depth 2 (and ignore errors)
