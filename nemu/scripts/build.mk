@@ -8,7 +8,7 @@ LDFLAGS += -rdynamic -shared -fPIC
 endif
 
 #Add auto_continue
-ifneq ($(ARGS), )
+ifeq ($(ARGS),)
 CFLAGS  += -D CONFIG_AUTO_C=1
 endif
 
