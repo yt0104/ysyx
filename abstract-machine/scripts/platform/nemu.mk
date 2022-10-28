@@ -7,7 +7,7 @@ AM_SRCS := platform/nemu/trm.c \
            platform/nemu/ioe/disk.c \
            platform/nemu/mpe.c
 
-CFLAGS    += -fdata-sections -ffunction-sections
+CFLAGS    += -fdata-sections -ffunction-sections 
 LDFLAGS   += -T $(AM_HOME)/scripts/linker.ld \
              --defsym=_pmem_start=0x80000000 --defsym=_entry_offset=0x0
 LDFLAGS   += --gc-sections -e _start
@@ -22,8 +22,10 @@ image: $(IMAGE).elf
 	@echo + OBJCOPY "->" $(IMAGE_REL).bin
 	@$(OBJCOPY) -S --set-section-flags .bss=alloc,contents -O binary $(IMAGE).elf $(IMAGE).bin
 
+CONFIG_AUTO_C = 1
+
 run: image
-	$(MAKE) -C $(NEMU_HOME)  ISA=$(ISA) run ARGS="$(NEMUFLAGS)" IMG=$(IMAGE).bin  -l $(NEMU_HOME)/configs/autoc_defconfig
+	$(MAKE) -C $(NEMU_HOME)  ISA=$(ISA) run ARGS="$(NEMUFLAGS)" IMG=$(IMAGE).bin  
 
 gdb: image
 	$(MAKE) -C $(NEMU_HOME) ISA=$(ISA) gdb ARGS="$(NEMUFLAGS)" IMG=$(IMAGE).bin
