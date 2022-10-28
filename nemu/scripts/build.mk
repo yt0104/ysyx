@@ -8,9 +8,9 @@ LDFLAGS += -rdynamic -shared -fPIC
 endif
 
 #Add auto_continue
-#ifeq ($(IMG), )
-#CFLAGS  += -D CONFIG_AUTO_C=1
-#endif
+ifeq ($(IMG), )
+CFLAGS  += -D CONFIG_AUTO_C=1
+endif
 
 
 WORK_DIR  = $(shell pwd)
