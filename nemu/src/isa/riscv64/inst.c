@@ -143,7 +143,7 @@ int isa_exec_once(Decode *s) {
 }
 
 
-#define MAX_INST_TO_SAVE 18
+#define MAX_INST_TO_SAVE 20
 char iringbuf [MAX_INST_TO_SAVE][128];
 int inst_p = 0;
 
@@ -153,7 +153,7 @@ void update_iringbuf(char *s){
 
 };
 
-void print_iringbuf(){
+void puts_iringbuf(){
   for(int i = inst_p; i < inst_p + MAX_INST_TO_SAVE; i++){
     if(*iringbuf[i%MAX_INST_TO_SAVE] != '\0') puts(iringbuf[i%MAX_INST_TO_SAVE]);
   }

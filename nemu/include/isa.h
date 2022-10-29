@@ -58,7 +58,7 @@ void isa_difftest_attach();
 //itrace
 #ifdef CONFIG_ITRACE
 void update_iringbuf(char *s);
-void print_iringbuf();
+void puts_iringbuf();
 #endif
 
 #endif
