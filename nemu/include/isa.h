@@ -57,8 +57,6 @@ void isa_difftest_attach();
 
 //itrace
 #ifdef CONFIG_ITRACE
-#define MAX_INST_TO_SAVE  20
-extern char iringbuf [MAX_INST_TO_SAVE][128];
 void update_iringbuf(char *s);
 void print_iringbuf();
 #endif
