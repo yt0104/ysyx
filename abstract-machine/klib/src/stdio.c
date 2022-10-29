@@ -11,13 +11,15 @@ int printf(const char *fmt, ...) {
 
 int vsprintf(char *out, const char *fmt, va_list ap) {
 
-  char temp[64];
+  int temp[64];
   int i,len;
   const char *s;
 	unsigned int num;
   int base;
 
 	char * str;
+
+  const char* num_data = "0123456789abcdef";
   
     
 	/*将字符逐个放到输出缓冲区中，直到遇到第一个%*/
@@ -75,7 +77,7 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
       }
       len = i;
       for(i = 0; i < len; i++){
-        *str++ = temp[len-i-1];
+        *str++ = num_data[ temp[len-i-1] ];
       }
     }
 
