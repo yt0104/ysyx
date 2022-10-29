@@ -141,3 +141,10 @@ int isa_exec_once(Decode *s) {
   s->isa.inst.val = inst_fetch(&s->snpc, 4);	//s->snpc = next pc
   return decode_exec(s);
 }
+
+int update_iringbuf(struct Decode *s){
+
+  return 0;
+
+};
+

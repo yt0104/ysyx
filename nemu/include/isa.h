@@ -55,6 +55,11 @@ word_t isa_query_intr();
 bool isa_difftest_checkregs(CPU_state *ref_r, vaddr_t pc);
 void isa_difftest_attach();
 
-
+//itrace
+#ifdef CONFIG_ITRACE
+#define MAX_INST_TO_SAVE  20
+char iringbuf [MAX_INST_TO_SAVE][128];
+int update_iringbuf(struct Decode *s);
+#endif
 
 #endif
