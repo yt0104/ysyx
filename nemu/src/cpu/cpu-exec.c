@@ -46,9 +46,6 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
       printf("watchpoint %d: %s has changed from %ld to %ld\n",NO,expr,val1,val2 ); 
       nemu_state.state = NEMU_STOP;
     }
-    else {
-      //printf("All watchpoints have no change!\n");   
-    }
 #endif
 
 }
