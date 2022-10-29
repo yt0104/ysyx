@@ -153,7 +153,7 @@ void update_iringbuf(char *s){
 };
 
 void print_iringbuf(){
-  for(int i = inst_p; i <  MAX_INST_TO_SAVE; i++){
+  for(int i = inst_p; i < inst_p + MAX_INST_TO_SAVE; i++){
     if(*iringbuf[i%MAX_INST_TO_SAVE] != '\0') puts(iringbuf[i]);
   }
 };

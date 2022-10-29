@@ -40,8 +40,7 @@ static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
 #ifdef CONFIG_ITRACE_COND
   if (ITRACE_COND) { log_write("%s\n", _this->logbuf); }
 #endif
-  //IFDEF(CONFIG_ITRACE, update_iringbuf(_this->logbuf));   //update buf   (inst.c) 
-  update_iringbuf(_this->logbuf);
+  IFDEF(CONFIG_ITRACE, update_iringbuf(_this->logbuf));   //update buf   (inst.c) 
   if (g_print_step) { IFDEF(CONFIG_ITRACE, puts(_this->logbuf)); }
   IFDEF(CONFIG_DIFFTEST, difftest_step(_this->pc, dnpc));
 
@@ -128,7 +127,7 @@ void cpu_exec(uint64_t n) {
     case NEMU_RUNNING: nemu_state.state = NEMU_STOP; break;
 
     case NEMU_END: case NEMU_ABORT:
-      print_iringbuf();
+      IFDEF(CONFIG_ITRACE, print_iringbuf());   //print buf   (inst.c) 
       Log("nemu: %s at pc = " FMT_WORD,
           (nemu_state.state == NEMU_ABORT ? ANSI_FMT("ABORT", ANSI_FG_RED) :
            (nemu_state.halt_ret == 0 ? ANSI_FMT("HIT GOOD TRAP", ANSI_FG_GREEN) :
