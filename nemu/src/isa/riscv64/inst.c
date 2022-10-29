@@ -143,7 +143,7 @@ int isa_exec_once(Decode *s) {
 }
 
 
-#define MAX_INST_TO_SAVE 20
+#define MAX_INST_TO_SAVE 18
 char iringbuf [MAX_INST_TO_SAVE][128];
 int inst_p = 0;
 
