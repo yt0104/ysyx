@@ -146,8 +146,8 @@ int isa_exec_once(Decode *s) {
 char iringbuf [MAX_INST_TO_SAVE][128];
 int inst_p = 0;
 
-int update_iringbuf(struct Decode *s){
-  strcpy(iringbuf[inst_p], s->logbuf);
+int update_iringbuf(char *s){
+  strcpy(iringbuf[inst_p], s);
   inst_p = (inst_p+1) % MAX_INST_TO_SAVE;
   
   return inst_p;
