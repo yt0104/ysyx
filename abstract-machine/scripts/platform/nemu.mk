@@ -23,7 +23,7 @@ image: $(IMAGE).elf
 	@$(OBJCOPY) -S --set-section-flags .bss=alloc,contents -O binary $(IMAGE).elf $(IMAGE).bin
 
 
-#auto_continue needs nemu clean :  make clean
+#auto_continue needs nemu: make clean 
 run: image
 	$(MAKE) -C $(NEMU_HOME)  ISA=$(ISA) run ARGS="$(NEMUFLAGS)" IMG=$(IMAGE).bin 
 
