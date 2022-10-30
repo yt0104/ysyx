@@ -157,12 +157,6 @@ config DIS_WATCHPOINT
 endchoice
 
 
-#config WATCHPOINT
-#  depends on ITRACE
-#  bool "Enable Watchpoint"
-#  default y
-
-
 config DIFFTEST
   depends on TARGET_NATIVE_ELF
   bool "Enable differential testing"
