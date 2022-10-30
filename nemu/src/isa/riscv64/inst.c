@@ -154,7 +154,7 @@ void update_iringbuf(char *s){
 };
 
 void puts_iringbuf(){
-  printf("last %d insts is shown:\n",MAX_INST_TO_SAVE);
+  printf("%d LAST INSTS is shown:\n",MAX_INST_TO_SAVE);
   for(int i = inst_p; i < inst_p + MAX_INST_TO_SAVE; i++){
     if(*iringbuf[i%MAX_INST_TO_SAVE] != '\0') puts(iringbuf[i%MAX_INST_TO_SAVE]);
   }
