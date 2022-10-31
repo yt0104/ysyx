@@ -156,6 +156,15 @@ config DIS_WATCHPOINT
   bool "Disable Watchpoint"
 endchoice
 
+choice
+  prompt "Memory Trace Configure"
+  default MTRACE
+config MTRACE
+  bool "Enable Memory Trace"
+config DIS_WATCHPOINT
+  bool "Disable Memory Trace"
+endchoice
+
 
 config DIFFTEST
   depends on TARGET_NATIVE_ELF
