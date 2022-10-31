@@ -161,7 +161,7 @@ choice
   default MTRACE
 config MTRACE
   bool "Enable Memory Trace"
-config DIS_WATCHPOINT
+config DIS_MTRACE
   bool "Disable Memory Trace"
 endchoice
 
