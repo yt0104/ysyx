@@ -59,7 +59,7 @@ void init_mem() {
 
 word_t paddr_read(paddr_t addr, int len) {
   if (likely(in_pmem(addr))) {
-    //IFDEF(CONFIG_MTARCE, printf("read : addr=%d, len=%d\n",addr, len));
+    //IFDEF(CONFIG_MTARCE, printf("read : addr=%x, len=%d\n",addr, len));
     printf("read : addr=%d, len=%d\n",addr, len);
     return pmem_read(addr, len);
     }
