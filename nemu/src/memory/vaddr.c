@@ -22,12 +22,11 @@ word_t vaddr_ifetch(vaddr_t addr, int len) {
 
 word_t vaddr_read(vaddr_t addr, int len) {
   word_t data = paddr_read(addr, len);
-  //IFDEF(CONFIG_MTARCE, printf("read : addr=%x, len=%d\n",addr, len));
-  printf("memory read : addr=0x%lx, len=%d, data=0x%lx\n",addr, len, data);
+  IFDEF(CONFIG_MTARCE, printf("memory read : addr=0x%lx, len=%d, data=0x%lx\n",addr, len, data));
   return data;
 }
 
 void vaddr_write(vaddr_t addr, int len, word_t data) {
-  printf("memory write: addr=0x%lx, len=%d, data=0x%lx\n",addr, len, data);
+  IFDEF(CONFIG_MTARCE, printf("memory write: addr=0x%lx, len=%d, data=0x%lx\n",addr, len, data));
   paddr_write(addr, len, data);
 }
