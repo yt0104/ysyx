@@ -165,6 +165,15 @@ config DIS_MTRACE
   bool "Disable Memory Trace"
 endchoice
 
+choice
+  prompt "Func Trace Configure"
+  default FTRACE
+config FTRACE
+  bool "Enable Func Trace"
+config DIS_FTRACE
+  bool "Disable Func Trace"
+endchoice
+
 
 config DIFFTEST
   depends on TARGET_NATIVE_ELF
