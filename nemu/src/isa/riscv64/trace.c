@@ -24,6 +24,7 @@ void puts_iringbuf(){
 
 //FTRACE
 #define FUNC_SIZE 30
+char func[FUNC_SIZE];
 
 static uint64_t sym_offset,str_offset;
 static uint64_t sym_size;
@@ -108,7 +109,9 @@ int ftrace_getTab()
 }
 
 
-int ftrace_matchFunc( uint64_t pc, char* func){
+int ftrace_matchFunc( uint64_t pc){
+
+    
 
 	// 重置指针位置到文件流开头
 	rewind(fp);
@@ -130,7 +133,7 @@ int ftrace_matchFunc( uint64_t pc, char* func){
 			rewind(fp);
 			fseek(fp, str_offset + symtab[i].st_name, SEEK_SET);
 			a = fread(func, FUNC_SIZE, 1, fp);
-            
+            if(pc == symtab[i].st_value) printf("pc = %lx, func = %s \n", pc, func);
 			return 1;
 		}
 	}
