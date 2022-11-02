@@ -142,6 +142,7 @@ int isa_exec_once(Decode *s) {
   return decode_exec(s);
 }
 
+
 //ITRACE
 #define MAX_INST_TO_SAVE 20
 char iringbuf [MAX_INST_TO_SAVE][128];
@@ -159,3 +160,6 @@ void puts_iringbuf(){
     if(*iringbuf[i%MAX_INST_TO_SAVE] != '\0') puts(iringbuf[i%MAX_INST_TO_SAVE]);
   }
 };
+
+//FTRACE
+
