@@ -108,10 +108,9 @@ int ftrace_getTab()
 	
 }
 
+parse_args()
 
 int ftrace_matchFunc( uint64_t pc){
-
-    
 
 	// 重置指针位置到文件流开头
 	rewind(fp);
