@@ -12,7 +12,7 @@ ifneq ($(IMG), )
 CFLAGS  += -D CONFIG_AUTO_C=1
 endif
 
-CFLAGS  += -D ELF_NAME="add-riscv64-nemu.elf"
+#CFLAGS  += -D ELF_NAME="add-riscv64-nemu.elf"
 
 
 WORK_DIR  = $(shell pwd)

@@ -61,7 +61,11 @@ void update_iringbuf(char *s);
 void puts_iringbuf();
 #endif
 
-
+//itrace
+#ifdef CONFIG_ITRACE
+int ftrace_getTab();
+int ftrace_matchFunc( uint64_t pc, char* func);
+#endif
 
 
 
