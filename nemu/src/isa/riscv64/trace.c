@@ -108,7 +108,7 @@ int ftrace_getTab()
 	
 }
 
-parse_args()
+
 
 int ftrace_matchFunc( uint64_t pc){
 
