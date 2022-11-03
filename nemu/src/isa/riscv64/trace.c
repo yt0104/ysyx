@@ -127,7 +127,6 @@ void ftrace_matchFunc( uint64_t pc){
 	if (0 == a) assert(0);
 
 	for(int i = 0; i < sym_num; i++) {
-		printf("pc= %lx, sym_num= %d, st_value= %lx, st_size= %ld\n", pc, sym_num, symtab[i].st_value, symtab[i].st_size);
 		if(pc >= symtab[i].st_value && pc < symtab[i].st_value + symtab[i].st_size) {
 			rewind(fp);
 			fseek(fp, str_offset + symtab[i].st_name, SEEK_SET);
