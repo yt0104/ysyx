@@ -63,7 +63,7 @@ void puts_iringbuf();
 
 //ftrace
 #ifdef CONFIG_FTRACE
-void ftrace_getTab();
+int ftrace_getTab();
 void ftrace_matchFunc( uint64_t pc);
 #endif
 

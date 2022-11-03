@@ -46,6 +46,7 @@ static char *diff_so_file = NULL;
 static char *img_file = NULL;
 static char *elf_file = NULL;
 static int difftest_port = 1234;
+int elf_exist = 0;
 
 static long load_img() {
   if (img_file == NULL) {
@@ -68,6 +69,17 @@ static long load_img() {
   fclose(fp);
   return size;
 }
+
+static int load_elf() {
+  if (elf_file == NULL) {
+    Log("No elf is given.");
+    elf_exist = 0;
+    return 2; 
+  }
+  elf_exist = 1;
+  return ftrace_getTab(elf_file);
+}
+
 
 static int parse_args(int argc, char *argv[]) {
   const struct option table[] = {
@@ -107,9 +119,6 @@ void init_monitor(int argc, char *argv[]) {
   /* Parse arguments. */
   parse_args(argc, argv);
 
-  //printf("%s\n", img_file);
-  //printf("%s\n", elf_file);
-
   /* Set random seed. */
   init_rand();
 
@@ -127,6 +136,9 @@ void init_monitor(int argc, char *argv[]) {
 
   /* Load the image to memory. This will overwrite the built-in image. */
   long img_size = load_img();
+
+  /* Load the elf to ftrace*/
+  if(2 != load_elf()) assert(0);
 
   /* Initialize differential testing. */
   init_difftest(diff_so_file, img_size, difftest_port);

@@ -30,10 +30,10 @@ static uint64_t sym_offset,str_offset;
 static uint64_t sym_size;
 FILE *fp;
 
-int ftrace_getTab()
+int ftrace_getTab(char *elf_name)
 {
 
-    fp = fopen("add-riscv64-nemu.elf", "r");
+    fp = fopen( elf_name, "r");
 	if (NULL == fp) assert(0);
 
 	// 解析head
@@ -110,7 +110,7 @@ int ftrace_getTab()
 
 
 
-int ftrace_matchFunc( uint64_t pc){
+void ftrace_matchFunc( uint64_t pc){
 
 	// 重置指针位置到文件流开头
 	rewind(fp);
@@ -133,11 +133,11 @@ int ftrace_matchFunc( uint64_t pc){
 			fseek(fp, str_offset + symtab[i].st_name, SEEK_SET);
 			a = fread(func, FUNC_SIZE, 1, fp);
             if(pc == symtab[i].st_value) printf("pc = %lx, func = %s \n", pc, func);
-			return 1;
+			
 		}
 	}
 
-	return 0;
+	
 
 }
 
