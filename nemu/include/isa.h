@@ -64,7 +64,7 @@ void puts_iringbuf();
 //ftrace
 #ifdef CONFIG_FTRACE
 int ftrace_getTab();
-void ftrace_matchFunc( uint64_t pc);
+void ftrace_matchFunc( word_t pc, word_t dnpc);
 #endif
 
 
