@@ -135,7 +135,7 @@ void ftrace_matchFunc( uint64_t pc){
             if(pc == symtab[i].st_value) {
 				printf("pc = %lx:", pc);
 				func_proc++ ;
-				for(int j=0;i<func_proc;j++){
+				for(int j=0;j<func_proc;j++){
 					printf("  ");
 				}
 				printf("call<%s>\n", func);
