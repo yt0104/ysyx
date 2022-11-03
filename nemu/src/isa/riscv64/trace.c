@@ -29,6 +29,7 @@ static char func[FUNC_SIZE];
 static uint64_t sym_offset,str_offset;
 static uint64_t sym_size;
 static FILE *fp;
+static int func_proc = 0;
 
 int ftrace_getTab(char *elf_name)
 {
@@ -131,7 +132,14 @@ void ftrace_matchFunc( uint64_t pc){
 			rewind(fp);
 			fseek(fp, str_offset + symtab[i].st_name, SEEK_SET);
 			a = fread(func, FUNC_SIZE, 1, fp);
-            if(pc == symtab[i].st_value) printf("pc = %lx:", pc);
+            if(pc == symtab[i].st_value) {
+				printf("pc = %lx:", pc);
+				func_proc++ ;
+				for(int j=0;i<func_proc;j++){
+					printf("  ");
+				}
+				printf("call<%s>\n", func);
+			}
 			
 		}
 	}
