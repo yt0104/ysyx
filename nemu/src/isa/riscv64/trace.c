@@ -26,8 +26,8 @@ void puts_iringbuf(){
 #define FUNC_SIZE 30
 static char func[FUNC_SIZE];
 
-static uint64_t sym_offset,str_offset;
-static uint64_t sym_size;
+static word_t sym_offset,str_offset;
+static word_t sym_size;
 static FILE *fp;
 static int func_proc = 0;
 
@@ -111,7 +111,7 @@ int ftrace_getTab(char *elf_name)
 
 
 
-void ftrace_matchFunc( uint64_t pc){
+void ftrace_matchFunc( word_t pc, word_t dnpc){
 
 	// 重置指针位置到文件流开头
 	rewind(fp);
@@ -128,23 +128,22 @@ void ftrace_matchFunc( uint64_t pc){
 	if (0 == a) assert(0);
 
 	for(int i = 0; i < sym_num; i++) {
-		if(pc >= symtab[i].st_value && pc < symtab[i].st_value + symtab[i].st_size) {
+		if(dnpc >= symtab[i].st_value && dnpc < symtab[i].st_value + symtab[i].st_size) {
 			rewind(fp);
 			fseek(fp, str_offset + symtab[i].st_name, SEEK_SET);
 			a = fread(func, FUNC_SIZE, 1, fp);
-            if(pc == symtab[i].st_value) {
+            if(dnpc == symtab[i].st_value) {
 				printf("pc = %lx:", pc);
 				func_proc++ ;
 				for(int j=0;j<func_proc;j++){
-					printf("  ");
+					printf(" ");
 				}
-				printf("call<%s>\n", func);
+				printf("call<%s[0x%lx]>\n", func, dnpc);
 			}
 			
 		}
 	}
 
-	
 
 }
 
