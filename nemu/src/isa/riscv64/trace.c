@@ -5,8 +5,8 @@
 
 //ITRACE
 #define MAX_INST_TO_SAVE 20
-char iringbuf [MAX_INST_TO_SAVE][128];
-int inst_p = 0;
+static char iringbuf [MAX_INST_TO_SAVE][128];
+static int inst_p = 0;
 
 void update_iringbuf(char *s){
   strcpy(iringbuf[inst_p], s);
@@ -24,11 +24,11 @@ void puts_iringbuf(){
 
 //FTRACE
 #define FUNC_SIZE 30
-char func[FUNC_SIZE];
+static char func[FUNC_SIZE];
 
 static uint64_t sym_offset,str_offset;
 static uint64_t sym_size;
-FILE *fp;
+static FILE *fp;
 
 int ftrace_getTab(char *elf_name)
 {
@@ -131,7 +131,7 @@ void ftrace_matchFunc( uint64_t pc){
 			rewind(fp);
 			fseek(fp, str_offset + symtab[i].st_name, SEEK_SET);
 			a = fread(func, FUNC_SIZE, 1, fp);
-            if(pc == symtab[i].st_value) printf("pc = %lx, func = %s \n", pc, func);
+            if(pc == symtab[i].st_value) printf("pc = %lx:", pc);
 			
 		}
 	}
