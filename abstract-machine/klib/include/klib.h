@@ -9,6 +9,8 @@
 extern "C" {
 #endif
 
+//ARCH=native: 定义宏把库函数链接到klib ; else, 库函数将会链接到glibc
+//test klib accurancy
 //#define __NATIVE_USE_KLIB__
 
 // string.h
