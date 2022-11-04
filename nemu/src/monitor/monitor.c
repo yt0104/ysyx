@@ -77,6 +77,7 @@ static int load_elf() {
     elf_exist = 0;
     return 2; 
   }
+  Log("The image is %s", elf_file);
   elf_exist = 1;
   return ftrace_getTab(elf_file);
 }
