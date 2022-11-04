@@ -87,7 +87,7 @@ void *memset(void *s, int c, size_t n) {
 	assert(s!=NULL);
 	char *pdest = (char *)s;
 
-	while (n-->0) *pdest++ = c;
+	while (n--) *pdest++ = (char)c;
 
 	return s;
 }
