@@ -72,7 +72,7 @@ static long load_img() {
 
 static int load_elf() {
   if (elf_file == NULL) {
-    Log("No elf is given.");
+    Log("No elf is given, but ftrace is open");
     elf_exist = 0;
     return 2; 
   }
@@ -138,7 +138,8 @@ void init_monitor(int argc, char *argv[]) {
   long img_size = load_img();
 
   /* Load the elf to ftrace*/
-  if(2 != load_elf()) assert(0);
+
+  IFDEF(CONFIG_FTRACE, if(2 != load_elf()) assert(0) );
 
   /* Initialize differential testing. */
   init_difftest(diff_so_file, img_size, difftest_port);
