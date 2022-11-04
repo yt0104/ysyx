@@ -62,10 +62,9 @@ void puts_iringbuf();
 #endif
 
 //ftrace
-#ifdef CONFIG_FTRACE
 int ftrace_getTab(char *elf_name);
 void ftrace_matchFunc( word_t pc, word_t dnpc, uint32_t inst);
-#endif
+
 
 
 
