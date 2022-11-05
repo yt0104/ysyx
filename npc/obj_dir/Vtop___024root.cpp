@@ -44,21 +44,16 @@ VL_INLINE_OPT void Vtop___024root___sequent__TOP__3(Vtop___024root* vlSelf) {
     if (false && vlSelf) {}  // Prevent unused
     Vtop__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
     VL_DEBUG_IF(VL_DBG_MSGF("+    Vtop___024root___sequent__TOP__3\n"); );
-    // Variables
-    IData/*31:0*/ __Vdly__top__DOT__cpu;
     // Body
-    __Vdly__top__DOT__cpu = vlSelf->top__DOT__cpu;
     if (vlSelf->rst_n) {
-        __Vdly__top__DOT__cpu = ((IData)(vlSelf->exit_flag)
-                                  ? 1U : vlSelf->top__DOT__cpu);
-        vlSelf->pc = (((0U == vlSelf->top__DOT__cpu) 
-                       & (~ (IData)(vlSelf->exit_flag)))
+        vlSelf->pc = ((0U == vlSelf->top__DOT__cpu)
                        ? (4ULL + vlSelf->pc) : vlSelf->pc);
+        vlSelf->top__DOT__cpu = ((IData)(vlSelf->top__DOT__exit_flag)
+                                  ? 1U : vlSelf->top__DOT__cpu);
     } else {
-        __Vdly__top__DOT__cpu = 0U;
         vlSelf->pc = 0x80000000ULL;
+        vlSelf->top__DOT__cpu = 0U;
     }
-    vlSelf->top__DOT__cpu = __Vdly__top__DOT__cpu;
 }
 
 VL_INLINE_OPT void Vtop___024root___sequent__TOP__4(Vtop___024root* vlSelf) {
@@ -93,16 +88,16 @@ VL_INLINE_OPT void Vtop___024root___combo__TOP__5(Vtop___024root* vlSelf) {
                              ? (0x1fU & (vlSelf->inst 
                                          >> 7U)) : 0U);
     if ((1U == vlSelf->top__DOT__op)) {
-        vlSelf->exit_flag = 0U;
+        vlSelf->top__DOT__exit_flag = 0U;
         vlSelf->top__DOT__u_EXU__DOT__wenR = 1U;
         vlSelf->top__DOT__u_EXU__DOT__dest = (vlSelf->top__DOT__u_EXU__DOT__u_reg__DOT__rf
                                               [vlSelf->top__DOT__rs1] 
                                               + vlSelf->top__DOT__imm);
     } else if ((2U == vlSelf->top__DOT__op)) {
-        vlSelf->exit_flag = 1U;
+        vlSelf->top__DOT__exit_flag = 1U;
         vlSelf->top__DOT__u_EXU__DOT__wenR = 0U;
     } else {
-        vlSelf->exit_flag = 0U;
+        vlSelf->top__DOT__exit_flag = 0U;
         vlSelf->top__DOT__u_EXU__DOT__wenR = 0U;
         vlSelf->top__DOT__u_EXU__DOT__dest = vlSelf->top__DOT__u_EXU__DOT__u_reg__DOT__rf
             [vlSelf->top__DOT__rs2];
