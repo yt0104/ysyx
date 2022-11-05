@@ -27,7 +27,7 @@ void Vtop___024root::__Vconfigure(Vtop__Syms* _vlSymsp, bool first) {
 Vtop___024root::~Vtop___024root() {
 }
 
-void Vtop___024root____Vdpiimwrap_top__DOT__hello_TOP();
+void Vtop___024root____Vdpiimwrap_top__DOT__sim_exit_TOP();
 
 void Vtop___024root___settle__TOP__1(Vtop___024root* vlSelf) {
     if (false && vlSelf) {}  // Prevent unused
@@ -66,7 +66,7 @@ void Vtop___024root___settle__TOP__1(Vtop___024root* vlSelf) {
             [vlSelf->top__DOT__rs2];
     }
     if (vlSelf->exit_flag) {
-        Vtop___024root____Vdpiimwrap_top__DOT__hello_TOP();
+        Vtop___024root____Vdpiimwrap_top__DOT__sim_exit_TOP();
     }
 }
 
