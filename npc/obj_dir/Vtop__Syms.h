@@ -17,8 +17,6 @@
 #include "Vtop___024root.h"
 #include "Vtop___024unit.h"
 
-// DPI TYPES for DPI Export callbacks (Internal use)
-
 // SYMS CLASS (contains all model state)
 class Vtop__Syms final : public VerilatedSyms {
   public:
