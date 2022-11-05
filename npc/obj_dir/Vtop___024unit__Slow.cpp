@@ -5,6 +5,8 @@
 #include "Vtop___024unit.h"
 #include "Vtop__Syms.h"
 
+#include "verilated_dpi.h"
+
 //==========
 
 

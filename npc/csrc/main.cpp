@@ -1,7 +1,9 @@
 #include "verilated.h"
 #include "verilated_vcd_c.h"
 #include "Vtop.h"
-//#include "svdpi.h"
+#include "verilated_dpi.h"
+
+extern "C" void sim_exit();
 
 VerilatedContext* contextp = NULL;
 VerilatedVcdC* tfp = NULL;
@@ -24,7 +26,7 @@ void sim_init(){
   tfp->open("wave.vcd");
 }
 
-extern void sim_exit(){
+void sim_exit(){
   step_and_dump_wave();
   delete top;
   tfp->close();
