@@ -48,7 +48,7 @@ VL_INLINE_OPT void Vtop___024root___sequent__TOP__3(Vtop___024root* vlSelf) {
     if (vlSelf->rst_n) {
         vlSelf->pc = ((0U == vlSelf->top__DOT__cpu)
                        ? (4ULL + vlSelf->pc) : vlSelf->pc);
-        vlSelf->top__DOT__cpu = ((IData)(vlSelf->top__DOT__exit_flag)
+        vlSelf->top__DOT__cpu = ((IData)(vlSelf->exit_flag)
                                   ? 1U : vlSelf->top__DOT__cpu);
     } else {
         vlSelf->pc = 0x80000000ULL;
@@ -88,16 +88,16 @@ VL_INLINE_OPT void Vtop___024root___combo__TOP__5(Vtop___024root* vlSelf) {
                              ? (0x1fU & (vlSelf->inst 
                                          >> 7U)) : 0U);
     if ((1U == vlSelf->top__DOT__op)) {
-        vlSelf->top__DOT__exit_flag = 0U;
+        vlSelf->exit_flag = 0U;
         vlSelf->top__DOT__u_EXU__DOT__wenR = 1U;
         vlSelf->top__DOT__u_EXU__DOT__dest = (vlSelf->top__DOT__u_EXU__DOT__u_reg__DOT__rf
                                               [vlSelf->top__DOT__rs1] 
                                               + vlSelf->top__DOT__imm);
     } else if ((2U == vlSelf->top__DOT__op)) {
-        vlSelf->top__DOT__exit_flag = 1U;
+        vlSelf->exit_flag = 1U;
         vlSelf->top__DOT__u_EXU__DOT__wenR = 0U;
     } else {
-        vlSelf->top__DOT__exit_flag = 0U;
+        vlSelf->exit_flag = 0U;
         vlSelf->top__DOT__u_EXU__DOT__wenR = 0U;
         vlSelf->top__DOT__u_EXU__DOT__dest = vlSelf->top__DOT__u_EXU__DOT__u_reg__DOT__rf
             [vlSelf->top__DOT__rs2];
