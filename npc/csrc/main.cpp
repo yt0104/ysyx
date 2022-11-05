@@ -3,7 +3,7 @@
 #include "Vtop.h"
 #include "verilated_dpi.h"
 
-extern "C" void sim_exit();
+extern "C" void step_and_dump_wave();
 
 
 VerilatedContext* contextp = NULL;

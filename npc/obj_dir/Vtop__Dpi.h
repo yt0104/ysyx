@@ -14,7 +14,7 @@ extern "C" {
 
     // DPI IMPORTS
     // DPI import at vsrc/EXU.sv:4:30
-    extern void sim_exit();
+    extern void step_and_dump_wave();
 
 #ifdef __cplusplus
 }
