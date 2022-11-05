@@ -77,11 +77,11 @@ int main() {
     top->inst = pmemread(top->pc);
     printf("#time = %d \t pc = 0x%8.0lx, inst = 0x%8.0x\n", main_time, top->pc, top->inst);
     step_one_clk(top);
-    /*
+    
     if(top->exit_flag) {
       printf("ebreak!\n");
       sim_exit();
-    }*/
+    }
     main_time ++;
   }
 
