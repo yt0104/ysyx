@@ -4,15 +4,11 @@
 #include "verilated_dpi.h"
 
 extern "C" void sim_exit();
-extern "C" void hello();
 
 VerilatedContext* contextp = NULL;
 VerilatedVcdC* tfp = NULL;
 
 static Vtop* top;
-
-
-
 
 
 void step_and_dump_wave(){
@@ -21,12 +17,6 @@ void step_and_dump_wave(){
   tfp->dump(contextp->time());
 }
 
-void hello(){
-  delete top;
-  tfp->close();
-  delete contextp;
-  exit(0);
-}
 
 void sim_init(){
   contextp = new VerilatedContext;
