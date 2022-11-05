@@ -58,9 +58,9 @@ uint64_t pmemread(uint64_t pc){
 }
 
 void step_one_clk(Vtop* top){
-    top->clk = 1;
-    step_and_dump_wave();
     top->clk = 0;
+    step_and_dump_wave();
+    top->clk = 1;
     step_and_dump_wave();
     
 }
