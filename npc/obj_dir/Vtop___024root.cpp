@@ -2016,10 +2016,8 @@ VL_INLINE_OPT void Vtop___024root___combo__TOP__5(Vtop___024root* vlSelf) {
                                                         == vlSelf->top__DOT__op)) 
                                                     | (0x30U 
                                                        == vlSelf->top__DOT__op))) 
-                                                  & ((0x31U 
-                                                      != vlSelf->top__DOT__op) 
-                                                     & (0x32U 
-                                                        == vlSelf->top__DOT__op))))))));
+                                                  & (0x31U 
+                                                     != vlSelf->top__DOT__op)))))));
     vlSelf->top__DOT__u_EXU__DOT__wenR = (((((((((1U 
                                                   == vlSelf->top__DOT__op) 
                                                  | (2U 
