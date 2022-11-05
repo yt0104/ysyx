@@ -5,7 +5,7 @@ TOPNAME = top
 
 all:
 	@echo "verilator!"
-	verilator -Wall $(VSRC) $(CSRC) --top-module $(TOPNAME) --cc --trace --exe --build
+	verilator -Wall $(VSRC) $(CSRC)  --cc --trace --exe --build
 	
 sim:all
 	$(call git_commit, "sim RTL") # DO NOT REMOVE THIS LINE!!!
