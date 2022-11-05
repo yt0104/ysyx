@@ -2564,8 +2564,10 @@ void Vtop___024root___settle__TOP__2(Vtop___024root* vlSelf) {
                                                         == vlSelf->top__DOT__op)) 
                                                     | (0x30U 
                                                        == vlSelf->top__DOT__op))) 
-                                                  & (0x31U 
-                                                     != vlSelf->top__DOT__op)))))));
+                                                  & ((0x31U 
+                                                      != vlSelf->top__DOT__op) 
+                                                     & (0x32U 
+                                                        == vlSelf->top__DOT__op))))))));
     vlSelf->top__DOT__u_EXU__DOT__src1 = vlSelf->top__DOT__u_EXU__DOT__u_reg__DOT__rf
         [vlSelf->top__DOT__rs1];
     vlSelf->top__DOT__npc = (((((((((1U == vlSelf->top__DOT__op) 
