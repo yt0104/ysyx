@@ -1887,7 +1887,7 @@ VL_INLINE_OPT void Vtop___024root___sequent__TOP__3(Vtop___024root* vlSelf) {
         __Vdly__top__DOT__cpu = ((IData)(vlSelf->exit_flag)
                                   ? 1U : vlSelf->top__DOT__cpu);
         vlSelf->pc = ((0U == vlSelf->top__DOT__cpu)
-                       ? (4ULL + vlSelf->pc) : vlSelf->top__DOT__npc);
+                       ? vlSelf->top__DOT__npc : vlSelf->pc);
     } else {
         __Vdly__top__DOT__cpu = 0U;
         vlSelf->pc = 0x80000000ULL;
@@ -2907,14 +2907,8 @@ VL_INLINE_OPT void Vtop___024root___combo__TOP__5(Vtop___024root* vlSelf) {
                                                    (4ULL 
                                                     + vlSelf->pc)
                                                     : 
-                                                   ((0U 
-                                                     == vlSelf->top__DOT__op)
-                                                     ? 
-                                                    (4ULL 
-                                                     + vlSelf->pc)
-                                                     : 
-                                                    (4ULL 
-                                                     + vlSelf->pc))))))))));
+                                                   (4ULL 
+                                                    + vlSelf->pc)))))))));
     if (((((((((1U == vlSelf->top__DOT__op) | (2U == vlSelf->top__DOT__op)) 
               | (3U == vlSelf->top__DOT__op)) | (4U 
                                                  == vlSelf->top__DOT__op)) 
@@ -2995,11 +2989,9 @@ VL_INLINE_OPT void Vtop___024root___combo__TOP__5(Vtop___024root* vlSelf) {
                           | (0x30U == vlSelf->top__DOT__op))))) {
                 if ((0x31U != vlSelf->top__DOT__op)) {
                     if ((0x32U != vlSelf->top__DOT__op)) {
-                        if ((0U != vlSelf->top__DOT__op)) {
-                            vlSelf->top__DOT__u_EXU__DOT__dest 
-                                = vlSelf->top__DOT__u_EXU__DOT__u_reg__DOT__rf
-                                [vlSelf->top__DOT__rs2];
-                        }
+                        vlSelf->top__DOT__u_EXU__DOT__dest 
+                            = vlSelf->top__DOT__u_EXU__DOT__u_reg__DOT__rf
+                            [vlSelf->top__DOT__rs2];
                     }
                 }
             }
