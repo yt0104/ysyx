@@ -32,7 +32,9 @@ VL_MODULE(Vtop___024root) {
     CData/*0:0*/ top__DOT__u_EXU__DOT__wenR;
     IData/*31:0*/ top__DOT__cpu;
     IData/*31:0*/ top__DOT__op;
+    QData/*63:0*/ top__DOT__npc;
     QData/*63:0*/ top__DOT__imm;
+    QData/*63:0*/ top__DOT__u_EXU__DOT__src1;
     QData/*63:0*/ top__DOT__u_EXU__DOT__dest;
     VlUnpacked<QData/*63:0*/, 32> top__DOT__u_EXU__DOT__u_reg__DOT__rf;
 
