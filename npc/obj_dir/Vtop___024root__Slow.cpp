@@ -2419,27 +2419,34 @@ void Vtop___024root___settle__TOP__2(Vtop___024root* vlSelf) {
     if (vlSelf->top__DOT__exit_flag) {
         Vtop___024root____Vdpiimwrap_top__DOT__sim_exit_TOP();
     }
-    if ((1U == vlSelf->top__DOT__op)) {
-        vlSelf->npc = (4ULL + vlSelf->pc);
-    } else if ((2U == vlSelf->top__DOT__op)) {
-        vlSelf->npc = (4ULL + vlSelf->pc);
-        vlSelf->npc = (0xfffffffffffffffeULL & (vlSelf->top__DOT__u_EXU__DOT__src1 
-                                                + vlSelf->top__DOT__imm));
-    } else if ((3U == vlSelf->top__DOT__op)) {
-        vlSelf->npc = (4ULL + vlSelf->pc);
-        vlSelf->npc = (0xfffffffffffffffeULL & (vlSelf->top__DOT__u_EXU__DOT__src1 
-                                                + vlSelf->top__DOT__imm));
-    } else if ((0x13U == vlSelf->top__DOT__op)) {
-        vlSelf->npc = (4ULL + vlSelf->pc);
-    } else if ((0x14U == vlSelf->top__DOT__op)) {
-        vlSelf->npc = (4ULL + vlSelf->pc);
-    } else if ((0x19U == vlSelf->top__DOT__op)) {
-        vlSelf->npc = (4ULL + vlSelf->pc);
-        vlSelf->npc = (vlSelf->pc + vlSelf->top__DOT__imm);
-    } else {
-        vlSelf->npc = ((0x32U == vlSelf->top__DOT__op)
-                        ? (4ULL + vlSelf->pc) : vlSelf->pc);
-    }
+    vlSelf->top__DOT__npc = ((1U == vlSelf->top__DOT__op)
+                              ? (4ULL + vlSelf->pc)
+                              : ((2U == vlSelf->top__DOT__op)
+                                  ? (0xfffffffffffffffeULL 
+                                     & (vlSelf->top__DOT__u_EXU__DOT__src1 
+                                        + vlSelf->top__DOT__imm))
+                                  : ((3U == vlSelf->top__DOT__op)
+                                      ? (0xfffffffffffffffeULL 
+                                         & (vlSelf->top__DOT__u_EXU__DOT__src1 
+                                            + vlSelf->top__DOT__imm))
+                                      : ((0x13U == vlSelf->top__DOT__op)
+                                          ? (4ULL + vlSelf->pc)
+                                          : ((0x14U 
+                                              == vlSelf->top__DOT__op)
+                                              ? (4ULL 
+                                                 + vlSelf->pc)
+                                              : ((0x19U 
+                                                  == vlSelf->top__DOT__op)
+                                                  ? 
+                                                 (vlSelf->pc 
+                                                  + vlSelf->top__DOT__imm)
+                                                  : 
+                                                 ((0x32U 
+                                                   == vlSelf->top__DOT__op)
+                                                   ? 
+                                                  (4ULL 
+                                                   + vlSelf->pc)
+                                                   : vlSelf->pc)))))));
     if ((1U == vlSelf->top__DOT__op)) {
         vlSelf->top__DOT__u_EXU__DOT__dest = (vlSelf->top__DOT__u_EXU__DOT__src1 
                                               + vlSelf->top__DOT__imm);
@@ -2509,9 +2516,9 @@ void Vtop___024root___ctor_var_reset(Vtop___024root* vlSelf) {
     vlSelf->rst_n = VL_RAND_RESET_I(1);
     vlSelf->inst = VL_RAND_RESET_I(32);
     vlSelf->pc = VL_RAND_RESET_Q(64);
-    vlSelf->npc = VL_RAND_RESET_Q(64);
     vlSelf->top__DOT__exit_flag = VL_RAND_RESET_I(1);
     vlSelf->top__DOT__cpu = 0;
+    vlSelf->top__DOT__npc = VL_RAND_RESET_Q(64);
     vlSelf->top__DOT__rd = VL_RAND_RESET_I(5);
     vlSelf->top__DOT__rs1 = VL_RAND_RESET_I(5);
     vlSelf->top__DOT__rs2 = VL_RAND_RESET_I(5);
