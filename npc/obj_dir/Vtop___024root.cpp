@@ -96,7 +96,7 @@ VL_INLINE_OPT void Vtop___024root___combo__TOP__5(Vtop___024root* vlSelf) {
     } else {
         vlSelf->top__DOT__npc = ((0x32U == vlSelf->top__DOT__op)
                                   ? (4ULL + vlSelf->pc)
-                                  : vlSelf->pc);
+                                  : (4ULL + vlSelf->pc));
         vlSelf->top__DOT__u_EXU__DOT__wenR = 0U;
     }
     vlSelf->top__DOT__rd = ((0x13U == (0x707fU & vlSelf->inst))
