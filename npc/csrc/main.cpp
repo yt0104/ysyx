@@ -28,7 +28,7 @@ void sim_init(){
 }
 
 void sim_exit(){
-  //step_and_dump_wave();
+  step_and_dump_wave();
   delete top;
   tfp->close();
   delete contextp;
