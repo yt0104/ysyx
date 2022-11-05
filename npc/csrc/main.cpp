@@ -80,9 +80,9 @@ int main() {
   int sim_time = 50;   // 最大仿真时间戳
   while (!Verilated::gotFinish() && main_time < sim_time) {
     top->inst = pmemread(top->pc);
-    
-    step_one_clk(top);
     printf("#time = %d \t pc = 0x%8.0lx, inst = 0x%8.0x, npc=0x%8.0lx\n", main_time, top->pc, top->inst, top->npc);
+    step_one_clk(top);
+    
     main_time ++;
   }
 
