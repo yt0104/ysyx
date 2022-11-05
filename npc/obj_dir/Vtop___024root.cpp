@@ -48,11 +48,6 @@ VL_INLINE_OPT void Vtop___024root___sequent__TOP__3(Vtop___024root* vlSelf) {
     IData/*31:0*/ __Vdly__top__DOT__cpu;
     // Body
     __Vdly__top__DOT__cpu = vlSelf->top__DOT__cpu;
-    vlSelf->pc = ((IData)(vlSelf->rst_n) ? ((0U == vlSelf->top__DOT__cpu)
-                                             ? (4ULL 
-                                                + vlSelf->pc)
-                                             : vlSelf->pc)
-                   : 0x80000000ULL);
     if (vlSelf->rst_n) {
         if (vlSelf->exit_flag) {
             Vtop___024root____Vdpiimwrap_top__DOT__sim_exit_TOP();
@@ -63,6 +58,12 @@ VL_INLINE_OPT void Vtop___024root___sequent__TOP__3(Vtop___024root* vlSelf) {
     } else {
         __Vdly__top__DOT__cpu = 0U;
     }
+    vlSelf->pc = ((IData)(vlSelf->rst_n) ? (((0U == vlSelf->top__DOT__cpu) 
+                                             & (~ (IData)(vlSelf->exit_flag)))
+                                             ? (4ULL 
+                                                + vlSelf->pc)
+                                             : vlSelf->pc)
+                   : 0x80000000ULL);
     vlSelf->top__DOT__cpu = __Vdly__top__DOT__cpu;
 }
 
