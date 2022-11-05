@@ -12,9 +12,7 @@ VerilatedVcdC* tfp = NULL;
 static Vtop* top;
 
 
-void hello(){
 
-}
 
 
 void step_and_dump_wave(){
@@ -23,6 +21,9 @@ void step_and_dump_wave(){
   tfp->dump(contextp->time());
 }
 
+void hello(){
+  step_and_dump_wave();
+}
 
 void sim_init(){
   contextp = new VerilatedContext;
