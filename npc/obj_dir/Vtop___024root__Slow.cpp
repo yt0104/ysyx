@@ -51,17 +51,17 @@ void Vtop___024root___settle__TOP__1(Vtop___024root* vlSelf) {
         vlSelf->top__DOT__rs1 = 0U;
         vlSelf->top__DOT__imm = 0ULL;
         vlSelf->top__DOT__op = ((0x100073U == vlSelf->inst)
-                                 ? 2U : 0U);
+                                 ? 0x32U : 0U);
         vlSelf->top__DOT__rd = 0U;
     }
     vlSelf->top__DOT__u_EXU__DOT__wenR = (1U == vlSelf->top__DOT__op);
     vlSelf->exit_flag = ((1U != vlSelf->top__DOT__op) 
-                         & (2U == vlSelf->top__DOT__op));
+                         & (0x32U == vlSelf->top__DOT__op));
     if ((1U == vlSelf->top__DOT__op)) {
         vlSelf->top__DOT__u_EXU__DOT__dest = (vlSelf->top__DOT__u_EXU__DOT__u_reg__DOT__rf
                                               [vlSelf->top__DOT__rs1] 
                                               + vlSelf->top__DOT__imm);
-    } else if ((2U != vlSelf->top__DOT__op)) {
+    } else if ((0x32U != vlSelf->top__DOT__op)) {
         vlSelf->top__DOT__u_EXU__DOT__dest = vlSelf->top__DOT__u_EXU__DOT__u_reg__DOT__rf
             [vlSelf->top__DOT__rs2];
     }
