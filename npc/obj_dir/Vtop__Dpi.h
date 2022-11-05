@@ -13,6 +13,8 @@ extern "C" {
 
 
     // DPI IMPORTS
+    // DPI import at vsrc/top.sv:15:30
+    extern void hello();
     // DPI import at vsrc/top.sv:14:30
     extern void sim_exit();
 

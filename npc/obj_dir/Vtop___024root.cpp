@@ -17,6 +17,14 @@ VL_INLINE_OPT void Vtop___024root____Vdpiimwrap_top__DOT__sim_exit_TOP() {
     sim_exit();
 }
 
+extern "C" void hello();
+
+VL_INLINE_OPT void Vtop___024root____Vdpiimwrap_top__DOT__hello_TOP() {
+    VL_DEBUG_IF(VL_DBG_MSGF("+    Vtop___024root____Vdpiimwrap_top__DOT__hello_TOP\n"); );
+    // Body
+    hello();
+}
+
 VL_INLINE_OPT void Vtop___024root___combo__TOP__2(Vtop___024root* vlSelf) {
     if (false && vlSelf) {}  // Prevent unused
     Vtop__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
@@ -99,7 +107,7 @@ VL_INLINE_OPT void Vtop___024root___combo__TOP__5(Vtop___024root* vlSelf) {
             [vlSelf->top__DOT__rs2];
     }
     if (vlSelf->exit_flag) {
-        Vtop___024root____Vdpiimwrap_top__DOT__sim_exit_TOP();
+        Vtop___024root____Vdpiimwrap_top__DOT__hello_TOP();
     }
 }
 
