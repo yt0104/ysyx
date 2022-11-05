@@ -27,6 +27,8 @@ void Vtop___024root::__Vconfigure(Vtop__Syms* _vlSymsp, bool first) {
 Vtop___024root::~Vtop___024root() {
 }
 
+void Vtop___024root____Vdpiimwrap_top__DOT__sim_exit_TOP();
+
 void Vtop___024root___settle__TOP__1(Vtop___024root* vlSelf) {
     if (false && vlSelf) {}  // Prevent unused
     Vtop__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
@@ -52,9 +54,9 @@ void Vtop___024root___settle__TOP__1(Vtop___024root* vlSelf) {
                                  ? 2U : 0U);
         vlSelf->top__DOT__rd = 0U;
     }
+    vlSelf->top__DOT__u_EXU__DOT__wenR = (1U == vlSelf->top__DOT__op);
     vlSelf->exit_flag = ((1U != vlSelf->top__DOT__op) 
                          & (2U == vlSelf->top__DOT__op));
-    vlSelf->top__DOT__u_EXU__DOT__wenR = (1U == vlSelf->top__DOT__op);
     if ((1U == vlSelf->top__DOT__op)) {
         vlSelf->top__DOT__u_EXU__DOT__dest = (vlSelf->top__DOT__u_EXU__DOT__u_reg__DOT__rf
                                               [vlSelf->top__DOT__rs1] 
@@ -62,6 +64,9 @@ void Vtop___024root___settle__TOP__1(Vtop___024root* vlSelf) {
     } else if ((2U != vlSelf->top__DOT__op)) {
         vlSelf->top__DOT__u_EXU__DOT__dest = vlSelf->top__DOT__u_EXU__DOT__u_reg__DOT__rf
             [vlSelf->top__DOT__rs2];
+    }
+    if (vlSelf->exit_flag) {
+        Vtop___024root____Vdpiimwrap_top__DOT__sim_exit_TOP();
     }
 }
 
