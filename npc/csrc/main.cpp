@@ -40,13 +40,18 @@ void sim_exit(){
 uint64_t pmemread(uint64_t pc){
   switch (pc)
   {
-  case 0x80000000: return 0xff010113;//addi	sp,sp,-16
-  case 0x80000004: return 0x00100513;//li	    a0,1
-  case 0x80000008: return 0xfb010113;//addi	sp,sp,-80 
-  case 0x8000000c: return 0x00100073;//ebreak 
-  case 0x80000010: return 0xff010113;//addi	sp,sp,-16
-  case 0x80000014: return 0x00100513;//li	    a0,1
-  case 0x80000018: return 0xfb010113;//addi	sp,sp,-80 
+  case 0x80000000: return 0x00000413;//li	s0,0
+  case 0x80000004: return 0x00009117;//auipc	sp,0x9
+  case 0x80000008: return 0xffc10113;//addi sp,sp,-4 # 80009000 <_end>
+  case 0x8000000c: return 0x00c000ef;//jal	ra,80000018 <_trm_init>
+  case 0x80000010: return 0x00000513;//li	a0,0
+  case 0x80000014: return 0x00008067;//ret
+  case 0x80000018: return 0xff010113;//addi	sp,sp,-16 
+  case 0x8000001c: return 0x00000517;//auipc	a0,0x0
+  case 0x80000020: return 0x01450513;//addi	a0,a0,20 # 80000030 <_etext>
+  case 0x80000024: return 0x00113423;//sd	ra,8(sp) 
+  case 0x80000028: return 0xfe9ff0ef;//jal	ra,80000010 <main>
+  case 0x8000002c: return 0x0000006f;//j	8000002c <_trm_init+0x14> 
   default: return 0x00100073;//ebreak 
   }
 
