@@ -11,8 +11,8 @@
 
 extern "C" void sim_exit();
 
-VL_INLINE_OPT void Vtop___024root____Vdpiimwrap_top__DOT__sim_exit_TOP() {
-    VL_DEBUG_IF(VL_DBG_MSGF("+    Vtop___024root____Vdpiimwrap_top__DOT__sim_exit_TOP\n"); );
+VL_INLINE_OPT void Vtop___024root____Vdpiimwrap_top__DOT__u_EXU__DOT__sim_exit_TOP() {
+    VL_DEBUG_IF(VL_DBG_MSGF("+    Vtop___024root____Vdpiimwrap_top__DOT__u_EXU__DOT__sim_exit_TOP\n"); );
     // Body
     sim_exit();
 }
@@ -89,19 +89,24 @@ VL_INLINE_OPT void Vtop___024root___combo__TOP__5(Vtop___024root* vlSelf) {
     Vtop__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
     VL_DEBUG_IF(VL_DBG_MSGF("+    Vtop___024root___combo__TOP__5\n"); );
     // Body
-    vlSelf->exit_flag = ((1U != vlSelf->top__DOT__op) 
-                         & (2U == vlSelf->top__DOT__op));
-    vlSelf->top__DOT__u_EXU__DOT__wenR = (1U == vlSelf->top__DOT__op);
     vlSelf->top__DOT__rd = ((0x13U == (0x707fU & vlSelf->inst))
                              ? (0x1fU & (vlSelf->inst 
                                          >> 7U)) : 0U);
     if ((1U == vlSelf->top__DOT__op)) {
+        vlSelf->exit_flag = 0U;
+        vlSelf->top__DOT__u_EXU__DOT__wenR = 1U;
         vlSelf->top__DOT__u_EXU__DOT__dest = (vlSelf->top__DOT__u_EXU__DOT__u_reg__DOT__rf
                                               [vlSelf->top__DOT__rs1] 
                                               + vlSelf->top__DOT__imm);
-    } else if ((2U != vlSelf->top__DOT__op)) {
+    } else if ((2U == vlSelf->top__DOT__op)) {
+        vlSelf->exit_flag = 1U;
+        vlSelf->top__DOT__u_EXU__DOT__wenR = 0U;
+    } else {
+        vlSelf->exit_flag = 0U;
+        vlSelf->top__DOT__u_EXU__DOT__wenR = 0U;
         vlSelf->top__DOT__u_EXU__DOT__dest = vlSelf->top__DOT__u_EXU__DOT__u_reg__DOT__rf
             [vlSelf->top__DOT__rs2];
+        Vtop___024root____Vdpiimwrap_top__DOT__u_EXU__DOT__sim_exit_TOP();
     }
 }
 

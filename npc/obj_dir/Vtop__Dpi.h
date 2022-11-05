@@ -13,7 +13,7 @@ extern "C" {
 
 
     // DPI IMPORTS
-    // DPI import at vsrc/top.sv:14:30
+    // DPI import at vsrc/EXU.sv:4:30
     extern void sim_exit();
 
 #ifdef __cplusplus
