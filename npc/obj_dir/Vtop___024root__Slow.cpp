@@ -2446,9 +2446,7 @@ void Vtop___024root___settle__TOP__2(Vtop___024root* vlSelf) {
                                                    ? 
                                                   (4ULL 
                                                    + vlSelf->pc)
-                                                   : 
-                                                  (4ULL 
-                                                   + vlSelf->pc))))))));
+                                                   : vlSelf->pc)))))));
     if ((1U == vlSelf->top__DOT__op)) {
         vlSelf->top__DOT__u_EXU__DOT__dest = (vlSelf->top__DOT__u_EXU__DOT__src1 
                                               + vlSelf->top__DOT__imm);
