@@ -1,7 +1,7 @@
 #include "verilated.h"
 #include "verilated_vcd_c.h"
 #include "Vtop.h"
-#include "verilated_dpi.h"
+//#include "verilated_dpi.h"
 
 extern "C" void sim_exit();
 
