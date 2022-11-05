@@ -1887,7 +1887,7 @@ VL_INLINE_OPT void Vtop___024root___sequent__TOP__3(Vtop___024root* vlSelf) {
         __Vdly__top__DOT__cpu = ((IData)(vlSelf->top__DOT__exit_flag)
                                   ? 1U : vlSelf->top__DOT__cpu);
         vlSelf->pc = ((0U == vlSelf->top__DOT__cpu)
-                       ? vlSelf->top__DOT__npc : vlSelf->pc);
+                       ? vlSelf->pc : vlSelf->top__DOT__npc);
     } else {
         __Vdly__top__DOT__cpu = 0U;
         vlSelf->pc = 0x80000000ULL;
