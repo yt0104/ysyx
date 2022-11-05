@@ -88,8 +88,7 @@ VL_INLINE_OPT void Vtop___024root___combo__TOP__5(Vtop___024root* vlSelf) {
     Vtop__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
     VL_DEBUG_IF(VL_DBG_MSGF("+    Vtop___024root___combo__TOP__5\n"); );
     // Body
-    vlSelf->top__DOT__exit_flag = ((1U != vlSelf->top__DOT__op) 
-                                   & (0x32U == vlSelf->top__DOT__op));
+    vlSelf->top__DOT__exit_flag = (1U != vlSelf->top__DOT__op);
     if ((1U == vlSelf->top__DOT__op)) {
         vlSelf->top__DOT__npc = (4ULL + vlSelf->pc);
         vlSelf->top__DOT__u_EXU__DOT__wenR = 1U;
