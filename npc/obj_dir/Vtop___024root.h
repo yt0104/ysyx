@@ -21,11 +21,11 @@ VL_MODULE(Vtop___024root) {
     // PORTS
     VL_IN8(clk,0,0);
     VL_IN8(rst_n,0,0);
-    VL_OUT8(exit_flag,0,0);
     VL_IN(inst,31,0);
     VL_OUT64(pc,63,0);
 
     // LOCAL SIGNALS
+    CData/*0:0*/ top__DOT__exit_flag;
     CData/*4:0*/ top__DOT__rd;
     CData/*4:0*/ top__DOT__rs1;
     CData/*4:0*/ top__DOT__rs2;
@@ -34,6 +34,7 @@ VL_MODULE(Vtop___024root) {
     IData/*31:0*/ top__DOT__op;
     QData/*63:0*/ top__DOT__npc;
     QData/*63:0*/ top__DOT__imm;
+    QData/*63:0*/ top__DOT__u_EXU__DOT__src1;
     QData/*63:0*/ top__DOT__u_EXU__DOT__dest;
     VlUnpacked<QData/*63:0*/, 32> top__DOT__u_EXU__DOT__u_reg__DOT__rf;
 
