@@ -114,6 +114,9 @@ VL_INLINE_OPT void Vtop___024root___combo__TOP__5(Vtop___024root* vlSelf) {
                 [vlSelf->top__DOT__rs2];
         }
     }
+    if (vlSelf->top__DOT__exit_flag) {
+        Vtop___024root____Vdpiimwrap_top__DOT__sim_exit_TOP();
+    }
 }
 
 void Vtop___024root___eval(Vtop___024root* vlSelf) {
