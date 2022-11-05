@@ -22,7 +22,10 @@ void step_and_dump_wave(){
 }
 
 void hello(){
-  step_and_dump_wave();
+  delete top;
+  tfp->close();
+  delete contextp;
+  exit(0);
 }
 
 void sim_init(){
