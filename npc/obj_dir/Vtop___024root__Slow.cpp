@@ -61,14 +61,18 @@ void Vtop___024root___settle__TOP__1(Vtop___024root* vlSelf) {
                               ? (4ULL + vlSelf->pc)
                               : ((0x32U == vlSelf->top__DOT__op)
                                   ? (4ULL + vlSelf->pc)
-                                  : vlSelf->pc));
+                                  : ((0U == vlSelf->top__DOT__op)
+                                      ? (4ULL + vlSelf->pc)
+                                      : vlSelf->pc)));
     if ((1U == vlSelf->top__DOT__op)) {
         vlSelf->top__DOT__u_EXU__DOT__dest = (vlSelf->top__DOT__u_EXU__DOT__u_reg__DOT__rf
                                               [vlSelf->top__DOT__rs1] 
                                               + vlSelf->top__DOT__imm);
     } else if ((0x32U != vlSelf->top__DOT__op)) {
-        vlSelf->top__DOT__u_EXU__DOT__dest = vlSelf->top__DOT__u_EXU__DOT__u_reg__DOT__rf
-            [vlSelf->top__DOT__rs2];
+        if ((0U != vlSelf->top__DOT__op)) {
+            vlSelf->top__DOT__u_EXU__DOT__dest = vlSelf->top__DOT__u_EXU__DOT__u_reg__DOT__rf
+                [vlSelf->top__DOT__rs2];
+        }
     }
     if (vlSelf->top__DOT__exit_flag) {
         Vtop___024root____Vdpiimwrap_top__DOT__sim_exit_TOP();

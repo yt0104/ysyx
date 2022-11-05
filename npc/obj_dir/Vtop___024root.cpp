@@ -96,7 +96,9 @@ VL_INLINE_OPT void Vtop___024root___combo__TOP__5(Vtop___024root* vlSelf) {
     } else {
         vlSelf->top__DOT__npc = ((0x32U == vlSelf->top__DOT__op)
                                   ? (4ULL + vlSelf->pc)
-                                  : vlSelf->pc);
+                                  : ((0U == vlSelf->top__DOT__op)
+                                      ? (4ULL + vlSelf->pc)
+                                      : vlSelf->pc));
         vlSelf->top__DOT__u_EXU__DOT__wenR = 0U;
     }
     vlSelf->top__DOT__rd = ((0x13U == (0x707fU & vlSelf->inst))
@@ -107,8 +109,10 @@ VL_INLINE_OPT void Vtop___024root___combo__TOP__5(Vtop___024root* vlSelf) {
                                               [vlSelf->top__DOT__rs1] 
                                               + vlSelf->top__DOT__imm);
     } else if ((0x32U != vlSelf->top__DOT__op)) {
-        vlSelf->top__DOT__u_EXU__DOT__dest = vlSelf->top__DOT__u_EXU__DOT__u_reg__DOT__rf
-            [vlSelf->top__DOT__rs2];
+        if ((0U != vlSelf->top__DOT__op)) {
+            vlSelf->top__DOT__u_EXU__DOT__dest = vlSelf->top__DOT__u_EXU__DOT__u_reg__DOT__rf
+                [vlSelf->top__DOT__rs2];
+        }
     }
     if (vlSelf->top__DOT__exit_flag) {
         Vtop___024root____Vdpiimwrap_top__DOT__sim_exit_TOP();
