@@ -7,7 +7,7 @@ all:
 	@echo "verilator!"
 	verilator -Wall $(VSRC) $(CSRC) --top-module $(TOPNAME) --cc --trace --exe --build
 	
-sim:all
+run:all
 	$(call git_commit, "sim RTL") # DO NOT REMOVE THIS LINE!!!
 	@echo "sim RTL!"
 	$(ELF)
