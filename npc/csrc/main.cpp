@@ -11,6 +11,14 @@ VerilatedVcdC* tfp = NULL;
 
 static Vtop* top;
 
+#define ANSI_FG_RED     "\33[1;31m"
+#define ANSI_FG_GREEN   "\33[1;32m"
+#define ANSI_NONE       "\33[0m"
+#define ANSI_FMT(str, fmt) fmt str ANSI_NONE
+// macro stringizing
+#define str_temp(x) #x
+#define str(x) str_temp(x)
+
 
 void sim_init(){
   contextp = new VerilatedContext;
@@ -23,7 +31,7 @@ void sim_init(){
 
 void sim_exit(int state){
 
-  if(state == 0) printf("good\n");
+  if(state == 0) ANSI_FMT("HIT GOOD TRAP", ANSI_FG_GREEN);
   else if(state == 1) printf("halt\n");
   else if(state == 2) printf("time out\n");
 
