@@ -79,7 +79,7 @@ uint64_t pmemread(uint64_t pc){
 static uint8_t pmem[CONFIG_MSIZE] PG_ALIGN = {};
 
 uint8_t* guest_to_host(uint32_t paddr) { return pmem + paddr - CONFIG_MBASE; }
-/*
+
 void load_img(int argc, char *argv[]) {
   
   char *img_file = argv[1];
@@ -102,11 +102,11 @@ void load_img(int argc, char *argv[]) {
   return;
 }
 
-*/
+
 
 int main(int argc, char *argv[]) {
 
-  //load_img(argc, argv);
+  load_img(argc, argv);
 
   sim_init();
 
