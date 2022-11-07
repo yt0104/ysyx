@@ -2,6 +2,7 @@ VSRC = $(wildcard ./vsrc/top.sv)
 CSRC = $(wildcard ./csrc/main.cpp)
 ELF  = $(wildcard ./obj_dir/Vtop)
 TOPNAME = top
+IMG ?=  
 
 all:
 	@echo "verilator!"
@@ -10,7 +11,7 @@ all:
 run:all
 	$(call git_commit, "sim RTL") # DO NOT REMOVE THIS LINE!!!
 	@echo "sim RTL!"
-	$(ELF)
+	$(ELF) 
 	
 gtk:sim
 	@echo "gtkwave!"

@@ -11,13 +11,6 @@ VerilatedVcdC* tfp = NULL;
 static Vtop* top;
 
 
-void step_and_dump_wave(){
-  top->eval();
-  contextp->timeInc(1);
-  tfp->dump(contextp->time());
-}
-
-
 void sim_init(){
   contextp = new VerilatedContext;
   tfp = new VerilatedVcdC;
@@ -33,6 +26,20 @@ void sim_exit(){
   tfp->close();
   delete contextp;
   exit(0);
+}
+
+void step_and_dump_wave(){
+  top->eval();
+  contextp->timeInc(1);
+  tfp->dump(contextp->time());
+}
+
+void step_one_clk(Vtop* top){
+    top->clk = 0;
+    step_and_dump_wave();
+    top->clk = 1;
+    step_and_dump_wave();
+    
 }
 
 
@@ -57,16 +64,47 @@ uint64_t pmemread(uint64_t pc){
 
 }
 
-void step_one_clk(Vtop* top){
-    top->clk = 0;
-    step_and_dump_wave();
-    top->clk = 1;
-    step_and_dump_wave();
-    
+/*
+#define CONFIG_MBASE 0x80000000
+#define CONFIG_MSIZE 0x80000000
+#define CONFIG_PC_RESET_OFFSET 0x0
+#define PG_ALIGN __attribute((aligned(4096)))
+#define PMEM_LEFT  ((uint32_t)CONFIG_MBASE)
+#define PMEM_RIGHT ((uint32_t)CONFIG_MBASE + CONFIG_MSIZE - 1)
+#define RESET_VECTOR (PMEM_LEFT + CONFIG_PC_RESET_OFFSET)
+
+static uint8_t pmem[CONFIG_MSIZE] PG_ALIGN = {};
+
+uint8_t* guest_to_host(uint32_t paddr) { return pmem + paddr - CONFIG_MBASE; }
+
+void load_img(int argc, char *argv[]) {
+  
+  char *img_file = argv[1];
+
+  if (img_file == NULL) assert(0);
+
+  FILE *fp = fopen(img_file, "rb");
+  if(fp == NULL) assert(0);
+
+  fseek(fp, 0, SEEK_END);
+  long size = ftell(fp);
+
+  printf("The image is %s, size = %ld", img_file, size);
+
+  fseek(fp, 0, SEEK_SET);
+  int ret = fread(guest_to_host(RESET_VECTOR), size, 1, fp);
+  assert(ret == 1);
+
+  fclose(fp);
+  return;
 }
 
+*/
 
-int main() {
+int main(int argc, char *argv[]) {
+
+  //load_img(argc, argv);
+
   sim_init();
 
   top->clk = 0;
