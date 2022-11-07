@@ -27,8 +27,6 @@ void Vtop___024root::__Vconfigure(Vtop__Syms* _vlSymsp, bool first) {
 Vtop___024root::~Vtop___024root() {
 }
 
-void Vtop___024root____Vdpiimwrap_top__DOT__sim_exit_TOP();
-
 void Vtop___024root___settle__TOP__2(Vtop___024root* vlSelf) {
     if (false && vlSelf) {}  // Prevent unused
     Vtop__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
@@ -2449,9 +2447,6 @@ void Vtop___024root___settle__TOP__2(Vtop___024root* vlSelf) {
     }
     vlSelf->top__DOT__u_EXU__DOT__src1 = vlSelf->top__DOT__u_EXU__DOT__u_reg__DOT__rf
         [vlSelf->top__DOT__rs1];
-    if (vlSelf->top__DOT__exit_flag) {
-        Vtop___024root____Vdpiimwrap_top__DOT__sim_exit_TOP();
-    }
     vlSelf->top__DOT__npc = (((((((((1U == vlSelf->top__DOT__op) 
                                     | (2U == vlSelf->top__DOT__op)) 
                                    | (3U == vlSelf->top__DOT__op)) 

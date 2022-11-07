@@ -1904,6 +1904,9 @@ VL_INLINE_OPT void Vtop___024root___sequent__TOP__4(Vtop___024root* vlSelf) {
     CData/*0:0*/ __Vdlyvset__top__DOT__u_EXU__DOT__u_reg__DOT__rf__v0;
     QData/*63:0*/ __Vdlyvval__top__DOT__u_EXU__DOT__u_reg__DOT__rf__v0;
     // Body
+    if (vlSelf->top__DOT__exit_flag) {
+        Vtop___024root____Vdpiimwrap_top__DOT__sim_exit_TOP();
+    }
     __Vdlyvset__top__DOT__u_EXU__DOT__u_reg__DOT__rf__v0 = 0U;
     if (vlSelf->top__DOT__u_EXU__DOT__wenR) {
         __Vdlyvval__top__DOT__u_EXU__DOT__u_reg__DOT__rf__v0 
@@ -2510,9 +2513,6 @@ VL_INLINE_OPT void Vtop___024root___combo__TOP__5(Vtop___024root* vlSelf) {
                                                      : 0U))))))));
     vlSelf->top__DOT__u_EXU__DOT__src1 = vlSelf->top__DOT__u_EXU__DOT__u_reg__DOT__rf
         [vlSelf->top__DOT__rs1];
-    if (vlSelf->top__DOT__exit_flag) {
-        Vtop___024root____Vdpiimwrap_top__DOT__sim_exit_TOP();
-    }
     vlSelf->top__DOT__npc = (((((((((1U == vlSelf->top__DOT__op) 
                                     | (2U == vlSelf->top__DOT__op)) 
                                    | (3U == vlSelf->top__DOT__op)) 
