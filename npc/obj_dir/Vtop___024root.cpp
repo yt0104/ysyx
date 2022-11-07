@@ -1946,7 +1946,7 @@ VL_INLINE_OPT void Vtop___024root___combo__TOP__5(Vtop___024root* vlSelf) {
             }
         }
     } else {
-        vlSelf->top__DOT__exit_flag = 1U;
+        vlSelf->top__DOT__exit_flag = 0U;
     }
     vlSelf->top__DOT__u_EXU__DOT__wenR = (((((((((1U 
                                                   == vlSelf->top__DOT__op) 
