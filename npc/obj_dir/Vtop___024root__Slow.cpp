@@ -2445,7 +2445,7 @@ void Vtop___024root___settle__TOP__2(Vtop___024root* vlSelf) {
             }
         }
     } else {
-        vlSelf->top__DOT__exit_flag = 0U;
+        vlSelf->top__DOT__exit_flag = 1U;
     }
     vlSelf->top__DOT__u_EXU__DOT__src1 = vlSelf->top__DOT__u_EXU__DOT__u_reg__DOT__rf
         [vlSelf->top__DOT__rs1];
