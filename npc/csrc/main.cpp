@@ -123,7 +123,6 @@ int main(int argc, char *argv[]) {
   top->inst = 0;
   top->rst_n = 1; step_and_dump_wave();
   top->rst_n = 0; step_and_dump_wave();
-  top->inst = ifetch(top->pc, 4);
   top->rst_n = 1; step_and_dump_wave();
   step_and_dump_wave();   //4s reset
 
