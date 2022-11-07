@@ -64,7 +64,7 @@ uint64_t pmemread(uint64_t pc){
 
 }
 
-/*
+
 #define CONFIG_MBASE 0x80000000
 #define CONFIG_MSIZE 0x80000000
 #define CONFIG_PC_RESET_OFFSET 0x0
@@ -73,10 +73,10 @@ uint64_t pmemread(uint64_t pc){
 #define PMEM_RIGHT ((uint32_t)CONFIG_MBASE + CONFIG_MSIZE - 1)
 #define RESET_VECTOR (PMEM_LEFT + CONFIG_PC_RESET_OFFSET)
 
-static uint8_t pmem[CONFIG_MSIZE] PG_ALIGN = {};
+//static uint8_t pmem[CONFIG_MSIZE] PG_ALIGN = {};
 
-uint8_t* guest_to_host(uint32_t paddr) { return pmem + paddr - CONFIG_MBASE; }
-
+//uint8_t* guest_to_host(uint32_t paddr) { return pmem + paddr - CONFIG_MBASE; }
+/*
 void load_img(int argc, char *argv[]) {
   
   char *img_file = argv[1];
