@@ -2,6 +2,8 @@
 #include "verilated_vcd_c.h"
 #include "Vtop.h"
 #include "verilated_dpi.h"
+#include "mem.h"
+
 
 extern "C" void sim_exit();
 
@@ -42,11 +44,12 @@ void step_one_clk(Vtop* top){
     
 }
 
+/********************************************/
+/*memory*/
 
-#define uint8_t unsigned char
-#define uint32_t unsigned int
-#define uint64_t unsigned long
-
+#define uint8_t     unsigned char
+#define uint32_t    unsigned int
+#define uint64_t    unsigned long
 
 #define CONFIG_MBASE 0x80000000
 #define CONFIG_MSIZE 0x8000000
@@ -55,6 +58,7 @@ void step_one_clk(Vtop* top){
 #define PMEM_LEFT  ((uint32_t)CONFIG_MBASE)
 #define PMEM_RIGHT ((uint32_t)CONFIG_MBASE + CONFIG_MSIZE - 1)
 #define RESET_VECTOR (PMEM_LEFT + CONFIG_PC_RESET_OFFSET)
+
 
 static uint8_t pmem[CONFIG_MSIZE] PG_ALIGN = {};
 
@@ -102,6 +106,8 @@ uint64_t pmem_read(uint32_t addr, int len) {
 uint64_t ifetch(uint32_t addr, int len) {
   return pmem_read(addr, len);
 }
+
+/*memory end*/
 
 
 
