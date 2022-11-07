@@ -43,29 +43,9 @@ void step_one_clk(Vtop* top){
 }
 
 
-
-uint64_t pmemread(uint64_t pc){
-  switch (pc)
-  {
-  case 0x80000000: return 0x00000413;//li	s0,0
-  case 0x80000004: return 0x00009117;//auipc	sp,0x9
-  case 0x80000008: return 0xffc10113;//addi sp,sp,-4 # 80009000 <_end>
-  case 0x8000000c: return 0x00c000ef;//jal	ra,80000018 <_trm_init>
-  case 0x80000010: return 0x00000513;//li	a0,0
-  case 0x80000014: return 0x00008067;//ret
-  case 0x80000018: return 0xff010113;//addi	sp,sp,-16 
-  case 0x8000001c: return 0x00000517;//auipc	a0,0x0
-  case 0x80000020: return 0x01450513;//addi	a0,a0,20 # 80000030 <_etext>
-  case 0x80000024: return 0x00113423;//sd	ra,8(sp) 
-  case 0x80000028: return 0xfe9ff0ef;//jal	ra,80000010 <main>
-  case 0x8000002c: return 0x0000006f;//j	8000002c <_trm_init+0x14> 
-  default: return 0x00100073;//ebreak 
-  }
-
-}
-
 #define uint8_t unsigned char
 #define uint32_t unsigned int
+#define uint64_t unsigned long
 
 
 #define CONFIG_MBASE 0x80000000
@@ -92,7 +72,7 @@ void load_img(int argc, char *argv[]) {
   fseek(fp, 0, SEEK_END);
   long size = ftell(fp);
 
-  printf("The image is %s, size = %ld", img_file, size);
+  printf("The image is %s, size = %ld\n", img_file, size);
 
   fseek(fp, 0, SEEK_SET);
   int ret = fread(guest_to_host(RESET_VECTOR), size, 1, fp);
@@ -101,6 +81,28 @@ void load_img(int argc, char *argv[]) {
   fclose(fp);
   return;
 }
+
+
+uint64_t host_read(void *addr, int len){
+  switch (len) {
+    case 1: return *(uint8_t  *)addr;
+    case 2: return *(uint16_t *)addr;
+    case 4: return *(uint32_t *)addr;
+    case 8: return *(uint64_t *)addr;
+    default: assert(0);
+  }
+}
+
+
+uint64_t pmem_read(uint32_t addr, int len) {
+  uint64_t ret = host_read(guest_to_host(addr), len);
+  return ret;
+}
+
+uint64_t ifetch(uint32_t addr, int len) {
+  return pmem_read(addr, len);
+}
+
 
 
 
@@ -120,7 +122,8 @@ int main(int argc, char *argv[]) {
   int main_time = 0;     // 仿真时间戳
   int sim_time = 50;   // 最大仿真时间戳
   while (!Verilated::gotFinish() && main_time < sim_time) {
-    top->inst = pmemread(top->pc);
+
+    top->inst = ifetch(top->pc, 4);
     printf("#time = %d \t pc = 0x%8.0lx, inst = 0x%8.0x\n", main_time, top->pc, top->inst);
     step_one_clk(top);
     
