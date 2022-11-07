@@ -11,7 +11,7 @@ all:
 run:all
 	$(call git_commit, "sim RTL") # DO NOT REMOVE THIS LINE!!!
 	@echo "sim RTL!"
-	$(ELF) 
+	$(ELF) $(IMG)
 	
 gtk:sim
 	@echo "gtkwave!"

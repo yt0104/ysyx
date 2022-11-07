@@ -23,4 +23,4 @@ image: $(IMAGE).elf
 
 #auto_continue needs : make clean 
 run: image
-	$(MAKE) -C $(NPC_HOME)  ISA=$(ISA) run 
+	$(MAKE) -C $(NPC_HOME)  ISA=$(ISA) run IMG=$(IMAGE).bin
