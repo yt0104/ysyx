@@ -14,11 +14,11 @@ static Vtop* top;
 #define ANSI_FG_RED     "\33[1;31m"
 #define ANSI_FG_GREEN   "\33[1;32m"
 #define ANSI_NONE       "\33[0m"
-#define ANSI_FMT(str, fmt) fmt str ANSI_NONE
+
 // macro stringizing
 #define str_temp(x) #x
 #define str(x) str_temp(x)
-
+#define ANSI_FMT(str, fmt) fmt str ANSI_NONE
 
 void sim_init(){
   contextp = new VerilatedContext;
