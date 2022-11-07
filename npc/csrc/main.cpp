@@ -4,7 +4,7 @@
 #include "verilated_dpi.h"
 
 
-extern "C" void sim_exit();
+extern "C" void sim_exit(int state);
 
 VerilatedContext* contextp = NULL;
 VerilatedVcdC* tfp = NULL;
@@ -21,7 +21,12 @@ void sim_init(){
   tfp->open("wave.vcd");
 }
 
-void sim_exit(){
+void sim_exit(int state){
+
+  if(state == 0) printf("good\n");
+  else if(state == 1) printf("halt\n");
+  else if(state == 2) printf("time out\n");
+
   delete top;
   tfp->close();
   delete contextp;
@@ -135,7 +140,7 @@ int main(int argc, char *argv[]) {
     main_time ++;
   }
 
-  sim_exit();
+  sim_exit(2);
 }
 
 
