@@ -23,9 +23,9 @@ void sim_init(){
 
 void sim_exit(int state){
 
-  if(state == 0) printf("HIT GOOD TRAP\n");
-  else if(state == 1) printf("HIT BAD TRAP\n");
-  else if(state == 2) printf("TIME OUT\n");
+  if(state == 0) printf("HIT GOOD TRAP!\n");
+  else if(state == 1) printf("HIT BAD TRAP!\n");
+  else if(state == 2) printf("TIME OUT!\n");
 
   delete top;
   tfp->close();
