@@ -114,8 +114,6 @@ int main(int argc, char *argv[]) {
 
   load_img(argc, argv);
 
-  top->inst = ifetch(top->pc, 4);
-
   sim_init();
 
   top->clk = 0;
