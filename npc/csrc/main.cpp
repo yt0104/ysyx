@@ -69,7 +69,7 @@ uint64_t pmemread(uint64_t pc){
 
 
 #define CONFIG_MBASE 0x80000000
-#define CONFIG_MSIZE 0x8000
+#define CONFIG_MSIZE 0x800000
 #define CONFIG_PC_RESET_OFFSET 0x0
 #define PG_ALIGN __attribute((aligned(4096)))
 #define PMEM_LEFT  ((uint32_t)CONFIG_MBASE)
