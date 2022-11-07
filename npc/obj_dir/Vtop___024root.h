@@ -26,6 +26,7 @@ VL_MODULE(Vtop___024root) {
 
     // LOCAL SIGNALS
     CData/*0:0*/ top__DOT__exit_flag;
+    CData/*0:0*/ top__DOT__halt_ret;
     CData/*4:0*/ top__DOT__rd;
     CData/*4:0*/ top__DOT__rs1;
     CData/*4:0*/ top__DOT__rs2;
