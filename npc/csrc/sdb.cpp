@@ -24,7 +24,7 @@ static char* rl_gets() {
   }*/
 
   printf("(npc) ");
-  if( scanf("%s", line_read) ){
+  if( 0 == scanf("%s", line_read) ){
     return line_read;
   };
   assert(0);
