@@ -1,6 +1,6 @@
 #include "common.h"
 
-extern "C" void sim_exit(int state);
+
 
 VerilatedContext* contextp = NULL;
 VerilatedVcdC* tfp = NULL;
@@ -11,7 +11,7 @@ int main_time = 0;     // 仿真时间戳
 int sim_time = 100;   // 最大仿真时间戳
 
 
-void sim_init(){
+static void sim_init(){
   contextp = new VerilatedContext;
   tfp = new VerilatedVcdC;
   top = new Vtop;
@@ -21,6 +21,24 @@ void sim_init(){
 }
 
 void sim_exit(int state){
+  switch (state)
+  {
+  case 0: 
+    printf("HIT GOOD TRAP!\n");
+    break;
+  case 1:
+    printf("HIT BAD TRAP!\n");
+    break;
+  case 2:
+    printf("TIME OUT!\n");
+    break;  
+  case 3:
+    printf("QUIT NPC!\n");
+    break; 
+  default:
+    printf("Unknown EXIT!\n");
+    break;
+  }
 
   if(state == 0) printf("HIT GOOD TRAP!\n");
   else if(state == 1) printf("HIT BAD TRAP!\n");
@@ -32,13 +50,13 @@ void sim_exit(int state){
   exit(0);
 }
 
-void step_and_dump_wave(){
+static void step_and_dump_wave(){
   top->eval();
   contextp->timeInc(1);
   tfp->dump(contextp->time());
 }
 
-void step_once(Vtop* top){
+static void step_once(Vtop* top){
     top->clk = 0;
     step_and_dump_wave();
     top->clk = 1;
@@ -46,10 +64,9 @@ void step_once(Vtop* top){
     
 }
 
-void cpu_exec(Vtop* top, int n){
-  if(n < 1) assert(0);
+void cpu_exec(Vtop* top, uint64_t n){
 
-  for (int i = 0; i < n; i++)
+  for (;n > 0; n --)
   {
     top->inst = ifetch(top->pc, 4);
     if(n <= 20) printf("#time = %d \t pc = 0x%8.0lx, inst = 0x%8.0x\n", main_time, top->pc, top->inst);
@@ -77,7 +94,6 @@ int main(int argc, char *argv[]) {
 
   while (!Verilated::gotFinish() && main_time < sim_time) {
     sdb_mainloop();
-    //cpu_exec(top, 1);
   }
 
   sim_exit(2);

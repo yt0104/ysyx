@@ -31,16 +31,15 @@ static char* rl_gets() {
 }
 
 static int cmd_c(char *args) {
-  printf("CONTINUE NEMU\n");
-  cpu_exec(top, 1);
+  printf("CONTINUE NPC\n");
+  cpu_exec(top, -1);
   return 0;
 }
 
 
 static int cmd_q(char *args) {
-  printf("QUIT NEMU\n");
-  
-  return -1;
+  sim_exit(3);
+  return 0;
 }
 
 

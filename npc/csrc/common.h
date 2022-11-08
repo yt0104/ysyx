@@ -9,7 +9,8 @@
 #include "verilated_dpi.h"
 
 
-void cpu_exec(Vtop* top, int n);
+void cpu_exec(Vtop* top, uint64_t n);
+extern "C" void sim_exit(int state);
 
 /*memory*/
 #define CONFIG_MBASE 0x80000000
