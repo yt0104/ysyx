@@ -10,6 +10,8 @@ int main_time = 0;     // 仿真时间戳
 int sim_time = 1000;   // 最大仿真时间戳
 
 
+#define CONFIG_WATCHPOINT 1
+
 static void sim_init(){
   contextp = new VerilatedContext;
   tfp = new VerilatedVcdC;
@@ -60,6 +62,7 @@ static void step_once(Vtop* top){
     
 }
 
+
 void cpu_exec(uint64_t n){
 
   for (;n > 0; n --)
@@ -67,6 +70,13 @@ void cpu_exec(uint64_t n){
     top->inst = ifetch(top->pc, 4);
     if(n <= 20) printf("#time = %d \t pc = 0x%.8lx \t inst = 0x%.8x\n", main_time, top->pc, top->inst);
     step_once(top);
+  #ifdef CONFIG_WATCHPOINT
+    int NO; char expr[32]; uint64_t val1,val2;
+    if ( trace_point(&NO, expr, &val1, &val2) ){
+      printf("watchpoint %d: %s has changed from %ld to %ld\n",NO,expr,val1,val2 ); 
+      break;
+    }
+  #endif
     main_time ++;
   }
     
