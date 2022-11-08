@@ -4,7 +4,7 @@ ELF  = $(wildcard ./obj_dir/Vtop)
 TOPNAME = top
 IMG ?=  
 
-CSRC += ./csrc/memory.cpp
+CSRC += ./csrc/memory.cpp ./csrc/sdb.cpp
 
 all:
 	@echo "verilator!"

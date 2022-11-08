@@ -5,7 +5,7 @@ extern "C" void sim_exit(int state);
 VerilatedContext* contextp = NULL;
 VerilatedVcdC* tfp = NULL;
 
-static Vtop* top;
+Vtop* top;
 
 int main_time = 0;     // 仿真时间戳
 int sim_time = 100;   // 最大仿真时间戳
@@ -76,11 +76,8 @@ int main(int argc, char *argv[]) {
   step_and_dump_wave();   //5s reset
 
   while (!Verilated::gotFinish() && main_time < sim_time) {
-    int n;
-    scanf("%d",&n);
-    
-    cpu_exec(top, n);
-    
+    //sdb_mainloop();
+    cpu_exec(top, 1);
   }
 
   sim_exit(2);
