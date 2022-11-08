@@ -12,41 +12,6 @@ VerilatedVcdC* tfp = NULL;
 static Vtop* top;
 
 
-void sim_init(){
-  contextp = new VerilatedContext;
-  tfp = new VerilatedVcdC;
-  top = new Vtop;
-  contextp->traceEverOn(true);
-  top->trace(tfp, 0);
-  tfp->open("wave.vcd");
-}
-
-void sim_exit(int state){
-
-  if(state == 0) printf("HIT GOOD TRAP!\n");
-  else if(state == 1) printf("HIT BAD TRAP!\n");
-  else if(state == 2) printf("TIME OUT!\n");
-
-  delete top;
-  tfp->close();
-  delete contextp;
-  exit(0);
-}
-
-void step_and_dump_wave(){
-  top->eval();
-  contextp->timeInc(1);
-  tfp->dump(contextp->time());
-}
-
-void step_one_clk(Vtop* top){
-    top->clk = 0;
-    step_and_dump_wave();
-    top->clk = 1;
-    step_and_dump_wave();
-    
-}
-
 /********************************************/
 /*memory*/
 
@@ -114,6 +79,42 @@ uint64_t ifetch(uint32_t addr, int len) {
 
 
 
+void sim_init(){
+  contextp = new VerilatedContext;
+  tfp = new VerilatedVcdC;
+  top = new Vtop;
+  contextp->traceEverOn(true);
+  top->trace(tfp, 0);
+  tfp->open("wave.vcd");
+}
+
+void sim_exit(int state){
+
+  if(state == 0) printf("HIT GOOD TRAP!\n");
+  else if(state == 1) printf("HIT BAD TRAP!\n");
+  else if(state == 2) printf("TIME OUT!\n");
+
+  delete top;
+  tfp->close();
+  delete contextp;
+  exit(0);
+}
+
+void step_and_dump_wave(){
+  top->eval();
+  contextp->timeInc(1);
+  tfp->dump(contextp->time());
+}
+
+void step_one_clk(Vtop* top){
+    top->inst = ifetch(top->pc, 4);
+    top->clk = 0;
+    step_and_dump_wave();
+    top->clk = 1;
+    step_and_dump_wave();
+    
+}
+
 
 int main(int argc, char *argv[]) {
 
@@ -133,7 +134,7 @@ int main(int argc, char *argv[]) {
   int sim_time = 50;   // 最大仿真时间戳
   while (!Verilated::gotFinish() && main_time < sim_time) {
 
-    top->inst = ifetch(top->pc, 4);
+    
     printf("#time = %d \t pc = 0x%8.0lx, inst = 0x%8.0x\n", main_time, top->pc, top->inst);
     step_one_clk(top);
     
