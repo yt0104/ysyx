@@ -27,7 +27,7 @@ void sim_exit(int state){
     break;
   case 1:
     printf("---SimMessage: HIT BAD TRAP\n");
-    printf("---break: time = %d /t pc = 0x%8.0lx, inst = 0x%8.0x\n", main_time, top->pc, top->inst);
+    printf("---break: time = %d \t pc = 0x%8.0lx, inst = 0x%8.0x\n", main_time, top->pc, top->inst);
     break;
   case 2:
     printf("---SimMessage: TIME OUT!\n");
@@ -65,7 +65,7 @@ void cpu_exec(uint64_t n){
   for (;n > 0; n --)
   {
     top->inst = ifetch(top->pc, 4);
-    if(n <= 20) printf("#time = %d /t pc = 0x%8.0lx, inst = 0x%8.0x\n", main_time, top->pc, top->inst);
+    if(n <= 20) printf("#time = %d \t pc = 0x%8.0lx, inst = 0x%8.0x\n", main_time, top->pc, top->inst);
     step_once(top);
     main_time ++;
   }
