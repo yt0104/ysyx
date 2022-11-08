@@ -38,15 +38,27 @@ void step_and_dump_wave(){
   tfp->dump(contextp->time());
 }
 
-void step_one_clk(Vtop* top){
-    top->inst = ifetch(top->pc, 4);
-    printf("#time = %d \t pc = 0x%8.0lx, inst = 0x%8.0x\n", main_time, top->pc, top->inst);
+void step_once(Vtop* top){
     top->clk = 0;
     step_and_dump_wave();
     top->clk = 1;
     step_and_dump_wave();
     
 }
+
+void cpu_exec(Vtop* top, int n){
+  if(n < 1) assert(0);
+
+  for (int i = 0; i < n; i++)
+  {
+    top->inst = ifetch(top->pc, 4);
+    if(n <= 20) printf("#time = %d \t pc = 0x%8.0lx, inst = 0x%8.0x\n", main_time, top->pc, top->inst);
+    step_once(top);
+    main_time ++;
+  }
+    
+}
+
 
 
 int main(int argc, char *argv[]) {
@@ -64,12 +76,11 @@ int main(int argc, char *argv[]) {
   step_and_dump_wave();   //5s reset
 
   while (!Verilated::gotFinish() && main_time < sim_time) {
-
+    int n;
+    scanf("please key cmd: %d",&n);
     
+    cpu_exec(top, n);
     
-    step_one_clk(top);
-    
-    main_time ++;
   }
 
   sim_exit(2);
