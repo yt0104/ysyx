@@ -1,6 +1,4 @@
 #include "common.h"
-#include <readline/readline.h>
-#include <readline/history.h>
 
 extern Vtop* top;
 
@@ -26,9 +24,11 @@ static char* rl_gets() {
   }*/
 
   printf("(npc) ");
-  scanf("%s", line_read);
-
-  return line_read;
+  if( scanf("%s", line_read) ){
+    return line_read;
+  };
+  assert(0);
+  
 }
 
 static int cmd_c(char *args) {
