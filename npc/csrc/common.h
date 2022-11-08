@@ -21,7 +21,8 @@ extern "C" void sim_exit(int state);
 #define PMEM_RIGHT ((uint32_t)CONFIG_MBASE + CONFIG_MSIZE - 1)
 #define RESET_VECTOR (PMEM_LEFT + CONFIG_PC_RESET_OFFSET)
 
-uint64_t ifetch(uint32_t addr, int len);
+uint64_t pmem_read(uint64_t addr, int len);
+uint64_t ifetch(uint64_t addr, int len);
 void load_img(int argc, char *argv[]);
 
 

@@ -5,7 +5,7 @@
 
 static uint8_t pmem[CONFIG_MSIZE] PG_ALIGN = {};
 
-uint8_t* guest_to_host(uint32_t paddr) { return pmem + paddr - CONFIG_MBASE; }
+uint8_t* guest_to_host(uint64_t paddr) { return pmem + paddr - CONFIG_MBASE; }
 
 void load_img(int argc, char *argv[]) {
   
@@ -41,12 +41,12 @@ static uint64_t host_read(void *addr, int len){
 }
 
 
-static uint64_t pmem_read(uint32_t addr, int len) {
+uint64_t pmem_read(uint64_t addr, int len) {
   uint64_t ret = host_read(guest_to_host(addr), len);
   return ret;
 }
 
-uint64_t ifetch(uint32_t addr, int len) {
+uint64_t ifetch(uint64_t addr, int len) {
   return pmem_read(addr, len);
 }
 

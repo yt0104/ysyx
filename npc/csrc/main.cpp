@@ -7,7 +7,7 @@ VerilatedVcdC* tfp = NULL;
 Vtop* top;
 
 int main_time = 0;     // 仿真时间戳
-int sim_time = 100;   // 最大仿真时间戳
+int sim_time = 1000;   // 最大仿真时间戳
 
 
 static void sim_init(){
