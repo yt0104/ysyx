@@ -30,7 +30,7 @@ void load_img(int argc, char *argv[]) {
 }
 
 
-uint64_t host_read(void *addr, int len){
+static uint64_t host_read(void *addr, int len){
   switch (len) {
     case 1: return *(uint8_t  *)addr;
     case 2: return *(uint16_t *)addr;
@@ -41,7 +41,7 @@ uint64_t host_read(void *addr, int len){
 }
 
 
-uint64_t pmem_read(uint32_t addr, int len) {
+static uint64_t pmem_read(uint32_t addr, int len) {
   uint64_t ret = host_read(guest_to_host(addr), len);
   return ret;
 }
