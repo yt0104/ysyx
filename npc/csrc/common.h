@@ -1,6 +1,12 @@
 #include <iostream>
 #include <assert.h>
 #include <cstdint>
+
+#include "verilated.h"
+#include "verilated_vcd_c.h"
+#include "Vtop.h"
+#include "verilated_dpi.h"
+
 //#define uint8_t     unsigned char
 //#define uint32_t    unsigned int
 //#define uint64_t    unsigned long
