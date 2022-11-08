@@ -77,7 +77,7 @@ static int cmd_info(char *args) {
   if(strcmp("r", subcmd1) == 0 ){
     printf("PRINT REG:\n");
   	for (int i = 0; i < 32; i++) {
-      printf("gpr[%d] = 0x%lx\n", i, cpu_gpr[i]);
+      printf("#gpr[%d] = 0x%8.0lx\n", i, cpu_gpr[i]);
     }
 	return 0;
   }
