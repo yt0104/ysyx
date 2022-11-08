@@ -9,7 +9,7 @@
 #include "verilated_dpi.h"
 
 
-void cpu_exec(Vtop* top, uint64_t n);
+void cpu_exec(uint64_t n);
 extern "C" void sim_exit(int state);
 
 /*memory*/

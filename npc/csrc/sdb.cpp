@@ -32,7 +32,7 @@ static char* rl_gets() {
 
 static int cmd_c(char *args) {
   printf("CONTINUE NPC\n");
-  cpu_exec(top, -1);
+  cpu_exec(-1);
   return 0;
 }
 
@@ -58,7 +58,7 @@ static int cmd_si(char *args) {
   	}
   	else printf("EXEC %ld\n",n);
   }
-  cpu_exec(top, n);
+  cpu_exec(n);
   return 0;
 }
 

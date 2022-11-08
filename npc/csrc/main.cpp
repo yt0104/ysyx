@@ -26,7 +26,7 @@ void sim_exit(int state){
     printf("---SimMessage: HIT GOOD TRAP!\n");
     break;
   case 1:
-    printf("---SimMessage: HIT BAD TRAP!\n");
+    printf("---SimMessage: HIT BAD TRAP at time = %d \t pc = 0x%8.0lx, inst = 0x%8.0x\n", main_time, top->pc, top->inst);
     break;
   case 2:
     printf("---SimMessage: TIME OUT!\n");
@@ -59,7 +59,7 @@ static void step_once(Vtop* top){
     
 }
 
-void cpu_exec(Vtop* top, uint64_t n){
+void cpu_exec(uint64_t n){
 
   for (;n > 0; n --)
   {
