@@ -4,6 +4,11 @@
 
 extern Vtop* top;
 
+uint64_t *cpu_gpr = NULL;
+extern "C" void set_gpr_ptr(const svOpenArrayHandle r) {
+  cpu_gpr = (uint64_t *)(((VerilatedDpiOpenVar*)r)->datap());
+}
+
 
 static char* subcmd_p;
 static char* subcmd1;
@@ -31,7 +36,7 @@ static char* rl_gets() {
 }
 
 static int cmd_c(char *args) {
-  printf("CONTINUE NPC\n");
+  printf("CONTINUE NPC:\n");
   cpu_exec(-1);
   return 0;
 }
@@ -48,15 +53,15 @@ static int cmd_si(char *args) {
   subcmd1 = strtok(NULL," ");
   if(subcmd1==NULL){
   	n = 1;
-  	printf("EXEC ONCE\n");
+  	printf("EXEC ONCE:\n");
   }
   else{
   	n = strtol( subcmd1, NULL, 10 ); 
   	if(n <= 0){
-  		printf("EXEC ONCE\n");
+  		printf("EXEC ONCE:\n");
   		n = 1;
   	}
-  	else printf("EXEC %ld\n",n);
+  	else printf("EXEC %ld:\n",n);
   }
   cpu_exec(n);
   return 0;
@@ -70,8 +75,10 @@ static int cmd_info(char *args) {
   	return 0;
   }
   if(strcmp("r", subcmd1) == 0 ){
-        printf("PRINT REG\n");
-  	//isa_reg_display();
+    printf("PRINT REG:\n");
+  	for (int i = 0; i < 32; i++) {
+      printf("gpr[%d] = 0x%lx\n", i, cpu_gpr[i]);
+    }
 	return 0;
   }
   if(strcmp("w", subcmd1) == 0 ){

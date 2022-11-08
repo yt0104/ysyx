@@ -13,6 +13,8 @@ extern "C" {
 
 
     // DPI IMPORTS
+    // DPI import at vsrc/RegisterFile.sv:21:30
+    extern void set_gpr_ptr(const svOpenArrayHandle a);
     // DPI import at vsrc/top.sv:15:30
     extern void sim_exit(int state);
 
