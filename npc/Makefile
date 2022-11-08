@@ -1,10 +1,10 @@
 VSRC = $(wildcard ./vsrc/top.sv)
-CSRC = $(wildcard ./csrc/main.cpp)
+CSRC = $(wildcard ./csrc/*.cpp)
 ELF  = $(wildcard ./obj_dir/Vtop)
 TOPNAME = top
 IMG ?=  
 
-CSRC += ./csrc/memory.cpp ./csrc/sdb.cpp
+#CSRC += ./csrc/memory.cpp ./csrc/sdb.cpp ./csrc/expr.cpp ./csrc/watchpoint.cpp
 LDFLAGS = -lreadline
 
 all:

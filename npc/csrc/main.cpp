@@ -80,6 +80,8 @@ int main(int argc, char *argv[]) {
 
   sim_init();
 
+  init_sdb();
+
   top->clk = 0;
   top->inst = 0;
   top->rst_n = 1; step_and_dump_wave();

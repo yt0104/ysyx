@@ -1,24 +1,7 @@
-/***************************************************************************************
-* Copyright (c) 2014-2022 Zihao Yu, Nanjing University
-*
-* NEMU is licensed under Mulan PSL v2.
-* You can use this software according to the terms and conditions of the Mulan PSL v2.
-* You may obtain a copy of Mulan PSL v2 at:
-*          http://license.coscl.org.cn/MulanPSL2
-*
-* THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND,
-* EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT,
-* MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
-*
-* See the Mulan PSL v2 for more details.
-***************************************************************************************/
-
-#include <isa.h>
-
-/* We use the POSIX regex functions to process regular expressions.
- * Type 'man regex' for more information about POSIX regex functions.
- */
+#include "common.h"
 #include <regex.h>
+
+extern uint64_t *cpu_gpr;
 
 enum {
   TK_NUM = 256,
@@ -71,8 +54,9 @@ void init_regex() {		//初始化：编译成一些用于进行pattern匹配的�
   for (i = 0; i < NR_REGEX; i ++) {
     ret = regcomp(&re[i], rules[i].regex, REG_EXTENDED);	//把正则表达式编译成特定数据格式re
     if (ret != 0) {
-      regerror(ret, &re[i], error_msg, 128);			//返回一个包含错误信息的字符串
-      panic("regex compilation failed: %s\n%s", error_msg, rules[i].regex);
+      //regerror(ret, &re[i], error_msg, 128);			//返回一个包含错误信息的字符串
+      //panic("regex compilation failed: %s\n%s", error_msg, rules[i].regex);
+      assert(0);
     }
   }
 }
@@ -133,7 +117,7 @@ static bool make_token(char *e) {
           		tokens[nr_token].str[substr_len-1] = '\0';
           		tokens[nr_token++].type =rules[i].token_type;	
           		break;  
-          default: TODO();
+          default: assert(0);
         }
 
         break;
@@ -167,7 +151,7 @@ static bool check_parentheses(int p, int q){
 }
 
 
-static word_t eval(int p, int q){
+static uint64_t eval(int p, int q){
   if(p > q){
     /* Bad expression */
   	assert(0);
@@ -177,7 +161,7 @@ static word_t eval(int p, int q){
      * For now this token should be a number.
      * Return the value of the number.
      */
-     word_t reg;
+     uint64_t reg;
      bool reg_success;
      switch(tokens[p].type){
      	case TK_NUM: return strtol( tokens[p].str, NULL, 10 );
@@ -265,7 +249,7 @@ static word_t eval(int p, int q){
 }
 
 
-word_t expr(char *e, bool *success) {
+uint64_t expr(char *e, bool *success) {
   if (!make_token(e)) {
     *success = false;
     return 0;
@@ -273,7 +257,7 @@ word_t expr(char *e, bool *success) {
   *success = true;
   return eval(0,nr_token-1);
   /* TODO: Insert codes to evaluate the expression. */
-  TODO();
+  assert(0);
 
   return 0;
 }

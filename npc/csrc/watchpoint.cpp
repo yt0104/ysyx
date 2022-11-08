@@ -1,19 +1,4 @@
-/***************************************************************************************
-* Copyright (c) 2014-2022 Zihao Yu, Nanjing University
-*
-* NEMU is licensed under Mulan PSL v2.
-* You can use this software according to the terms and conditions of the Mulan PSL v2.
-* You may obtain a copy of Mulan PSL v2 at:
-*          http://license.coscl.org.cn/MulanPSL2
-*
-* THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND,
-* EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT,
-* MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
-*
-* See the Mulan PSL v2 for more details.
-***************************************************************************************/
-
-#include "sdb.h"
+#include "common.h"
 
 #define NR_WP 32
 
@@ -21,7 +6,7 @@ typedef struct watchpoint {
   int NO;
   struct watchpoint *next;
   char expr[32];
-  word_t val;
+  uint64_t val;
 
   /* TODO: Add more members if necessary */
 
@@ -111,10 +96,10 @@ void print_point(){
 }
 
 
-bool trace_point(int* NO, char* e, word_t* val1, word_t* val2){
+bool trace_point(int* NO, char* e, uint64_t* val1, uint64_t* val2){
   if(head == NULL) return false;	// no watchpoint
   WP* wp = head;
-  word_t new_val = 0;
+  uint64_t new_val = 0;
   bool success;
   while(wp != NULL){
     new_val = expr(wp->expr, &success);

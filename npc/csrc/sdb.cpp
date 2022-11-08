@@ -4,11 +4,6 @@
 
 extern Vtop* top;
 
-uint64_t *cpu_gpr = NULL;
-extern "C" void set_gpr_ptr(const svOpenArrayHandle r) {
-  cpu_gpr = (uint64_t *)(((VerilatedDpiOpenVar*)r)->datap());
-}
-
 
 static char* subcmd_p;
 static char* subcmd1;
@@ -75,16 +70,15 @@ static int cmd_info(char *args) {
   	return 0;
   }
   if(strcmp("r", subcmd1) == 0 ){
+
     printf("PRINT REG:\n");
-  	for (int i = 0; i < 32; i++) {
-      printf("#gpr[%2d] = 0x%.8lx\n", i, cpu_gpr[i]);
-    }
-	return 0;
+    isa_reg_display();
+	  return 0;
   }
   if(strcmp("w", subcmd1) == 0 ){
         printf("PRINT POINT\n");
   	//print_point();
-	return 0;
+	  return 0;
   }  
   
   printf("Invalid command\n");
@@ -239,4 +233,14 @@ void sdb_mainloop() {
     if (i == NR_CMD) { printf("Unknown command '%s'\n", cmd); }	//匹配不到命令
   }
 }
+
+void init_sdb() {
+  /* Compile the regular expressions. */
+  init_regex();
+
+  /* Initialize the watchpoint pool. */
+  init_wp_pool();
+}
+
+
 
