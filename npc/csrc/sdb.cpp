@@ -100,7 +100,7 @@ static int cmd_x(char *args) {
   raddr=maddr;
   for(int i=0;i<n;i++){
   	printf("0x%lx\t\t",raddr);
-  	printf("0x%x\n",pmem_read(raddr, 4));	
+  	printf("0x%lx\n",pmem_read(raddr, 4));	
   	raddr += 4;
   }
   
