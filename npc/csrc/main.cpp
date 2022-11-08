@@ -26,7 +26,7 @@ void sim_exit(int state){
     printf("---SimMessage: HIT GOOD TRAP!\n");
     break;
   case 1:
-    printf("---SimMessage: HIT BAD TRAP at time = %d \t pc = 0x%8.0lx, inst = 0x%8.0x\n", main_time, top->pc, top->inst);
+    printf("---SimMessage: HIT BAD TRAP at time = %d, pc = 0x%8.0lx, inst = 0x%8.0x\n", main_time, top->pc, top->inst);
     break;
   case 2:
     printf("---SimMessage: TIME OUT!\n");
