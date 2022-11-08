@@ -52,6 +52,7 @@ void isa_reg_display() {
 	printf("t5 \t\t 0x%lx \t\t %ld\n", cpu_gpr[30],cpu_gpr[30]);
 	printf("t6 \t\t 0x%lx \t\t %ld\n", cpu_gpr[31],cpu_gpr[31]);
 	
+	printf("ALL(32) regs has printed!\n");
 	return;
 
 }

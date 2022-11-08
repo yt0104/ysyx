@@ -85,6 +85,7 @@ char* del_point(int no){
 
 
 void print_point(){
+  printf("Watchpoint is shown:\n");
   WP* wp = head;
   int i = 0;
   while(wp != NULL){
