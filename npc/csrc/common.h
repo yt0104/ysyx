@@ -11,6 +11,7 @@
 
 
 /*main*/
+#define PRINT_MESSAGE printf("#time = %d \t pc = 0x%.8lx \t inst = 0x%.8x\n", main_time, top->pc, top->inst);
 void cpu_exec(uint64_t n);
 extern "C" void sim_exit(int state);
 
