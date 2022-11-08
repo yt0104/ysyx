@@ -76,8 +76,8 @@ static int cmd_info(char *args) {
 	  return 0;
   }
   if(strcmp("w", subcmd1) == 0 ){
-        printf("PRINT POINT\n");
-  	//print_point();
+    printf("PRINT POINT:\n");
+  	print_point();
 	  return 0;
   }  
   
@@ -130,9 +130,9 @@ static int cmd_w(char *args) {
   	printf("Invalid command\n");
   	return 0;
   }
-  printf("set watchpoint\n");
-  //int NO = set_point(subcmd_p);
-  //printf("set watchpoint %d:%s success! \n",NO,subcmd_p );
+
+  int NO = set_point(subcmd_p);
+  printf("set watchpoint %d:%s success! \n",NO,subcmd_p );
   return 0;
 }
 
