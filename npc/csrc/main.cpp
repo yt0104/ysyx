@@ -29,7 +29,7 @@ void sim_exit(int state){
     break;
   case 1:
     printf("---SimMessage: HIT BAD TRAP\n");
-    printf("---break: time = %d \t pc = 0x%.8lx, inst = 0x%.8x\n", main_time, top->pc, top->inst);
+    printf("---break: #time = %d \t pc = 0x%.8lx, inst = 0x%.8x\n", main_time, top->pc, top->inst);
     break;
   case 2:
     printf("---SimMessage: TIME OUT!\n");
@@ -74,6 +74,7 @@ void cpu_exec(uint64_t n){
     int NO; char expr[32]; uint64_t val1,val2;
     if ( trace_point(&NO, expr, &val1, &val2) ){
       printf("watchpoint %d: %s has changed from %ld to %ld\n",NO,expr,val1,val2 ); 
+      printf("#time = %d \t pc = 0x%.8lx \t inst = 0x%.8x\n", main_time, top->pc, top->inst);
       break;
     }
   #endif
