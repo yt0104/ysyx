@@ -115,7 +115,6 @@ static int cmd_p(char *args) {
   	printf("Invalid command\n");
   	return 0;
   }
-  printf("expr success!\n");
   bool success;
   uint64_t result = expr(subcmd_p,&success);
   if(success) printf("expr success! result is %ld\n",result);
