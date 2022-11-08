@@ -39,10 +39,6 @@ void sim_exit(int state){
     break;
   }
 
-  if(state == 0) printf("HIT GOOD TRAP!\n");
-  else if(state == 1) printf("HIT BAD TRAP!\n");
-  else if(state == 2) printf("TIME OUT!\n");
-
   delete top;
   tfp->close();
   delete contextp;
@@ -68,7 +64,7 @@ void cpu_exec(Vtop* top, uint64_t n){
   for (;n > 0; n --)
   {
     top->inst = ifetch(top->pc, 4);
-    /*if(n <= 20)*/ printf("#time = %d \t pc = 0x%8.0lx, inst = 0x%8.0x\n", main_time, top->pc, top->inst);
+    if(n <= 20) printf("#time = %d \t pc = 0x%8.0lx, inst = 0x%8.0x\n", main_time, top->pc, top->inst);
     step_once(top);
     main_time ++;
   }
