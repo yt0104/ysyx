@@ -76,8 +76,8 @@ int main(int argc, char *argv[]) {
   step_and_dump_wave();   //5s reset
 
   while (!Verilated::gotFinish() && main_time < sim_time) {
-    //sdb_mainloop();
-    cpu_exec(top, 1);
+    sdb_mainloop();
+    //cpu_exec(top, 1);
   }
 
   sim_exit(2);
