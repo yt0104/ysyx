@@ -20,15 +20,6 @@ int sim_time = 100;   // 最大仿真时间戳
 
 
 
-#define CONFIG_MBASE 0x80000000
-#define CONFIG_MSIZE 0x8000000
-#define CONFIG_PC_RESET_OFFSET 0x0
-#define PG_ALIGN __attribute((aligned(4096)))
-#define PMEM_LEFT  ((uint32_t)CONFIG_MBASE)
-#define PMEM_RIGHT ((uint32_t)CONFIG_MBASE + CONFIG_MSIZE - 1)
-#define RESET_VECTOR (PMEM_LEFT + CONFIG_PC_RESET_OFFSET)
-
-
 static uint8_t pmem[CONFIG_MSIZE] PG_ALIGN = {};
 
 uint8_t* guest_to_host(uint32_t paddr) { return pmem + paddr - CONFIG_MBASE; }
