@@ -76,10 +76,10 @@ int main(int argc, char *argv[]) {
   step_and_dump_wave();   //5s reset
 
   while (!Verilated::gotFinish() && main_time < sim_time) {
-    int n;
-    scanf("please key cmd: %d",&n);
+    //int n;
+    //scanf("please key cmd: %d",&n);
     
-    cpu_exec(top, n);
+    cpu_exec(top, 1);
     
   }
 
