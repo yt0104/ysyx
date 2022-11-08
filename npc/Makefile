@@ -5,10 +5,11 @@ TOPNAME = top
 IMG ?=  
 
 CSRC += ./csrc/memory.cpp ./csrc/sdb.cpp
+LDFLAGS = -lreadline
 
 all:
 	@echo "verilator!"
-	verilator -Wall $(VSRC) $(CSRC) --top-module $(TOPNAME) --cc --trace --exe --build -LDFLAGS -lreadline
+	verilator -Wall $(VSRC) $(CSRC) --top-module $(TOPNAME) -LDFLAGS $(LDFLAGS) --cc --trace --exe --build 
 	
 run:all
 	$(call git_commit, "sim RTL") # DO NOT REMOVE THIS LINE!!!
