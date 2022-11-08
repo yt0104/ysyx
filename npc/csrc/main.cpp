@@ -23,19 +23,19 @@ void sim_exit(int state){
   switch (state)
   {
   case 0: 
-    printf("HIT GOOD TRAP!\n");
+    printf("SimMessage: HIT GOOD TRAP!\n");
     break;
   case 1:
-    printf("HIT BAD TRAP!\n");
+    printf("SimMessage: HIT BAD TRAP!\n");
     break;
   case 2:
-    printf("TIME OUT!\n");
+    printf("SimMessage: TIME OUT!\n");
     break;  
   case 3:
-    printf("QUIT NPC!\n");
+    printf("SimMessage: QUIT NPC!\n");
     break; 
   default:
-    printf("Unknown EXIT!\n");
+    printf("SimMessage: Unknown!\n");
     break;
   }
 
