@@ -116,10 +116,10 @@ static int cmd_p(char *args) {
   	return 0;
   }
   printf("expr success!\n");
-  //bool success;
-  //uint64_t result = expr(subcmd_p,&success);
-  //if(success) printf("expr success! result is %ld\n",result);
-  //else printf("expr failed\n");
+  bool success;
+  uint64_t result = expr(subcmd_p,&success);
+  if(success) printf("expr success! result is %ld\n",result);
+  else printf("expr failed\n");
   
   return 0;
 }
