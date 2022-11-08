@@ -2,7 +2,7 @@
 #include "verilated_vcd_c.h"
 #include "Vtop.h"
 #include "verilated_dpi.h"
-
+#include "common.h"
 
 extern "C" void sim_exit(int state);
 
@@ -12,15 +12,13 @@ VerilatedVcdC* tfp = NULL;
 static Vtop* top;
 
 int main_time = 0;     // 仿真时间戳
-int sim_time = 50;   // 最大仿真时间戳
+int sim_time = 100;   // 最大仿真时间戳
 
 
 /********************************************/
 /*memory*/
 
-#define uint8_t     unsigned char
-#define uint32_t    unsigned int
-#define uint64_t    unsigned long
+
 
 #define CONFIG_MBASE 0x80000000
 #define CONFIG_MSIZE 0x8000000
