@@ -1,4 +1,6 @@
 #include "common.h"
+#include <readline/readline.h>
+#include <readline/history.h>
 
 extern Vtop* top;
 
@@ -11,7 +13,7 @@ static char* subcmd2;
 /* We use the `readline' library to provide more flexibility to read from stdin. */
 static char* rl_gets() {
   static char *line_read = NULL;
-/*
+
   if (line_read) {
     free(line_read);
     line_read = NULL;
@@ -21,13 +23,10 @@ static char* rl_gets() {
 
   if (line_read && *line_read) {
     add_history(line_read);
-  }*/
+  }
 
-  printf("(npc) ");
-  if( 0 == scanf("%s", line_read) ){
-    return line_read;
-  };
-  assert(0);
+  return line_read;
+
   
 }
 

@@ -8,7 +8,7 @@ CSRC += ./csrc/memory.cpp ./csrc/sdb.cpp
 
 all:
 	@echo "verilator!"
-	verilator -Wall $(VSRC) $(CSRC) --top-module $(TOPNAME) --cc --trace --exe --build
+	verilator -Wall $(VSRC) $(CSRC) --top-module $(TOPNAME) --cc --trace --exe --build -LDFLAGS -lreadline
 	
 run:all
 	$(call git_commit, "sim RTL") # DO NOT REMOVE THIS LINE!!!
