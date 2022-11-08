@@ -11,6 +11,9 @@ VerilatedVcdC* tfp = NULL;
 
 static Vtop* top;
 
+int main_time = 0;     // 仿真时间戳
+int sim_time = 50;   // 最大仿真时间戳
+
 
 /********************************************/
 /*memory*/
@@ -108,6 +111,7 @@ void step_and_dump_wave(){
 
 void step_one_clk(Vtop* top){
     top->inst = ifetch(top->pc, 4);
+    printf("#time = %d \t pc = 0x%8.0lx, inst = 0x%8.0x\n", main_time, top->pc, top->inst);
     top->clk = 0;
     step_and_dump_wave();
     top->clk = 1;
@@ -130,12 +134,10 @@ int main(int argc, char *argv[]) {
   top->rst_n = 1; step_and_dump_wave();
   step_and_dump_wave();   //5s reset
 
-  int main_time = 0;     // 仿真时间戳
-  int sim_time = 50;   // 最大仿真时间戳
   while (!Verilated::gotFinish() && main_time < sim_time) {
 
     
-    printf("#time = %d \t pc = 0x%8.0lx, inst = 0x%8.0x\n", main_time, top->pc, top->inst);
+    
     step_one_clk(top);
     
     main_time ++;
