@@ -137,9 +137,9 @@ int main(int argc, char *argv[]) {
   top->rst_n = 1; step_and_dump_wave();
   step_and_dump_wave();   //5s reset
 
-  while (!Verilated::gotFinish() && main_time < sim_time) {
-    sdb_mainloop();
-  }
+  //while (!Verilated::gotFinish() && main_time < sim_time)
+    
+  sdb_mainloop();
 
   sim_exit(2);
 }
