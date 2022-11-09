@@ -18,7 +18,7 @@ char logbuf[128];
 
 static void print_inst(){
     char *p = logbuf;
-    p += snprintf(p, sizeof(logbuf), "#time =%2d  0x%08lx :", main_time, top->pc);
+    p += snprintf(p, sizeof(logbuf), "#time =%2d  0x%016lx :", main_time, top->pc);
     int ilen = 4;
     uint8_t *inst = (uint8_t *)&top->inst;
     for (int i = ilen - 1; i >= 0; i --) {
