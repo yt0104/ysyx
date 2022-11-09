@@ -59,3 +59,5 @@ void puts_iringbuf();
 int ftrace_getTab(char *elf_name);
 void ftrace_matchFunc( uint64_t pc, uint64_t dnpc, uint32_t inst);
 
+
+extern "C" void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
