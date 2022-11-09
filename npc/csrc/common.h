@@ -52,11 +52,11 @@ bool trace_point(int* NO, char* e, uint64_t* val1, uint64_t* val2);
 
 
 /*itrace*/
-void update_iringbuf(char *s);
-void puts_iringbuf();
+void itrace_update_iringbuf(char *s);
+void itrace_puts_iringbuf();
 
 /*ftrace*/
-int ftrace_getTab(char *elf_name);
+int ftrace_load_elf(int argc, char *argv[]);
 void ftrace_matchFunc( uint64_t pc, uint64_t dnpc, uint32_t inst);
 
 

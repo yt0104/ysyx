@@ -3,7 +3,7 @@ CSRC = $(wildcard ./csrc/*.cpp)
 NPC  = $(wildcard ./obj_dir/Vtop)
 TOPNAME = top
 IMG ?=  
-
+ELF ?=
 
 
 LDFLAGS += -LDFLAGS -lreadline #Linker pre-object arguments for makefile
@@ -18,7 +18,7 @@ all:
 run:all
 	$(call git_commit, "sim RTL") # DO NOT REMOVE THIS LINE!!!
 	@echo "sim RTL!"
-	$(NPC) $(IMG)
+	$(NPC) $(IMG) $(ELF)
 	
 gtk:sim
 	@echo "gtkwave!"

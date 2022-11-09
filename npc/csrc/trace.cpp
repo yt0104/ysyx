@@ -8,13 +8,13 @@
 static char iringbuf [MAX_INST_TO_SAVE][128];
 static int inst_p = 0;
 
-void update_iringbuf(char *s){
+void itrace_update_iringbuf(char *s){
   strcpy(iringbuf[inst_p], s);
   inst_p = (inst_p+1) % MAX_INST_TO_SAVE;
 
 };
 
-void puts_iringbuf(){
+void itrace_puts_iringbuf(){
   printf("%d LAST INSTS is shown:\n",MAX_INST_TO_SAVE);
   for(int i = inst_p; i < inst_p + MAX_INST_TO_SAVE; i++){
     if(*iringbuf[i%MAX_INST_TO_SAVE] != '\0') puts(iringbuf[i%MAX_INST_TO_SAVE]);
@@ -31,7 +31,8 @@ static uint64_t sym_size;
 static FILE *fp;
 static int func_proc = 0;
 
-int ftrace_getTab(char *elf_name)
+
+static int ftrace_getTab(char *elf_name)
 {
 
     fp = fopen( elf_name, "r");
@@ -109,6 +110,19 @@ int ftrace_getTab(char *elf_name)
 	
 }
 
+
+int ftrace_load_elf(int argc, char *argv[]) {
+
+  char *elf_file = argv[2];
+
+  if (elf_file == NULL) {
+	puts("No elf is given, but ftrace is open.");
+    assert(0); 
+  }
+  printf("The elf is %s\n", elf_file);
+
+  return ftrace_getTab(elf_file);
+}
 
 
 void ftrace_matchFunc( uint64_t pc, uint64_t dnpc, uint32_t inst){

@@ -37,8 +37,6 @@ void update_logbuff(){
 }
 
 
-
-
 static void sim_init(){
   contextp = new VerilatedContext;
   tfp = new VerilatedVcdC;
@@ -56,7 +54,7 @@ extern "C" void sim_exit(int state){
     break;
   case 1:
 #ifdef CONFIG_ITRACE
-    puts_iringbuf();
+    itrace_puts_iringbuf();
 #endif
     printf("---SimMessage: HIT BAD TRAP\n");
     printf("---break: ");
@@ -113,7 +111,7 @@ void cpu_exec(uint64_t n){
 #endif
 
 #ifdef CONFIG_ITRACE
-    update_iringbuf(logbuf);
+    itrace_update_iringbuf(logbuf);
 #endif
     main_time ++;
   }
@@ -125,6 +123,10 @@ void cpu_exec(uint64_t n){
 int main(int argc, char *argv[]) {
 
   load_img(argc, argv);
+
+#ifdef CONFIG_FTRACE
+  ftrace_load_elf(argc, argv);
+#endif
 
   sim_init();
 
