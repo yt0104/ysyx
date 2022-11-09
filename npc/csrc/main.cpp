@@ -55,6 +55,7 @@ extern "C" void sim_exit(int state){
     printf("---SimMessage: HIT GOOD TRAP!\n");
     break;
   case 1:
+    puts_iringbuf();
     printf("---SimMessage: HIT BAD TRAP\n");
     printf("---break: ");
     puts(logbuf);
@@ -103,8 +104,8 @@ void cpu_exec(uint64_t n){
 #ifdef CONFIG_WATCHPOINT
     int NO; char expr[32]; uint64_t val1,val2;
     if ( trace_point(&NO, expr, &val1, &val2) ){
-      puts(logbuf);
       printf("#watchpoint %d: %s has changed from %ld to %ld\n",NO,expr,val1,val2 ); 
+      puts(logbuf);
       break;
     }
 #endif
