@@ -11,8 +11,8 @@ int sim_time = 1000;   // 最大仿真时间戳
 
 #define PRINT_MESSAGE printf("#time = %d \t pc = 0x%.8lx \t inst = 0x%.8x\n", main_time, top->pc, top->inst);
 
-#define   CONFIG_WATCHPOINT   1
-#define   CONFIG_ITRACE       0
+#define   CONFIG_WATCHPOINT   
+//#define   CONFIG_ITRACE       
 
 
 static void sim_init(){
