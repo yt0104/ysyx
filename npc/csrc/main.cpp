@@ -9,10 +9,36 @@ int main_time = 0;     // 仿真时间戳
 int sim_time = 1000;   // 最大仿真时间戳
 
 
-#define PRINT_MESSAGE printf("#time = %d \t pc = 0x%.8lx \t inst = 0x%.8x\n", main_time, top->pc, top->inst);
 
 #define   CONFIG_WATCHPOINT   
 //#define   CONFIG_ITRACE       
+
+
+char logbuf[128];
+
+static void print_inst(){
+    char *p = logbuf;
+    p += snprintf(p, sizeof(logbuf), "#time =%2d  0x%08lx :", main_time, top->pc);
+    int ilen = 4;
+    uint8_t *inst = (uint8_t *)&top->inst;
+    for (int i = ilen - 1; i >= 0; i --) {
+      p += snprintf(p, 4, " %02x", inst[i]);
+    }
+    int ilen_max = 4;
+    int space_len = ilen_max - ilen;
+    if (space_len < 0) space_len = 0;
+    space_len = space_len * 3 + 1;
+    memset(p, ' ', space_len);
+    p += space_len;
+#ifdef CONFIG_ITRACE
+    disassemble(p, logbuf + sizeof(logbuf) - p,
+         top->pc, (uint8_t *)&top->inst, ilen);
+#endif
+    puts(logbuf);
+
+}
+
+
 
 
 static void sim_init(){
@@ -33,7 +59,7 @@ extern "C" void sim_exit(int state){
   case 1:
     printf("---SimMessage: HIT BAD TRAP\n");
     printf("---break: ");
-    PRINT_MESSAGE;
+    print_inst();
     break;
   case 2:
     printf("---SimMessage: TIME OUT!\n");
@@ -65,31 +91,6 @@ static void step_once(Vtop* top){
     step_and_dump_wave();
     
 }
-
-char logbuf[128];
-
-static void print_inst(){
-    char *p = logbuf;
-    p += snprintf(p, sizeof(logbuf), "#time = %2d  0x%08lx :", main_time, top->pc);
-    int ilen = 4;
-    uint8_t *inst = (uint8_t *)&top->inst;
-    for (int i = ilen - 1; i >= 0; i --) {
-      p += snprintf(p, 4, " %02x", inst[i]);
-    }
-    int ilen_max = 4;
-    int space_len = ilen_max - ilen;
-    if (space_len < 0) space_len = 0;
-    space_len = space_len * 3 + 1;
-    memset(p, ' ', space_len);
-    p += space_len;
-#ifdef CONFIG_ITRACE
-    disassemble(p, logbuf + sizeof(logbuf) - p,
-         top->pc, (uint8_t *)&top->inst, ilen);
-#endif
-    puts(logbuf);
-
-}
-
 
 
 void cpu_exec(uint64_t n){
