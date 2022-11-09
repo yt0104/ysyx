@@ -86,7 +86,7 @@ void cpu_exec(uint64_t n){
 
 #ifdef CONFIG_ITRACE
     char *p = logbuf;
-    p += snprintf(p, sizeof(logbuf), "0x%016lx :", top->pc);
+    p += snprintf(p, sizeof(logbuf), "#time=%.2d  0x%08lx :", main_time, top->pc);
     int ilen = 4;
     int i;
     uint8_t *inst = (uint8_t *)&top->inst;
