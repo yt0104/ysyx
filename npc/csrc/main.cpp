@@ -102,7 +102,7 @@ void cpu_exec(uint64_t n){
 /*
     disassemble(p, logbuf + sizeof(logbuf) - p,
          top->pc, (uint8_t *)&top->inst, ilen);*/
-    //puts(logbuf);
+    puts(logbuf);
     //update_iringbuf();
 #endif
     main_time ++;
