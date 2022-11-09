@@ -10,6 +10,7 @@ int sim_time = 1000;   // 最大仿真时间戳
 
 char logbuf[128];
 
+#define PRINT_MESSAGE printf("#time = %d \t pc = 0x%.8lx \t inst = 0x%.8x\n", main_time, top->pc, top->inst);
 
 #define   CONFIG_WATCHPOINT   1
 #define   CONFIG_ITRACE       1
@@ -86,7 +87,7 @@ void cpu_exec(uint64_t n){
 
 #ifdef CONFIG_ITRACE
     char *p = logbuf;
-    p += snprintf(p, sizeof(logbuf), "#time=%.2d  0x%08lx :", main_time, top->pc);
+    p += snprintf(p, sizeof(logbuf), "#time=%0.2d  0x%08lx :", main_time, top->pc);
     int ilen = 4;
     int i;
     uint8_t *inst = (uint8_t *)&top->inst;
