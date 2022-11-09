@@ -8,7 +8,7 @@ Vtop* top;
 int main_time = 0;     // 仿真时间戳
 int sim_time = 1000;   // 最大仿真时间戳
 uint64_t lpc;
-
+uint32_t linst;
 
 #define   CONFIG_WATCHPOINT   
 #define   CONFIG_ITRACE       
@@ -97,6 +97,7 @@ void cpu_exec(uint64_t n){
   for (;n > 0; n --)
   { 
     lpc = top->pc;
+    linst = top->inst;
     update_logbuff();
     if(n <= 20) puts(logbuf);
     step_once(top);
@@ -114,6 +115,11 @@ void cpu_exec(uint64_t n){
 #ifdef CONFIG_ITRACE
     itrace_update_iringbuf(logbuf);
 #endif
+#ifdef CONFIG_FTRACE
+    ftrace_matchFunc(lpc, top->pc, linst);
+#endif
+
+
     main_time ++;
   }
     
