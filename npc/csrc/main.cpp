@@ -16,7 +16,7 @@ int sim_time = 1000;   // 最大仿真时间戳
 
 static char logbuf[128];
 
-void print_inst(){
+void update_logbuff(){
     char *p = logbuf;
     p += snprintf(p, sizeof(logbuf), "#%2d  0x%016lx :", main_time, top->pc);
     int ilen = 4;
@@ -33,7 +33,6 @@ void print_inst(){
 #ifdef CONFIG_ITRACE
     disassemble(p, logbuf + sizeof(logbuf) - p, top->pc, (uint8_t *)&top->inst, ilen);
 #endif
-    puts(logbuf);
 
 }
 
@@ -58,7 +57,7 @@ extern "C" void sim_exit(int state){
   case 1:
     printf("---SimMessage: HIT BAD TRAP\n");
     printf("---break: ");
-    print_inst();
+    puts(logbuf);
     break;
   case 2:
     printf("---SimMessage: TIME OUT!\n");
@@ -97,20 +96,21 @@ void cpu_exec(uint64_t n){
   for (;n > 0; n --)
   {
     top->inst = ifetch(top->pc, 4);
-    if(n <= 20) print_inst();
+    update_logbuff();
+    if(n <= 20) puts(logbuf);
     step_once(top);
 
 #ifdef CONFIG_WATCHPOINT
     int NO; char expr[32]; uint64_t val1,val2;
     if ( trace_point(&NO, expr, &val1, &val2) ){
-      print_inst();
+      puts(logbuf);
       printf("#watchpoint %d: %s has changed from %ld to %ld\n",NO,expr,val1,val2 ); 
       break;
     }
 #endif
 
 #ifdef CONFIG_ITRACE
-    //update_iringbuf();
+    update_iringbuf(logbuf);
 #endif
     main_time ++;
   }
@@ -142,6 +142,7 @@ int main(int argc, char *argv[]) {
   sdb_mainloop();
 
   sim_exit(2);
+
 }
 
 
