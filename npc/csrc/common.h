@@ -15,6 +15,7 @@
 /*main*/
 void cpu_exec(uint64_t n);
 extern "C" void sim_exit(int state);
+void print_inst();
 
 
 /*memory*/

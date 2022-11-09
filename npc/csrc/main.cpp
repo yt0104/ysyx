@@ -11,12 +11,12 @@ int sim_time = 1000;   // 最大仿真时间戳
 
 
 #define   CONFIG_WATCHPOINT   
-//#define   CONFIG_ITRACE       
+#define   CONFIG_ITRACE       
 
 
-char logbuf[128];
+static char logbuf[128];
 
-static void print_inst(){
+void print_inst(){
     char *p = logbuf;
     p += snprintf(p, sizeof(logbuf), "#%2d  0x%016lx :", main_time, top->pc);
     int ilen = 4;
@@ -31,8 +31,7 @@ static void print_inst(){
     memset(p, ' ', space_len);
     p += space_len;
 #ifdef CONFIG_ITRACE
-    disassemble(p, logbuf + sizeof(logbuf) - p,
-         top->pc, (uint8_t *)&top->inst, ilen);
+    disassemble(p, logbuf + sizeof(logbuf) - p, top->pc, (uint8_t *)&top->inst, ilen);
 #endif
     puts(logbuf);
 
@@ -105,7 +104,7 @@ void cpu_exec(uint64_t n){
     int NO; char expr[32]; uint64_t val1,val2;
     if ( trace_point(&NO, expr, &val1, &val2) ){
       print_inst();
-      printf("watchpoint %d: %s has changed from %ld to %ld\n",NO,expr,val1,val2 ); 
+      printf("#watchpoint %d: %s has changed from %ld to %ld\n",NO,expr,val1,val2 ); 
       break;
     }
 #endif
@@ -127,6 +126,8 @@ int main(int argc, char *argv[]) {
   sim_init();
 
   init_sdb();
+  
+  init_disasm("riscv64-pc-linux-gnu");
 
   top->clk = 0;
   top->inst = 0;
