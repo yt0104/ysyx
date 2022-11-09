@@ -7,7 +7,7 @@ Vtop* top;
 
 int main_time = 0;     // 仿真时间戳
 int sim_time = 1000;   // 最大仿真时间戳
-
+uint64_t lpc;
 
 
 #define   CONFIG_WATCHPOINT   
@@ -95,11 +95,12 @@ static void step_once(Vtop* top){
 void cpu_exec(uint64_t n){
 
   for (;n > 0; n --)
-  {
-    top->inst = ifetch(top->pc, 4);
+  { 
+    lpc = top->pc;
     update_logbuff();
     if(n <= 20) puts(logbuf);
     step_once(top);
+    top->inst = ifetch(top->pc, 4);
 
 #ifdef CONFIG_WATCHPOINT
     int NO; char expr[32]; uint64_t val1,val2;
