@@ -8,12 +8,11 @@ Vtop* top;
 int main_time = 0;     // 仿真时间戳
 int sim_time = 1000;   // 最大仿真时间戳
 
-char logbuf[128];
 
 #define PRINT_MESSAGE printf("#time = %d \t pc = 0x%.8lx \t inst = 0x%.8x\n", main_time, top->pc, top->inst);
 
 #define   CONFIG_WATCHPOINT   1
-#define   CONFIG_ITRACE       1
+#define   CONFIG_ITRACE       0
 
 
 static void sim_init(){
@@ -67,31 +66,14 @@ static void step_once(Vtop* top){
     
 }
 
+char logbuf[128];
 
-void cpu_exec(uint64_t n){
-
-  for (;n > 0; n --)
-  {
-    top->inst = ifetch(top->pc, 4);
-    if(n <= 20) PRINT_MESSAGE;
-    step_once(top);
-
-#ifdef CONFIG_WATCHPOINT
-    int NO; char expr[32]; uint64_t val1,val2;
-    if ( trace_point(&NO, expr, &val1, &val2) ){
-      PRINT_MESSAGE;
-      printf("watchpoint %d: %s has changed from %ld to %ld\n",NO,expr,val1,val2 ); 
-      break;
-    }
-#endif
-
-#ifdef CONFIG_ITRACE
+static void print_inst(){
     char *p = logbuf;
     p += snprintf(p, sizeof(logbuf), "#time = %2d  0x%08lx :", main_time, top->pc);
     int ilen = 4;
-    int i;
     uint8_t *inst = (uint8_t *)&top->inst;
-    for (i = ilen - 1; i >= 0; i --) {
+    for (int i = ilen - 1; i >= 0; i --) {
       p += snprintf(p, 4, " %02x", inst[i]);
     }
     int ilen_max = 4;
@@ -100,10 +82,34 @@ void cpu_exec(uint64_t n){
     space_len = space_len * 3 + 1;
     memset(p, ' ', space_len);
     p += space_len;
-/*
+#ifdef CONFIG_ITRACE
     disassemble(p, logbuf + sizeof(logbuf) - p,
-         top->pc, (uint8_t *)&top->inst, ilen);*/
+         top->pc, (uint8_t *)&top->inst, ilen);
+#endif
     puts(logbuf);
+
+}
+
+
+
+void cpu_exec(uint64_t n){
+
+  for (;n > 0; n --)
+  {
+    top->inst = ifetch(top->pc, 4);
+    if(n <= 20) print_inst();
+    step_once(top);
+
+#ifdef CONFIG_WATCHPOINT
+    int NO; char expr[32]; uint64_t val1,val2;
+    if ( trace_point(&NO, expr, &val1, &val2) ){
+      print_inst();
+      printf("watchpoint %d: %s has changed from %ld to %ld\n",NO,expr,val1,val2 ); 
+      break;
+    }
+#endif
+
+#ifdef CONFIG_ITRACE
     //update_iringbuf();
 #endif
     main_time ++;
