@@ -60,4 +60,6 @@ int ftrace_getTab(char *elf_name);
 void ftrace_matchFunc( uint64_t pc, uint64_t dnpc, uint32_t inst);
 
 
+/*disasm*/
+extern "C" void init_disasm(const char *triple);
 extern "C" void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);

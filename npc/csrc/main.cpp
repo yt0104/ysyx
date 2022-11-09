@@ -24,7 +24,7 @@ static void sim_init(){
   tfp->open("wave.vcd");
 }
 
-void sim_exit(int state){
+extern "C" void sim_exit(int state){
   switch (state)
   {
   case 0: 
@@ -103,7 +103,7 @@ void cpu_exec(uint64_t n){
     void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
     disassemble(p, logbuf + sizeof(logbuf) - p,
          top->pc, (uint8_t *)&top->inst, ilen);
-    puts(logbuf);
+    //puts(logbuf);
     //update_iringbuf();
 #endif
     main_time ++;
