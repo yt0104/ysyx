@@ -2,11 +2,13 @@
 #include <assert.h>
 #include <cstdint>
 #include <string>
+#include <cstring>
 
 #include "verilated.h"
 #include "verilated_vcd_c.h"
 #include "Vtop.h"
 #include "verilated_dpi.h"
+
 
 
 
@@ -47,3 +49,13 @@ int set_point(char *e);
 char* del_point(int no);
 void print_point();
 bool trace_point(int* NO, char* e, uint64_t* val1, uint64_t* val2);
+
+
+/*itrace*/
+void update_iringbuf(char *s);
+void puts_iringbuf();
+
+/*ftrace*/
+int ftrace_getTab(char *elf_name);
+void ftrace_matchFunc( uint64_t pc, uint64_t dnpc, uint32_t inst);
+
