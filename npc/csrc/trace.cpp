@@ -4,7 +4,7 @@
 #include <stdlib.h>
 
 //ITRACE
-#define MAX_INST_TO_SAVE 20
+#define MAX_INST_TO_SAVE 10
 static char iringbuf [MAX_INST_TO_SAVE][128];
 static int inst_p = 0;
 
@@ -15,7 +15,7 @@ void itrace_update_iringbuf(char *s){
 };
 
 void itrace_puts_iringbuf(){
-  printf("%d LAST INSTS is shown:\n",MAX_INST_TO_SAVE);
+  printf("ITRACE--> %d LAST INSTS is shown:\n",MAX_INST_TO_SAVE);
   for(int i = inst_p; i < inst_p + MAX_INST_TO_SAVE; i++){
     if(*iringbuf[i%MAX_INST_TO_SAVE] != '\0') puts(iringbuf[i%MAX_INST_TO_SAVE]);
   }
@@ -147,7 +147,7 @@ void ftrace_matchFunc( uint64_t pc, uint64_t dnpc, uint32_t inst){
 			fseek(fp, str_offset + symtab[i].st_name, SEEK_SET);
 			a = fread(func, FUNC_SIZE, 1, fp);
             
-			printf("pc = %lx:", pc);
+			printf("FTRACE--> pc = %8lx:", pc);
 			func_proc++ ;
 			for(int j=0;j<func_proc;j++){
 				printf("  ");
