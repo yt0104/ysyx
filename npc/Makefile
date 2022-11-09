@@ -1,6 +1,6 @@
 VSRC = $(wildcard ./vsrc/top.sv)
 CSRC = $(wildcard ./csrc/*.cpp)
-ELF  = $(wildcard ./obj_dir/Vtop)
+NPC  = $(wildcard ./obj_dir/Vtop)
 TOPNAME = top
 IMG ?=  
 
@@ -18,7 +18,7 @@ all:
 run:all
 	$(call git_commit, "sim RTL") # DO NOT REMOVE THIS LINE!!!
 	@echo "sim RTL!"
-	$(ELF) $(IMG)
+	$(NPC) $(IMG)
 	
 gtk:sim
 	@echo "gtkwave!"
