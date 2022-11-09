@@ -17,7 +17,7 @@ void itrace_update_iringbuf(char *s){
 void itrace_puts_iringbuf(){
   printf("ITRACE--> %d LAST INSTS is shown:\n",MAX_INST_TO_SAVE);
   for(int i = inst_p; i < inst_p + MAX_INST_TO_SAVE; i++){
-    if(*iringbuf[i%MAX_INST_TO_SAVE] != '\0') puts(iringbuf[i%MAX_INST_TO_SAVE]);
+    if(*iringbuf[i%MAX_INST_TO_SAVE] != '\0') printf("ITRACE--> %s",iringbuf[i%MAX_INST_TO_SAVE]);
   }
 };
 
