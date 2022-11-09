@@ -18,6 +18,7 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 #include "sdb.h"
+#include <memory/vaddr.h>
 
 static int is_batch_mode = false;
 
@@ -117,7 +118,7 @@ static int cmd_x(char *args) {
   raddr=maddr;
   for(int i=0;i<n;i++){
   	printf("0x%lx\t\t",raddr);
-  	printf("0x%x\n",*(uint32_t *)raddr);	//0x7fffffffe080
+  	printf("0x%lx\n",vaddr_read(raddr, 4));	//0x7fffffffe080
   	raddr += 4;
   }
   
