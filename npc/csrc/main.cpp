@@ -12,7 +12,7 @@ int sim_time = 1000;   // 最大仿真时间戳
 
 #define   CONFIG_WATCHPOINT   
 #define   CONFIG_ITRACE       
-
+#define   CONFIG_FTRACE   
 
 static char logbuf[128];
 
