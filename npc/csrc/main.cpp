@@ -72,7 +72,7 @@ void cpu_exec(uint64_t n){
   for (;n > 0; n --)
   {
     top->inst = ifetch(top->pc, 4);
-    //if(n <= 20) PRINT_MESSAGE;
+    if(n <= 20) PRINT_MESSAGE;
     step_once(top);
 
 #ifdef CONFIG_WATCHPOINT
@@ -92,14 +92,14 @@ void cpu_exec(uint64_t n){
     uint8_t *inst = (uint8_t *)&top->inst;
     for (i = ilen - 1; i >= 0; i --) {
       p += snprintf(p, 4, " %02x", inst[i]);
-    }/*
+    }
     int ilen_max = 4;
     int space_len = ilen_max - ilen;
     if (space_len < 0) space_len = 0;
     space_len = space_len * 3 + 1;
     memset(p, ' ', space_len);
     p += space_len;
-
+/*
     void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
     disassemble(p, logbuf + sizeof(logbuf) - p,
          top->pc, (uint8_t *)&top->inst, ilen);*/
