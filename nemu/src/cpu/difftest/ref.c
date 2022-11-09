@@ -19,15 +19,29 @@
 #include <memory/paddr.h>
 
 void difftest_memcpy(paddr_t addr, void *buf, size_t n, bool direction) {
-  assert(0);
+  uint8_t *p = (uint8_t *)buf;
+  if(direction == DIFFTEST_TO_REF){
+    for (size_t i = 0; i < n; i++)
+    {
+      *guest_to_host(addr++) = *p++;
+    }
+    
+  }
+  else assert(0);
 }
 
 void difftest_regcpy(void *dut, bool direction) {
-  assert(0);
+  CPU_state *p = (CPU_state *)dut;
+  if(direction == DIFFTEST_TO_REF) {
+    cpu = *p;
+  }
+  else {
+    *p = cpu;
+  }
 }
 
 void difftest_exec(uint64_t n) {
-  assert(0);
+  cpu_exec(n);
 }
 
 void difftest_raise_intr(word_t NO) {
