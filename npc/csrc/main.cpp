@@ -99,10 +99,9 @@ void cpu_exec(uint64_t n){
     space_len = space_len * 3 + 1;
     memset(p, ' ', space_len);
     p += space_len;
-/*
-    void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
+
     disassemble(p, logbuf + sizeof(logbuf) - p,
-         top->pc, (uint8_t *)&top->inst, ilen);*/
+         top->pc, (uint8_t *)&top->inst, ilen);
     //puts(logbuf);
     //update_iringbuf();
 #endif
