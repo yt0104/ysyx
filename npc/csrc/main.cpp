@@ -11,8 +11,8 @@ uint64_t lpc;
 uint32_t linst;
 
 #define   CONFIG_WATCHPOINT   
-//#define   CONFIG_ITRACE       
-//#define   CONFIG_FTRACE   
+#define   CONFIG_ITRACE       
+#define   CONFIG_FTRACE   
 
 static char logbuf[128];
 

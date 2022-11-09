@@ -143,10 +143,10 @@ static int cmd_d(char *args) {
   	return 0;
   }
   printf("delete watchpoint\n");
-  //int NO = strtol( subcmd_p, NULL, 10 ); 
-  //char *e = del_point(NO);
+  int NO = strtol( subcmd_p, NULL, 10 ); 
+  char *e = del_point(NO);
   
-  //printf("delete watchpoint %d:%s success! \n",NO,e );
+  printf("delete watchpoint %d:%s success! \n",NO,e );
   return 0;
 }
 
