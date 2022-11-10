@@ -61,7 +61,7 @@ void init_difftest(char *ref_so_file, long img_size, int port) {
   //void *dut = temp;
   //for (int i = 0; i < 32; i++) temp[i] = cpu_gpr[i];
   //temp[32] = top->pc;
-  ref_difftest_regcpy(cpu_gpr  , DIFFTEST_TO_REF);
+  ref_difftest_regcpy(cpu_gpr, NULL , DIFFTEST_TO_REF);
   puts("333");
 }
 
@@ -69,7 +69,7 @@ void init_difftest(char *ref_so_file, long img_size, int port) {
 static bool isa_difftest_checkregs() {
   uint64_t ref[33];
 
-  ref_difftest_regcpy(ref , DIFFTEST_TO_DUT);
+  ref_difftest_regcpy(ref, &ref[33], DIFFTEST_TO_DUT);
 
   for (int i = 0; i < 32; i++)
   {
