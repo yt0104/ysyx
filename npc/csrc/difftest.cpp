@@ -54,14 +54,12 @@ void init_difftest(char *ref_so_file, long img_size, int port) {
       "---If it is not necessary, you can turn it off\n", ref_so_file);
 
   ref_difftest_init(port);
-  puts("111");
   ref_difftest_memcpy(RESET_VECTOR, guest_to_host(RESET_VECTOR), img_size, DIFFTEST_TO_REF);
-  puts("222");
 
   uint64_t dut[33];
   for (size_t i = 0; i < 32; i++) dut[i] = cpu_gpr[i];
   dut[32] = top->pc;
-  ref_difftest_regcpy(NULL   , DIFFTEST_TO_REF);
+  ref_difftest_regcpy(NULL  , DIFFTEST_TO_REF);
   puts("333");
 }
 
