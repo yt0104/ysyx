@@ -21,7 +21,7 @@ extern Vtop *top;
 
 
 void (*ref_difftest_memcpy)(uint32_t addr, void *buf, size_t n, bool direction) = NULL;
-void (*ref_difftest_regcpy)(void *dut_gpr, void *dut_pc, bool direction) = NULL;
+void (*ref_difftest_regcpy)(void *dut_gpr, uint64_t dut_pc, bool direction) = NULL;
 void (*ref_difftest_exec)(uint64_t n) = NULL;
 void (*ref_difftest_raise_intr)(uint64_t NO) = NULL;
 
@@ -37,7 +37,7 @@ void init_difftest(char *ref_so_file, long img_size, int port) {
   ref_difftest_memcpy = (void(*)(uint32_t, void *, size_t, bool))dlsym(handle, "difftest_memcpy");
   assert(ref_difftest_memcpy);
 
-  ref_difftest_regcpy = (void(*)(void *, void *, bool ))dlsym(handle, "difftest_regcpy");
+  ref_difftest_regcpy = (void(*)(void *, uint64_t, bool ))dlsym(handle, "difftest_regcpy");
   assert(ref_difftest_regcpy);
 
   ref_difftest_exec = (void(*)(uint64_t))dlsym(handle, "difftest_exec");
@@ -58,7 +58,7 @@ void init_difftest(char *ref_so_file, long img_size, int port) {
   puts("111");
   ref_difftest_memcpy(RESET_VECTOR, guest_to_host(RESET_VECTOR), img_size, DIFFTEST_TO_REF);
   puts("222");
-  ref_difftest_regcpy(&cpu_gpr, &port , DIFFTEST_TO_REF);
+  ref_difftest_regcpy(&cpu_gpr, top->pc , DIFFTEST_TO_REF);
   puts("333");
 }
 
