@@ -69,7 +69,7 @@ void set_point(char *e){
   bool success;
   wp->val = expr(e,&success);
   
-  if(success) printf("set watchpoint %d:%s success! \n", NO, e );
+  if(success) printf("set watchpoint %d:%s = %ld success! \n", wp->NO, wp->expr, wp->val );
   else assert(0);
 
 }
@@ -82,7 +82,7 @@ void del_point(int no){
     if(wp == NULL) assert(0);
   }
   free_wp(wp);
-  printf("delete watchpoint %d:%s success! \n", NO, wp->expr );
+  printf("delete watchpoint %d:%s success! \n", wp->NO, wp->expr );
 
 }
 
@@ -112,7 +112,7 @@ bool trace_point(){
   } 
   
   if(wp == NULL) return false;
-  else 
+  else {
     printf("#watchpoint %d: %s has changed from %ld to %ld\n",wp->NO,wp->expr,wp->val,new_val ); 
     wp->val = new_val; 
     return true;

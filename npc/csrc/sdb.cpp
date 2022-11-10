@@ -130,7 +130,6 @@ static int cmd_w(char *args) {
   	printf("Invalid command\n");
   	return 0;
   }
-
   set_point(subcmd_p);
 
   return 0;
@@ -142,7 +141,6 @@ static int cmd_d(char *args) {
   	printf("Invalid command\n");
   	return 0;
   }
-  printf("delete watchpoint\n");
   int NO = strtol( subcmd_p, NULL, 10 ); 
   del_point(NO);
   
