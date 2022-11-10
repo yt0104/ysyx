@@ -5,6 +5,7 @@ NPC  = $(wildcard ./obj_dir/Vtop)
 TOPNAME = top
 IMG ?=  
 ELF ?=
+DIFF = $(NEMU_HOME)/build
 
 
 LDFLAGS += -LDFLAGS -lreadline #Linker pre-object arguments for makefile
