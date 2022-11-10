@@ -124,6 +124,7 @@ bool trace_point(int* NO, char* e, uint64_t* val1, uint64_t* val2){
 }
 
 #else 
+void init_wp_pool() { }
 int set_point(char *e) { puts("CONFIG_WATCHPOINT is OFF"); }
 char* del_point(int no) { puts("CONFIG_WATCHPOINT is OFF"); }
 void print_point() { puts("CONFIG_WATCHPOINT is OFF"); }
