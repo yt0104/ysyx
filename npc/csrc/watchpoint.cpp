@@ -63,27 +63,27 @@ static void free_wp(WP *wp){
 
 
 
-int set_point(char *e){
+void set_point(char *e){
   WP* wp = new_wp();
   strcpy(wp->expr, e);
   bool success;
   wp->val = expr(e,&success);
   
-  if(success) return wp->NO;
+  if(success) printf("set watchpoint %d:%s success! \n", NO, e );
   else assert(0);
 
 }
 
 
-char* del_point(int no){
+void del_point(int no){
   WP *wp = head;
   while(wp->NO != no) {
     wp = wp->next;
     if(wp == NULL) assert(0);
   }
   free_wp(wp);
-  
-  return wp->expr;
+  printf("delete watchpoint %d:%s success! \n", NO, wp->expr );
+
 }
 
 
@@ -125,8 +125,8 @@ bool trace_point(int* NO, char* e, uint64_t* val1, uint64_t* val2){
 
 #else 
 void init_wp_pool() { }
-int set_point(char *e) { puts("CONFIG_WATCHPOINT is OFF"); }
-char* del_point(int no) { puts("CONFIG_WATCHPOINT is OFF"); }
+void set_point(char *e) { puts("CONFIG_WATCHPOINT is OFF"); }
+void del_point(int no)  { puts("CONFIG_WATCHPOINT is OFF"); }
 void print_point() { puts("CONFIG_WATCHPOINT is OFF"); }
 bool trace_point(int* NO, char* e, uint64_t* val1, uint64_t* val2) { }
 
