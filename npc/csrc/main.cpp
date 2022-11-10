@@ -50,9 +50,7 @@ extern "C" void sim_exit(int state){
     printf("---SimMessage: HIT GOOD TRAP!\n");
     break;
   case 1:
-  #ifdef CONFIG_ITRACE
     itrace_puts_iringbuf();
-  #endif
     printf("---SimMessage: HIT BAD TRAP\n");
     printf("---break: ");
     puts(logbuf);
@@ -64,9 +62,7 @@ extern "C" void sim_exit(int state){
     printf("---SimMessage: QUIT NPC!\n");
     break; 
   case 4:
-  #ifdef CONFIG_ITRACE
     itrace_puts_iringbuf();
-  #endif
     printf("---SimMessage: DIFFTEST QUIT!\n");
     printf("---break: ");
     puts(logbuf);
