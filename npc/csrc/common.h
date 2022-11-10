@@ -75,5 +75,6 @@ extern "C" void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int
 
 /*difftest*/
 enum { DIFFTEST_TO_DUT, DIFFTEST_TO_REF };
+void init_difftest(char *ref_so_file, long img_size, int port);
 void difftest_step();
 

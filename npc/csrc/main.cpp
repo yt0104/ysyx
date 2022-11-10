@@ -109,6 +109,8 @@ void cpu_exec(uint64_t n){
 
     ftrace_matchFunc(lpc, top->pc, linst);
 
+    difftest_step();
+
     main_time ++;
     if(main_time > sim_time) sim_exit(2);
   }
@@ -123,7 +125,7 @@ int main(int argc, char *argv[]) {
 
   ftrace_load_elf(argv[2]);
 
-  //init_difftest(argv[3], img_size, int port);
+  init_difftest(argv[3], img_size, 1234);
 
   init_sdb();
   
