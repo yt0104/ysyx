@@ -111,6 +111,7 @@ void cpu_exec(uint64_t n){
     ftrace_matchFunc(lpc, top->pc, linst);
 
     main_time ++;
+    if(main_time > sim_time) sim_exit(2);
   }
     
 }
@@ -140,8 +141,6 @@ int main(int argc, char *argv[]) {
   //while (!Verilated::gotFinish() && main_time < sim_time)
     
   sdb_mainloop();
-
-  sim_exit(2);
 
 }
 
