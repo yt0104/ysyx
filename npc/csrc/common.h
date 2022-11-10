@@ -55,7 +55,7 @@ uint64_t expr(char *e, bool *success);
 void set_point(char *e);
 void del_point(int no);
 void print_point();
-bool trace_point(int* NO, char* e, uint64_t* val1, uint64_t* val2);
+bool trace_point();
 
 
 /*itrace*/

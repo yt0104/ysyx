@@ -100,7 +100,7 @@ void print_point(){
 }
 
 
-bool trace_point(int* NO, char* e, uint64_t* val1, uint64_t* val2){
+bool trace_point(){
   if(head == NULL) return false;	// no watchpoint
   WP* wp = head;
   uint64_t new_val = 0;
@@ -112,11 +112,8 @@ bool trace_point(int* NO, char* e, uint64_t* val1, uint64_t* val2){
   } 
   
   if(wp == NULL) return false;
-  else {
-    *NO = wp->NO;
-    strcpy(e,wp->expr);
-    *val1 = wp->val;
-    *val2 = new_val;
+  else 
+    printf("#watchpoint %d: %s has changed from %ld to %ld\n",wp->NO,wp->expr,wp->val,new_val ); 
     wp->val = new_val; 
     return true;
     }
@@ -128,7 +125,7 @@ void init_wp_pool() { }
 void set_point(char *e) { puts("CONFIG_WATCHPOINT is OFF"); }
 void del_point(int no)  { puts("CONFIG_WATCHPOINT is OFF"); }
 void print_point() { puts("CONFIG_WATCHPOINT is OFF"); }
-bool trace_point(int* NO, char* e, uint64_t* val1, uint64_t* val2) { }
+bool trace_point() { return false; }
 
 #endif
 

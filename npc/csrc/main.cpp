@@ -109,9 +109,7 @@ void cpu_exec(uint64_t n){
     top->inst = ifetch(top->pc, 4);
 
   #ifdef CONFIG_WATCHPOINT
-    int NO; char expr[32]; uint64_t val1,val2;
-    if ( trace_point(&NO, expr, &val1, &val2) ){
-      printf("#watchpoint %d: %s has changed from %ld to %ld\n",NO,expr,val1,val2 ); 
+    if ( trace_point() ){
       puts(logbuf);
       break;
     }
