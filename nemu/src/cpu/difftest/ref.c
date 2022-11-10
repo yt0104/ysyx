@@ -30,22 +30,22 @@ void difftest_memcpy(paddr_t addr, void *buf, size_t n, bool direction) {
   else assert(0);
 }
 
-void difftest_regcpy(void *dut_gpr, void *dut_pc, bool direction) {
-  word_t *g = (word_t*)dut_gpr; 
+void difftest_regcpy(void *dut, bool direction) {
+  word_t *g = (word_t*)dut; 
 
   if(direction == DIFFTEST_TO_REF) {
     for (size_t i = 0; i < 32; i++)
     {
-      //cpu.gpr[i] = g[i];
+      cpu.gpr[i] = g[i];
     }
-    //cpu.pc = *(word_t*)dut_pc; 
+    cpu.pc = g[32]; 
   }
   else {
     for (size_t i = 0; i < 32; i++)
     {
       g[i] = cpu.gpr[i];
     }
-    *(word_t*)dut_pc = cpu.pc; 
+    g[32] = cpu.pc; 
   }
 }
 
