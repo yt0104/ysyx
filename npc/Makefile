@@ -7,9 +7,9 @@ ELF ?=
 
 
 LDFLAGS += -LDFLAGS -lreadline #Linker pre-object arguments for makefile
-LDFLAGS += -LDFLAGS $(shell llvm-config-13 --libs)
+LDFLAGS += -LDFLAGS -lLLVM-13
 #C++ compiler arguments for makefile
-CFLAGS += -I</usr/lib/llvm-13/include> -D_GNU_SOURCE -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS
+CFLAGS += -CFLAGS -I/usr/lib/llvm-13/include -D_GNU_SOURCE -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS
 
 all:
 	@echo "verilator!"

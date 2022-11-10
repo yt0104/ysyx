@@ -12,7 +12,7 @@
 
 
 #define   CONFIG_WATCHPOINT   
-//#define   CONFIG_ITRACE       
+#define   CONFIG_ITRACE       
 #define   CONFIG_FTRACE 
 //#define   CONFIG_DIFFTEST     
 
