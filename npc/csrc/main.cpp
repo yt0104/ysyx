@@ -27,9 +27,9 @@ void update_logbuff(){
     space_len = space_len * 3 + 1;
     memset(p, ' ', space_len);
     p += space_len;
-#ifdef CONFIG_ITRACE
-    //disassemble(p, logbuf + sizeof(logbuf) - p, top->pc, (uint8_t *)&top->inst, ilen);
-#endif
+
+    disassemble(p, logbuf + sizeof(logbuf) - p, top->pc, (uint8_t *)&top->inst, ilen);
+
 
 }
 
@@ -126,7 +126,7 @@ int main(int argc, char *argv[]) {
 
   init_sdb();
   
-  //init_disasm("riscv64-pc-linux-gnu");
+  init_disasm("riscv64-pc-linux-gnu");
 
   sim_init();
 
