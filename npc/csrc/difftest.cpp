@@ -58,9 +58,9 @@ void init_difftest(char *ref_so_file, long img_size, int port) {
   ref_difftest_memcpy(RESET_VECTOR, guest_to_host(RESET_VECTOR), img_size, DIFFTEST_TO_REF);
   puts("222");
 
-  uint64_t dut_pc  = (top->pc);
+  uint64_t *dut_pc  = &(top->pc);
   uint64_t *dut_gpr = cpu_gpr;
-  ref_difftest_regcpy(dut_gpr, &dut_pc , DIFFTEST_TO_REF);
+  ref_difftest_regcpy(dut_gpr, dut_pc , DIFFTEST_TO_REF);
   puts("333");
 }
 
