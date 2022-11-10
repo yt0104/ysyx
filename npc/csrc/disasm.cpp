@@ -13,6 +13,10 @@
 * See the Mulan PSL v2 for more details.
 ***************************************************************************************/
 
+#include "common.h"
+
+#ifdef CONFIG_ITRACE
+
 #if defined(__GNUC__) && !defined(__clang__)
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
@@ -102,3 +106,8 @@ extern "C" void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int
   assert((int)s.length() - skip < size);
   strcpy(str, p);
 }
+
+#else
+extern "C" void init_disasm(const char *triple) { }
+extern "C" void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte) { }
+#endif
