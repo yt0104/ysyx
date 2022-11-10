@@ -38,7 +38,7 @@ void difftest_regcpy(void *dut_gpr, void *dut_pc, bool direction) {
     {
       cpu.gpr[i] = g[i];
     }
-    cpu.pc = *(word_t*)dut_pc; 
+    //cpu.pc = *(word_t*)dut_pc; 
   }
   else {
     for (size_t i = 0; i < 32; i++)
