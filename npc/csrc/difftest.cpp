@@ -19,7 +19,6 @@
 extern uint64_t *cpu_gpr;
 extern Vtop *top;
 
-  uint64_t *pc = &(top->pc);
 uint64_t temp[33];
 
 void (*ref_difftest_memcpy)(uint32_t addr, void *buf, size_t n, bool direction) = NULL;
@@ -63,7 +62,7 @@ void init_difftest(char *ref_so_file, long img_size, int port) {
   //for (int i = 0; i < 32; i++) temp[i] = cpu_gpr[i];
   //temp[32] = top->pc;
 
-  ref_difftest_regcpy(cpu_gpr, pc , DIFFTEST_TO_REF);
+  ref_difftest_regcpy(cpu_gpr, NULL , DIFFTEST_TO_REF);
   puts("333");
 }
 
