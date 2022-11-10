@@ -8,9 +8,9 @@ static uint8_t pmem[CONFIG_MSIZE] PG_ALIGN = {};
 uint8_t* guest_to_host(uint64_t paddr) { return pmem + paddr - CONFIG_MBASE; }
 uint32_t host_to_guest(uint8_t *haddr) { return haddr - pmem + CONFIG_MBASE; }
 
-void load_img(int argc, char *argv[]) {
+long load_img(char *bin) {
   
-  char *img_file = argv[1];
+  char *img_file = bin;
 
   if (img_file == NULL) assert(0);
 
@@ -27,7 +27,7 @@ void load_img(int argc, char *argv[]) {
   assert(ret == 1);
 
   fclose(fp);
-  return;
+  return size;
 }
 
 

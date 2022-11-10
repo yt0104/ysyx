@@ -119,9 +119,11 @@ void cpu_exec(uint64_t n){
 
 int main(int argc, char *argv[]) {
 
-  load_img(argc, argv);
+  long img_size = load_img(argv[1]);
 
-  ftrace_load_elf(argc, argv);
+  ftrace_load_elf(argv[2]);
+
+  //init_difftest(argv[3], img_size, int port);
 
   init_sdb();
   

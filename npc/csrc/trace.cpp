@@ -121,9 +121,9 @@ static int ftrace_getTab(char *elf_name)
 }
 
 
-int ftrace_load_elf(int argc, char *argv[]) {
+int ftrace_load_elf(char* elf) {
 
-  char *elf_file = argv[2];
+  char *elf_file = elf;
 
   if (elf_file == NULL) {
 	puts("No elf is given, but ftrace is open.");
@@ -182,7 +182,7 @@ void ftrace_matchFunc( uint64_t pc, uint64_t dnpc, uint32_t inst){
 }
 
 #else
-int ftrace_load_elf(int argc, char *argv[]) { }
+int ftrace_load_elf(char* elf) { }
 void ftrace_matchFunc( uint64_t pc, uint64_t dnpc, uint32_t inst) { }
 #endif
 

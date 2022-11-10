@@ -37,7 +37,7 @@ uint32_t host_to_guest(uint8_t *haddr);
 
 uint64_t pmem_read(uint64_t addr, int len);
 uint64_t ifetch(uint64_t addr, int len);
-void load_img(int argc, char *argv[]);
+long load_img(char *bin);
 
 
 /*reg*/
@@ -64,7 +64,7 @@ void itrace_update_iringbuf(char *s);
 void itrace_puts_iringbuf();
 
 /*ftrace*/
-int ftrace_load_elf(int argc, char *argv[]);
+int ftrace_load_elf(char* elf);
 void ftrace_matchFunc( uint64_t pc, uint64_t dnpc, uint32_t inst);
 
 
