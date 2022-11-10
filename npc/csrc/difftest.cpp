@@ -60,7 +60,7 @@ void init_difftest(char *ref_so_file, long img_size, int port) {
 
   void *dut = temp;
   for (int i = 0; i < 32; i++) temp[i] = cpu_gpr[i];
-  temp[32] = top->pc;
+  //temp[32] = top->pc;
   //ref_difftest_regcpy(dut  , DIFFTEST_TO_REF);
   puts("333");
 }
