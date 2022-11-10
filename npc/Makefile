@@ -5,7 +5,7 @@ NPC  = $(wildcard ./obj_dir/Vtop)
 TOPNAME = top
 IMG ?=  
 ELF ?=
-DIFF = $(NEMU_HOME)/build
+DIFF = $(NEMU_HOME)/build/riscv64-nemu-interpreter-so
 
 
 LDFLAGS += -LDFLAGS -lreadline #Linker pre-object arguments for makefile
@@ -20,7 +20,7 @@ all:
 run:all
 	$(call git_commit, "sim RTL") # DO NOT REMOVE THIS LINE!!!
 	@echo "sim RTL!"
-	$(NPC) $(IMG) $(ELF)
+	$(NPC) $(IMG) $(ELF) $(DIFF)
 	
 gtk:sim
 	@echo "gtkwave!"
