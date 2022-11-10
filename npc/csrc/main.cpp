@@ -10,9 +10,6 @@ int sim_time = 1000;   // 最大仿真时间戳
 uint64_t lpc;
 uint32_t linst;
 
-#define   CONFIG_WATCHPOINT   
-#define   CONFIG_ITRACE       
-#define   CONFIG_FTRACE   
 
 static char logbuf[128];
 
@@ -53,9 +50,9 @@ extern "C" void sim_exit(int state){
     printf("---SimMessage: HIT GOOD TRAP!\n");
     break;
   case 1:
-#ifdef CONFIG_ITRACE
+  #ifdef CONFIG_ITRACE
     itrace_puts_iringbuf();
-#endif
+  #endif
     printf("---SimMessage: HIT BAD TRAP\n");
     printf("---break: ");
     puts(logbuf);
@@ -65,6 +62,14 @@ extern "C" void sim_exit(int state){
     break;
   case 3:
     printf("---SimMessage: QUIT NPC!\n");
+    break; 
+  case 4:
+  #ifdef CONFIG_ITRACE
+    itrace_puts_iringbuf();
+  #endif
+    printf("---SimMessage: DIFFTEST QUIT!\n");
+    printf("---break: ");
+    puts(logbuf);
     break; 
   default:
     printf("---SimMessage: Unknown EXIT!\n");
@@ -103,21 +108,22 @@ void cpu_exec(uint64_t n){
     step_once(top);
     top->inst = ifetch(top->pc, 4);
 
-#ifdef CONFIG_WATCHPOINT
+  #ifdef CONFIG_WATCHPOINT
     int NO; char expr[32]; uint64_t val1,val2;
     if ( trace_point(&NO, expr, &val1, &val2) ){
       printf("#watchpoint %d: %s has changed from %ld to %ld\n",NO,expr,val1,val2 ); 
       puts(logbuf);
       break;
     }
-#endif
+  #endif
 
-#ifdef CONFIG_ITRACE
+  #ifdef CONFIG_ITRACE
     itrace_update_iringbuf(logbuf);
-#endif
-#ifdef CONFIG_FTRACE
+  #endif
+
+  #ifdef CONFIG_FTRACE
     ftrace_matchFunc(lpc, top->pc, linst);
-#endif
+  #endif
 
 
     main_time ++;
@@ -131,9 +137,7 @@ int main(int argc, char *argv[]) {
 
   load_img(argc, argv);
 
-#ifdef CONFIG_FTRACE
   ftrace_load_elf(argc, argv);
-#endif
 
   sim_init();
 

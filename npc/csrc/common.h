@@ -10,6 +10,10 @@
 #include "verilated_dpi.h"
 
 
+#define   CONFIG_WATCHPOINT   
+#define   CONFIG_ITRACE       
+#define   CONFIG_FTRACE 
+//#define   CONFIG_DIFFTEST     
 
 
 /*main*/
@@ -26,6 +30,9 @@ void update_logbuff();
 #define PMEM_LEFT  ((uint32_t)CONFIG_MBASE)
 #define PMEM_RIGHT ((uint32_t)CONFIG_MBASE + CONFIG_MSIZE - 1)
 #define RESET_VECTOR (PMEM_LEFT + CONFIG_PC_RESET_OFFSET)
+
+uint8_t* guest_to_host(uint64_t paddr);
+uint32_t host_to_guest(uint8_t *haddr);
 
 uint64_t pmem_read(uint64_t addr, int len);
 uint64_t ifetch(uint64_t addr, int len);
@@ -63,3 +70,9 @@ void ftrace_matchFunc( uint64_t pc, uint64_t dnpc, uint32_t inst);
 /*disasm*/
 extern "C" void init_disasm(const char *triple);
 extern "C" void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
+
+
+/*difftest*/
+enum { DIFFTEST_TO_DUT, DIFFTEST_TO_REF };
+void difftest_step();
+

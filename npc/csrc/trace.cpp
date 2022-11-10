@@ -3,7 +3,8 @@
 #include <elf.h>
 #include <stdlib.h>
 
-//ITRACE
+#ifdef CONFIG_ITRACE
+
 #define MAX_INST_TO_SAVE 10
 static char iringbuf [MAX_INST_TO_SAVE][128];
 static int inst_p = 0;
@@ -21,8 +22,17 @@ void itrace_puts_iringbuf(){
   }
 };
 
+#else
+void itrace_update_iringbuf(char *s) { }
+void itrace_puts_iringbuf() { }
+#endif
 
-//FTRACE
+
+
+
+
+#ifdef CONFIG_FTRACE
+
 #define FUNC_SIZE 30
 static char func[FUNC_SIZE];
 
@@ -167,10 +177,12 @@ void ftrace_matchFunc( uint64_t pc, uint64_t dnpc, uint32_t inst){
 			printf("ret<[%s]0x%lx>\n", func, dnpc);	
 		}
 
-
-
 	}
 
-
 }
+
+#else
+int ftrace_load_elf(int argc, char *argv[]) { }
+void ftrace_matchFunc( uint64_t pc, uint64_t dnpc, uint32_t inst) { }
+#endif
 
