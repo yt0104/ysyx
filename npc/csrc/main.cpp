@@ -28,7 +28,7 @@ void update_logbuff(){
     memset(p, ' ', space_len);
     p += space_len;
 #ifdef CONFIG_ITRACE
-    disassemble(p, logbuf + sizeof(logbuf) - p, top->pc, (uint8_t *)&top->inst, ilen);
+    //disassemble(p, logbuf + sizeof(logbuf) - p, top->pc, (uint8_t *)&top->inst, ilen);
 #endif
 
 }
@@ -124,11 +124,11 @@ int main(int argc, char *argv[]) {
 
   ftrace_load_elf(argc, argv);
 
-  sim_init();
-
   init_sdb();
   
-  init_disasm("riscv64-pc-linux-gnu");
+  //init_disasm("riscv64-pc-linux-gnu");
+
+  sim_init();
 
   top->clk = 0;
   top->inst = 0;
