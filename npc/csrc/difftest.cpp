@@ -21,7 +21,7 @@ extern Vtop *top;
 
 #ifdef CONFIG_DIFFTEST
 
-void (*ref_difftest_memcpy)(paddr_t addr, void *buf, size_t n, bool direction) = NULL;
+void (*ref_difftest_memcpy)(uint32_t addr, void *buf, size_t n, bool direction) = NULL;
 void (*ref_difftest_regcpy)(void *dut_gpr, void *dut_pc, bool direction) = NULL;
 void (*ref_difftest_exec)(uint64_t n) = NULL;
 void (*ref_difftest_raise_intr)(uint64_t NO) = NULL;
@@ -70,7 +70,7 @@ static bool isa_difftest_checkregs() {
   {
     if(ref_gpr[i] != cpu_gpr[i]) return false;
   }
-  if(ref_r->pc != cpu.pc) return false;
+  if(ref_pc != top->pc) return false;
   
   return true;
 }
