@@ -30,7 +30,6 @@ void update_logbuff(){
 
     disassemble(p, logbuf + sizeof(logbuf) - p, top->pc, (uint8_t *)&top->inst, ilen);
 
-
 }
 
 
