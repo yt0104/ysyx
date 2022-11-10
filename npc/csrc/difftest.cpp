@@ -67,7 +67,7 @@ static bool isa_difftest_checkregs() {
   uint64_t ref_pc;
   uint64_t ref_gpr[32];
 
-  ref_difftest_regcpy(&ref_gpr, &ref_pc, DIFFTEST_TO_DUT);
+  ref_difftest_regcpy(&ref_gpr, ref_pc, DIFFTEST_TO_DUT);
 
   for (int i = 0; i < 32; i++)
   {
