@@ -108,21 +108,11 @@ void cpu_exec(uint64_t n){
     step_once(top);
     top->inst = ifetch(top->pc, 4);
 
-  #ifdef CONFIG_WATCHPOINT
-    if ( trace_point() ){
-      puts(logbuf);
-      break;
-    }
-  #endif
+    if ( trace_point() ){ puts(logbuf); break; }
 
-  #ifdef CONFIG_ITRACE
     itrace_update_iringbuf(logbuf);
-  #endif
 
-  #ifdef CONFIG_FTRACE
     ftrace_matchFunc(lpc, top->pc, linst);
-  #endif
-
 
     main_time ++;
   }
