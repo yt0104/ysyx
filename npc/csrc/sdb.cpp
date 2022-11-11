@@ -95,12 +95,10 @@ static int cmd_x(char *args) {
   	return 0;
   }
   uint64_t n = strtol( subcmd1, NULL, 10 );
-  uint64_t maddr = strtol( &subcmd2[2], NULL, 16 );
+  uint64_t raddr = strtol( &subcmd2[2], NULL, 16 );
   
-  uint64_t raddr;
   uint64_t rdata;
   pmem_read(raddr, (long long*)&rdata);
-  raddr=maddr;
   for(int i=0;i<n;i++){
   	printf("0x%lx\t\t",raddr);
   	printf("0x%lx\n",rdata & 0xFFFFFFFF);	
