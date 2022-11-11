@@ -121,6 +121,8 @@ void cpu_exec(uint64_t n){
 
 int main(int argc, char *argv[]) {
 
+  sim_init();
+
   long img_size = load_img(argv[1]);
 
   ftrace_load_elf(argv[2]);
@@ -131,7 +133,7 @@ int main(int argc, char *argv[]) {
   
   init_disasm("riscv64-pc-linux-gnu");
 
-  sim_init();
+  
 
   top->clk = 0;
   top->inst = 0;
