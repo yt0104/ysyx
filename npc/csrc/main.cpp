@@ -88,7 +88,10 @@ static void step_once(){
     step_and_dump_wave();
     top->clk = 1;
     step_and_dump_wave();
-    top->inst = ifetch(top->pc);
+    long long inst_t;
+    pmem_read(top->pc, &inst_t);
+    top->inst = inst_t&0xffffffff;
+    //top->inst = ifetch(top->pc);
 }
 
 
