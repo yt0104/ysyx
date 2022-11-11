@@ -89,7 +89,6 @@ static void step_once(){
     top->clk = 1;
     step_and_dump_wave();
     top->inst = ifetch(top->pc, 4);
-    
 }
 
 
@@ -109,7 +108,7 @@ void cpu_exec(uint64_t n){
 
     ftrace_matchFunc(lpc, top->pc, linst);
 
-    //difftest_step();
+    difftest_step();
 
     main_time ++;
     if(main_time > sim_time) sim_exit(2);
