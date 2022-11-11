@@ -131,8 +131,6 @@ int main(int argc, char *argv[]) {
   
   init_disasm("riscv64-pc-linux-gnu");
 
-  init_difftest(argv[3], img_size, 1234);
-
   top->clk = 0;
   top->inst = 0;
   top->rst_n = 1; step_and_dump_wave();
@@ -140,6 +138,8 @@ int main(int argc, char *argv[]) {
   top->inst = ifetch(top->pc, 4); step_and_dump_wave(); // inst 
   top->rst_n = 1; step_and_dump_wave();
   step_and_dump_wave();   //5s reset
+
+  init_difftest(argv[3], img_size, 1234);
 
   //while (!Verilated::gotFinish() && main_time < sim_time)
     
