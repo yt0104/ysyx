@@ -75,13 +75,12 @@ extern "C" void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int
 
 /*difftest*/
 
-extern "C" {
-    
 enum { DIFFTEST_TO_DUT, DIFFTEST_TO_REF };
 void init_difftest(char *ref_so_file, long img_size, int port);
 void difftest_step();
 
-extern  void (*ref_difftest_memcpy)(uint32_t addr, void *buf, size_t n, bool direction);
+extern "C" {
+extern void (*ref_difftest_memcpy)(uint32_t addr, void *buf, size_t n, bool direction);
 extern void (*ref_difftest_regcpy)(void *dut_gpr, void *dut_pc, bool direction);
 extern void (*ref_difftest_exec)(uint64_t n);
 extern void (*ref_difftest_raise_intr)(uint64_t NO);

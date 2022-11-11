@@ -27,6 +27,7 @@ void (*ref_difftest_regcpy)(void *dut_gpr, void *dut_pc, bool direction) = NULL;
 void (*ref_difftest_exec)(uint64_t n) = NULL;
 void (*ref_difftest_raise_intr)(uint64_t NO) = NULL;
 
+}
 
 #ifdef CONFIG_DIFFTEST
 
@@ -100,4 +101,3 @@ void init_difftest(char *ref_so_file, long img_size, int port) { }
 void difftest_step() { }
 #endif
 
-}
