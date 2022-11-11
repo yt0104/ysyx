@@ -74,11 +74,8 @@ static bool isa_difftest_checkregs() {
 
   for (int i = 0; i < 32; i++)
   {
-    puts("iiiii");
     if(ref_gpr[i] != cpu_gpr[i]) return false;
-    
   }
-  puts("pcpcpc");
   
   if(ref_pc != top->pc) return false;
   
