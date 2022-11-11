@@ -127,13 +127,11 @@ int main(int argc, char *argv[]) {
 
   ftrace_load_elf(argv[2]);
 
-  init_difftest(argv[3], img_size, 1234);
-
   init_sdb();
   
   init_disasm("riscv64-pc-linux-gnu");
 
-  
+  init_difftest(argv[3], img_size, 1234);
 
   top->clk = 0;
   top->inst = 0;
