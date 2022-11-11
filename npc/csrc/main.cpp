@@ -7,8 +7,6 @@ Vtop* top;
 
 int main_time = 0;     // 仿真时间戳
 int sim_time = 1000;   // 最大仿真时间戳
-uint64_t lpc;
-uint32_t linst;
 
 
 static char logbuf[128];
@@ -89,23 +87,27 @@ static void step_once(){
     top->clk = 1;
     step_and_dump_wave();
     long long inst_t;
-    //pmem_read(top->pc, &inst_t);
-    //top->inst = inst_t&0xffffffff;
-    //ifetch(top->pc, (int*)&top->inst);
 
 }
 
+uint64_t lpc;
+uint32_t linst;
 
 void cpu_exec(uint64_t n){
 
   for (;n > 0; n --)
   { 
+    /*last pc + inst*/
     lpc = top->pc;
     linst = top->inst;
+
+    /*cpu-exec*/
     update_logbuff();
     if(n <= 20) puts(logbuf);
     step_once();
 
+    /*debug*/
+    
     if ( trace_point() ){ puts(logbuf); break; }
 
     itrace_update_iringbuf(logbuf);
@@ -114,8 +116,7 @@ void cpu_exec(uint64_t n){
 
     difftest_step();
 
-    main_time ++;
-    if(main_time > sim_time) sim_exit(2);
+    if(main_time++ > sim_time) sim_exit(2);
   }
     
 }
@@ -135,10 +136,8 @@ int main(int argc, char *argv[]) {
   init_disasm("riscv64-pc-linux-gnu");
 
   top->clk = 0;
-  //top->inst = 0;
   top->rst_n = 1; step_and_dump_wave();
   top->rst_n = 0; step_and_dump_wave();
-  //ifetch(top->pc, (int*)&top->inst); step_and_dump_wave(); // inst 
   top->rst_n = 1; step_and_dump_wave();
   step_and_dump_wave();   //5s reset
 

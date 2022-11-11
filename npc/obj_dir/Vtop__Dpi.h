@@ -15,6 +15,10 @@ extern "C" {
     // DPI IMPORTS
     // DPI import at vsrc/top.sv:16:30
     extern void ifetch(long long pc, int* inst);
+    // DPI import at vsrc/EXU.sv:37:30
+    extern void pmem_read(long long raddr, long long* rdata);
+    // DPI import at vsrc/EXU.sv:39:30
+    extern void pmem_write(long long waddr, long long wdata, char wmask);
     // DPI import at vsrc/RegisterFile.sv:21:30
     extern void set_gpr_ptr(const svOpenArrayHandle a);
     // DPI import at vsrc/top.sv:15:30
