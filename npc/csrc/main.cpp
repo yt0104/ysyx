@@ -109,7 +109,7 @@ void cpu_exec(uint64_t n){
 
     ftrace_matchFunc(lpc, top->pc, linst);
 
-    //difftest_step();
+    difftest_step();
 
     main_time ++;
     if(main_time > sim_time) sim_exit(2);
