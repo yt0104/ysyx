@@ -19,12 +19,15 @@
 extern uint64_t *cpu_gpr;
 extern Vtop *top;
 
-uint64_t temp[33];
+
+extern "C" {
 
 void (*ref_difftest_memcpy)(uint32_t addr, void *buf, size_t n, bool direction) = NULL;
 void (*ref_difftest_regcpy)(void *dut_gpr, void *dut_pc, bool direction) = NULL;
 void (*ref_difftest_exec)(uint64_t n) = NULL;
 void (*ref_difftest_raise_intr)(uint64_t NO) = NULL;
+
+}
 
 #ifdef CONFIG_DIFFTEST
 
@@ -97,3 +100,5 @@ void difftest_step() {
 void init_difftest(char *ref_so_file, long img_size, int port) { }
 void difftest_step() { }
 #endif
+
+
