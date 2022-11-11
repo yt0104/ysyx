@@ -91,7 +91,7 @@ static void step_once(){
     long long inst_t;
     //pmem_read(top->pc, &inst_t);
     //top->inst = inst_t&0xffffffff;
-    ifetch(top->pc, (int*)&top->inst);
+    //ifetch(top->pc, (int*)&top->inst);
 
 }
 
@@ -135,10 +135,10 @@ int main(int argc, char *argv[]) {
   init_disasm("riscv64-pc-linux-gnu");
 
   top->clk = 0;
-  top->inst = 0;
+  //top->inst = 0;
   top->rst_n = 1; step_and_dump_wave();
   top->rst_n = 0; step_and_dump_wave();
-  ifetch(top->pc, (int*)&top->inst); step_and_dump_wave(); // inst 
+  //ifetch(top->pc, (int*)&top->inst); step_and_dump_wave(); // inst 
   top->rst_n = 1; step_and_dump_wave();
   step_and_dump_wave();   //5s reset
 
