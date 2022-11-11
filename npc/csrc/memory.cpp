@@ -76,10 +76,18 @@ extern "C" void pmem_read(long long raddr, long long *rdata ) {
 
 extern "C" void pmem_write(long long waddr, long long wdata, char wmask) {
   if (likely(in_pmem(waddr))){
-    int len = 0;
-    unsigned char w = (unsigned char)wmask;
-    while( w != 0 ) { len++; w>>1; }
-    host_write(guest_to_host(waddr), len, wdata);
+    uint64_t wtemp = 0;
+    for (int i = 0; i < 8; i++)
+    {
+      if( wmask & 0x01){
+        wtemp = wdata&0xff ;
+        wdata >> 8;
+        host_write(guest_to_host(waddr), 1, wtemp);
+      }
+      wmask >> 1;
+    }
+    
+    
   }
   out_of_bound(waddr);
   return;
