@@ -88,7 +88,6 @@ static void step_once(){
     step_and_dump_wave();
     top->clk = 1;
     step_and_dump_wave();
-    //ifetch(top->pc, (long long*)&top->inst);
     top->inst = ifetch(top->pc);
 }
 

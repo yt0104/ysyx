@@ -101,7 +101,7 @@ extern "C" void ifetch(long long pc, long long* inst) {
   return;
 }
 */
-extern "C" uint32_t ifetch(long long pc){
+uint32_t ifetch(long long pc){
   long long inst_t;
   pmem_read(pc, &inst_t);
   return inst_t&0xffffffff;
