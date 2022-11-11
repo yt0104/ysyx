@@ -64,26 +64,32 @@ static void out_of_bound(uint64_t addr) {
   assert(0);
 }
 
-extern "C" uint64_t pmem_read(uint64_t addr, int len) {
-  if (likely(in_pmem(addr))) {
-    return host_read(guest_to_host(addr), len);
+extern "C" void pmem_read(long long raddr, long long *rdata ) {
+  if (likely(in_pmem(raddr))) {
+    *rdata = host_read(guest_to_host(raddr), 8);
+    return;
   }
-  out_of_bound(addr);
-  return 0;
-}
-
-
-extern "C" void pmem_write(uint64_t addr, int len, uint64_t data) {
-  if (likely(in_pmem(addr))){
-    host_write(guest_to_host(addr), len, data);
-  }
-  out_of_bound(addr);
+  out_of_bound(raddr);
   return;
 }
 
 
-extern "C" uint64_t ifetch(uint64_t addr) {
-  return pmem_read(addr, 4);
+extern "C" void pmem_write(long long waddr, long long wdata, char wmask) {
+  if (likely(in_pmem(waddr))){
+    int len = 0;
+    unsigned char w = (unsigned char)wmask;
+    while( w != 0 ) { len++; w>>1; }
+    host_write(guest_to_host(waddr), len, wdata);
+  }
+  out_of_bound(waddr);
+  return;
+}
+
+
+uint64_t ifetch(uint64_t addr) {
+  long long pc;
+  pmem_read(addr, &pc);
+  return (uint64_t)pc;
 }
 
 /*memory end*/

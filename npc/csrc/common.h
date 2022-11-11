@@ -36,9 +36,9 @@ void update_logbuff();
 uint8_t* guest_to_host(uint64_t paddr);
 uint64_t host_to_guest(uint8_t *haddr);
 
-extern "C" uint64_t pmem_read(uint64_t addr, int len);
-extern "C" void pmem_write(uint64_t addr, int len, uint64_t data);
-extern "C" uint64_t ifetch(uint64_t addr);
+extern "C" void pmem_read(long long raddr, long long *rdata );
+extern "C" void pmem_write(long long waddr, long long wdata, char wmask);
+uint64_t ifetch(uint64_t addr);
 long load_img(char *bin);
 
 
