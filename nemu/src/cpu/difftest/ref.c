@@ -41,7 +41,7 @@ void difftest_regcpy(void *dut_gpr, void *dut_pc, bool direction) {
   if(direction == DIFFTEST_TO_REF){
     for (size_t i = 0; i < 32; i++)
     {
-      cpu.gpr[i] = s->dut_gpr[i];
+      printf("%ld\n", s->dut_gpr[i]);
     }
   }
 
