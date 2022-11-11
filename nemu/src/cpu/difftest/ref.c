@@ -30,19 +30,16 @@ void difftest_memcpy(paddr_t addr, void *buf, size_t n, bool direction) {
   else assert(0);
 }
 
-struct dut{
-  uint64_t dut_gpr[32];
-} ;
-
 
 void difftest_regcpy(void *dut_gpr, void *dut_pc, bool direction) {
   
-  //struct dut *s = (struct dut *)dut_gpr;
   word_t *g = (word_t*)dut_gpr; 
+  
   if(direction == DIFFTEST_TO_REF){
-    for (size_t i = 0; i < 32; i++)
-      //cpu.gpr[i] = s->dut_gpr[i];
-      printf("%ld\n",*g++ );
+    for (size_t i = 0; i < 32; i++){
+      cpu.gpr[i] = g[i];
+    }
+    cpu.pc = *(word_t*)dut_pc;
 
   }
 
