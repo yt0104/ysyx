@@ -40,27 +40,15 @@ void difftest_regcpy(void *dut_gpr, void *dut_pc, bool direction) {
       cpu.gpr[i] = g[i];
     }
     cpu.pc = *(word_t*)dut_pc;
-
-    printf("%ld\n", cpu.pc);
-
   }
 
-  /*
-  word_t *g = (word_t*)dut_gpr; 
-  if(direction == DIFFTEST_TO_REF) {
-    for (size_t i = 0; i < 32; i++)
-    {
-      cpu.gpr[i] = g[i];
-    }
-    //cpu.pc = g[32]; 
-  }
   else {
     for (size_t i = 0; i < 32; i++)
     {
       g[i] = cpu.gpr[i];
     }
-    //g[32] = cpu.pc; 
-  }*/
+    *(word_t*)dut_pc = cpu.pc;
+  }
 }
 
 void difftest_exec(uint64_t n) {
