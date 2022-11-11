@@ -87,8 +87,8 @@ static void step_once(){
     top->clk = 0;
     step_and_dump_wave();
     top->clk = 1;
-    top->inst = ifetch(top->pc, 4);
     step_and_dump_wave();
+    top->inst = ifetch(top->pc, 4);
     
 }
 
