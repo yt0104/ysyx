@@ -65,7 +65,7 @@ static void out_of_bound(uint64_t addr) {
 }
 
 extern "C" void pmem_read(long long raddr, long long *rdata ) {
-  if (likely(in_pmem(raddr))) {
+  if (likely(in_pmem((uint64_t)raddr))) {
     *rdata = host_read(guest_to_host(raddr), 8);
     return;
   }
