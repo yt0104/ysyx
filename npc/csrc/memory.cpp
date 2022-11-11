@@ -64,7 +64,7 @@ static void out_of_bound(uint64_t addr) {
   assert(0);
 }
 
-uint64_t pmem_read(uint64_t addr, int len) {
+extern "C" uint64_t pmem_read(uint64_t addr, int len) {
   if (likely(in_pmem(addr))) {
     return host_read(guest_to_host(addr), len);
   }
@@ -73,7 +73,7 @@ uint64_t pmem_read(uint64_t addr, int len) {
 }
 
 
-void pmem_write(uint64_t addr, int len, uint64_t data) {
+extern "C" void pmem_write(uint64_t addr, int len, uint64_t data) {
   if (likely(in_pmem(addr))){
     host_write(guest_to_host(addr), len, data);
   }
@@ -82,8 +82,8 @@ void pmem_write(uint64_t addr, int len, uint64_t data) {
 }
 
 
-uint64_t ifetch(uint64_t addr, int len) {
-  return pmem_read(addr, len);
+extern "C" uint64_t ifetch(uint64_t addr) {
+  return pmem_read(addr, 4);
 }
 
 /*memory end*/

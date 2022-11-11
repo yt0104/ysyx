@@ -88,7 +88,7 @@ static void step_once(){
     step_and_dump_wave();
     top->clk = 1;
     step_and_dump_wave();
-    top->inst = ifetch(top->pc, 4);
+    top->inst = ifetch(top->pc);
 }
 
 
@@ -134,7 +134,7 @@ int main(int argc, char *argv[]) {
   top->inst = 0;
   top->rst_n = 1; step_and_dump_wave();
   top->rst_n = 0; step_and_dump_wave();
-  top->inst = ifetch(top->pc, 4); step_and_dump_wave(); // inst 
+  top->inst = ifetch(top->pc); step_and_dump_wave(); // inst 
   top->rst_n = 1; step_and_dump_wave();
   step_and_dump_wave();   //5s reset
 
