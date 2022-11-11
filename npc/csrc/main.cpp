@@ -83,12 +83,12 @@ static void step_and_dump_wave(){
   tfp->dump(contextp->time());
 }
 
-static void step_once(Vtop* top){
+static void step_once(){
     top->clk = 0;
     step_and_dump_wave();
     top->clk = 1;
     step_and_dump_wave();
-    
+    top->inst = ifetch(top->pc, 4);
 }
 
 
@@ -100,8 +100,7 @@ void cpu_exec(uint64_t n){
     linst = top->inst;
     update_logbuff();
     if(n <= 20) puts(logbuf);
-    step_once(top);
-    top->inst = ifetch(top->pc, 4);
+    step_once();
 
     if ( trace_point() ){ puts(logbuf); break; }
 
@@ -109,7 +108,7 @@ void cpu_exec(uint64_t n){
 
     ftrace_matchFunc(lpc, top->pc, linst);
 
-    difftest_step();
+    //difftest_step();
 
     main_time ++;
     if(main_time > sim_time) sim_exit(2);
