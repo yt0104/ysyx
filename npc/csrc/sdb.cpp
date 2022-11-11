@@ -98,8 +98,8 @@ static int cmd_x(char *args) {
   uint64_t maddr = strtol( &subcmd2[2], NULL, 16 );
   
   uint64_t raddr;
-  long long rdata;
-  pmem_read(raddr, &rdata);
+  uint64_t rdata;
+  pmem_read(raddr, (long long*)&rdata);
   raddr=maddr;
   for(int i=0;i<n;i++){
   	printf("0x%lx\t\t",raddr);
