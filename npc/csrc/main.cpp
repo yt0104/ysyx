@@ -89,9 +89,10 @@ static void step_once(){
     top->clk = 1;
     step_and_dump_wave();
     long long inst_t;
-    pmem_read(top->pc, &inst_t);
-    top->inst = inst_t&0xffffffff;
-    //top->inst = ifetch(top->pc);
+    //pmem_read(top->pc, &inst_t);
+    //top->inst = inst_t&0xffffffff;
+    ifetch(top->pc, (int*)&top->inst);
+
 }
 
 
@@ -137,7 +138,7 @@ int main(int argc, char *argv[]) {
   top->inst = 0;
   top->rst_n = 1; step_and_dump_wave();
   top->rst_n = 0; step_and_dump_wave();
-  top->inst = ifetch(top->pc); step_and_dump_wave(); // inst 
+  ifetch(top->pc, (int*)&top->inst); step_and_dump_wave(); // inst 
   top->rst_n = 1; step_and_dump_wave();
   step_and_dump_wave();   //5s reset
 

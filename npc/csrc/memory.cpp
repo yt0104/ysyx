@@ -93,20 +93,14 @@ extern "C" void pmem_write(long long waddr, long long wdata, char wmask) {
   return;
 }
 
-/*
-extern "C" void ifetch(long long pc, long long* inst) {
+
+extern "C" void ifetch(long long pc, int* inst) {
   long long inst_t;
   pmem_read(pc, &inst_t);
   *inst = inst_t &0xffffffff;
   return;
 }
-*/
-uint32_t ifetch(long long pc){
-  long long inst_t;
-  pmem_read(pc, &inst_t);
-  return inst_t&0xffffffff;
 
-}
 
 
 /*memory end*/
