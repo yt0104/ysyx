@@ -17,6 +17,7 @@
 #define   CONFIG_DIFFTEST     
 
 
+
 /*main*/
 void cpu_exec(uint64_t n);
 extern "C" void sim_exit(int state);
@@ -36,6 +37,7 @@ uint8_t* guest_to_host(uint64_t paddr);
 uint32_t host_to_guest(uint8_t *haddr);
 
 uint64_t pmem_read(uint64_t addr, int len);
+void pmem_write(uint64_t addr, int len, uint64_t data);
 uint64_t ifetch(uint64_t addr, int len);
 long load_img(char *bin);
 
