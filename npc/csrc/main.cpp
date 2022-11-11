@@ -134,7 +134,7 @@ int main(int argc, char *argv[]) {
   top->inst = 0;
   top->rst_n = 1; step_and_dump_wave();
   top->rst_n = 0; step_and_dump_wave();
-  ifetch(top->pc, (long long*)&top->inst); step_and_dump_wave(); // inst 
+  ifetch(0x80000000, (long long*)&top->inst); step_and_dump_wave(); // inst 
   top->rst_n = 1; step_and_dump_wave();
   step_and_dump_wave();   //5s reset
 
