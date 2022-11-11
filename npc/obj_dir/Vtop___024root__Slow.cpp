@@ -2071,13 +2071,17 @@ void Vtop___024root___settle__TOP__2(Vtop___024root* vlSelf) {
                                                     == 
                                                     (0x7fU 
                                                      & vlSelf->inst))
-                                                    ? 0U
+                                                    ? 
+                                                   (vlSelf->inst 
+                                                    >> 7U)
                                                     : 
                                                    ((0x37U 
                                                      == 
                                                      (0x7fU 
                                                       & vlSelf->inst))
-                                                     ? 0U
+                                                     ? 
+                                                    (vlSelf->inst 
+                                                     >> 7U)
                                                      : 
                                                     ((0x3023U 
                                                       == 

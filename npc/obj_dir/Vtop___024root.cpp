@@ -2214,13 +2214,17 @@ VL_INLINE_OPT void Vtop___024root___combo__TOP__6(Vtop___024root* vlSelf) {
                                                     == 
                                                     (0x7fU 
                                                      & vlSelf->inst))
-                                                    ? 0U
+                                                    ? 
+                                                   (vlSelf->inst 
+                                                    >> 7U)
                                                     : 
                                                    ((0x37U 
                                                      == 
                                                      (0x7fU 
                                                       & vlSelf->inst))
-                                                     ? 0U
+                                                     ? 
+                                                    (vlSelf->inst 
+                                                     >> 7U)
                                                      : 
                                                     ((0x3023U 
                                                       == 
