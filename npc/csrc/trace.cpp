@@ -126,10 +126,10 @@ int ftrace_load_elf(char* elf) {
   char *elf_file = elf;
 
   if (elf_file == NULL) {
-	puts("No elf is given, but ftrace is open.");
+	puts("---No elf is given, but ftrace is open.");
     assert(0); 
   }
-  printf("The elf is %s\n", elf_file);
+  printf("---The elf is %s\n", elf_file);
 
   return ftrace_getTab(elf_file);
 }
