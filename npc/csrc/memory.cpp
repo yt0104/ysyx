@@ -94,10 +94,11 @@ extern "C" void pmem_write(long long waddr, long long wdata, char wmask) {
 }
 
 
-uint64_t ifetch(uint64_t addr) {
-  long long pc;
-  pmem_read(addr, &pc);
-  return (uint64_t)pc;
+extern "C" void ifetch(long long pc, long long* inst) {
+  long long inst_t;
+  pmem_read(pc, &inst_t);
+  *inst = inst_t &0xffffffff;
+  return;
 }
 
 /*memory end*/

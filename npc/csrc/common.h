@@ -38,7 +38,7 @@ uint64_t host_to_guest(uint8_t *haddr);
 
 extern "C" void pmem_read(long long raddr, long long *rdata );
 extern "C" void pmem_write(long long waddr, long long wdata, char wmask);
-uint64_t ifetch(uint64_t addr);
+extern "C" void ifetch(long long pc, long long* inst);
 long load_img(char *bin);
 
 
