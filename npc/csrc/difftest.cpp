@@ -74,7 +74,11 @@ static bool isa_difftest_checkregs() {
 
   for (int i = 0; i < 32; i++)
   {
-    if(ref_gpr[i] != cpu_gpr[i]) return false;
+    if(ref_gpr[i] != cpu_gpr[i]) {
+
+      printf("---difftest:ref_gpr[%d]=%lx, cpu_gpr[%d]=%lx\n ", i, ref_gpr[i], i, cpu_gpr[i] );
+      return false;
+    }
   }
   
   if(ref_pc != top->pc) return false;
