@@ -182,7 +182,7 @@ void ftrace_matchFunc( uint64_t pc, uint64_t dnpc, uint32_t inst){
 }
 
 #else
-int ftrace_load_elf(char* elf) { }
+int ftrace_load_elf(char* elf) { return 0; }
 void ftrace_matchFunc( uint64_t pc, uint64_t dnpc, uint32_t inst) { }
 #endif
 
