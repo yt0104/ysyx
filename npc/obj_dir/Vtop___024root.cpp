@@ -2059,17 +2059,21 @@ VL_INLINE_OPT void Vtop___024root___combo__TOP__5(Vtop___024root* vlSelf) {
                                                | (0x13U 
                                                   == vlSelf->top__DOT__op)) 
                                               | (0x14U 
-                                                 == vlSelf->top__DOT__op)) 
-                                             | ((0x15U 
-                                                 != vlSelf->top__DOT__op) 
-                                                & ((0x19U 
-                                                    == vlSelf->top__DOT__op) 
-                                                   | ((0x1fU 
-                                                       == vlSelf->top__DOT__op) 
-                                                      | ((0x20U 
-                                                          == vlSelf->top__DOT__op) 
-                                                         | (0x22U 
-                                                            == vlSelf->top__DOT__op)))))));
+                                                 == vlSelf->top__DOT__op))
+                                              ? ((1U 
+                                                  == vlSelf->top__DOT__op) 
+                                                 | (2U 
+                                                    != vlSelf->top__DOT__op))
+                                              : ((0x15U 
+                                                  != vlSelf->top__DOT__op) 
+                                                 & ((0x19U 
+                                                     == vlSelf->top__DOT__op) 
+                                                    | ((0x1fU 
+                                                        == vlSelf->top__DOT__op) 
+                                                       | ((0x20U 
+                                                           == vlSelf->top__DOT__op) 
+                                                          | (0x22U 
+                                                             == vlSelf->top__DOT__op)))))));
 }
 
 VL_INLINE_OPT void Vtop___024root___sequent__TOP__6(Vtop___024root* vlSelf) {
@@ -2771,66 +2775,56 @@ VL_INLINE_OPT void Vtop___024root___combo__TOP__7(Vtop___024root* vlSelf) {
                | (0xbU == vlSelf->top__DOT__op)) | 
               (0x13U == vlSelf->top__DOT__op)) | (0x14U 
                                                   == vlSelf->top__DOT__op))) {
-            vlSelf->top__DOT__u_EXU__DOT__dest = ((1U 
+            if ((1U == vlSelf->top__DOT__op)) {
+                vlSelf->top__DOT__u_EXU__DOT__dest 
+                    = (vlSelf->top__DOT__u_EXU__DOT__src1 
+                       + vlSelf->top__DOT__imm);
+            } else if ((2U != vlSelf->top__DOT__op)) {
+                vlSelf->top__DOT__u_EXU__DOT__dest 
+                    = ((3U == vlSelf->top__DOT__op)
+                        ? (4ULL + vlSelf->pc) : ((6U 
+                                                  == vlSelf->top__DOT__op)
+                                                  ? vlSelf->top__DOT__u_EXU__DOT__rdata
+                                                  : 
+                                                 ((7U 
                                                    == vlSelf->top__DOT__op)
                                                    ? 
-                                                  (vlSelf->top__DOT__u_EXU__DOT__src1 
-                                                   + vlSelf->top__DOT__imm)
-                                                   : 
-                                                  ((2U 
-                                                    == vlSelf->top__DOT__op)
-                                                    ? 
-                                                   (4ULL 
-                                                    + vlSelf->pc)
-                                                    : 
-                                                   ((3U 
-                                                     == vlSelf->top__DOT__op)
-                                                     ? 
-                                                    (4ULL 
-                                                     + vlSelf->pc)
-                                                     : 
-                                                    ((6U 
-                                                      == vlSelf->top__DOT__op)
-                                                      ? vlSelf->top__DOT__u_EXU__DOT__rdata
-                                                      : 
-                                                     ((7U 
-                                                       == vlSelf->top__DOT__op)
-                                                       ? 
-                                                      (((QData)((IData)(
-                                                                        (- (IData)(
-                                                                                (1U 
+                                                  (((QData)((IData)(
+                                                                    (- (IData)(
+                                                                               (1U 
                                                                                 & (IData)(
                                                                                 (vlSelf->top__DOT__u_EXU__DOT__rdata 
                                                                                 >> 0x1fU))))))) 
-                                                        << 0x20U) 
-                                                       | (QData)((IData)(vlSelf->top__DOT__u_EXU__DOT__rdata)))
-                                                       : 
-                                                      ((0xbU 
-                                                        == vlSelf->top__DOT__op)
-                                                        ? 
-                                                       ((vlSelf->top__DOT__u_EXU__DOT__src1 
-                                                         < vlSelf->top__DOT__imm)
-                                                         ? 1ULL
-                                                         : 0ULL)
-                                                        : 
-                                                       ((0x13U 
-                                                         == vlSelf->top__DOT__op)
-                                                         ? 
-                                                        (vlSelf->pc 
-                                                         + vlSelf->top__DOT__imm)
-                                                         : 
-                                                        (((QData)((IData)(
-                                                                          (- (IData)(
+                                                    << 0x20U) 
+                                                   | (QData)((IData)(vlSelf->top__DOT__u_EXU__DOT__rdata)))
+                                                   : 
+                                                  ((0xbU 
+                                                    == vlSelf->top__DOT__op)
+                                                    ? 
+                                                   ((vlSelf->top__DOT__u_EXU__DOT__src1 
+                                                     < vlSelf->top__DOT__imm)
+                                                     ? 1ULL
+                                                     : 0ULL)
+                                                    : 
+                                                   ((0x13U 
+                                                     == vlSelf->top__DOT__op)
+                                                     ? 
+                                                    (vlSelf->pc 
+                                                     + vlSelf->top__DOT__imm)
+                                                     : 
+                                                    (((QData)((IData)(
+                                                                      (- (IData)(
                                                                                 (1U 
                                                                                 & (IData)(
                                                                                 (vlSelf->top__DOT__imm 
                                                                                 >> 0x1fU))))))) 
-                                                          << 0x20U) 
-                                                         | (QData)((IData)(
-                                                                           ((IData)(
+                                                      << 0x20U) 
+                                                     | (QData)((IData)(
+                                                                       ((IData)(
                                                                                 (vlSelf->top__DOT__imm 
                                                                                 >> 0xcU)) 
-                                                                            << 0xcU)))))))))));
+                                                                        << 0xcU)))))))));
+            }
         } else if ((0x15U != vlSelf->top__DOT__op)) {
             if ((0x19U == vlSelf->top__DOT__op)) {
                 vlSelf->top__DOT__u_EXU__DOT__dest 
