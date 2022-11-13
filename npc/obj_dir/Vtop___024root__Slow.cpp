@@ -2730,7 +2730,7 @@ void Vtop___024root___settle__TOP__4(Vtop___024root* vlSelf) {
             } else if ((0x1fU == vlSelf->top__DOT__op)) {
                 vlSelf->top__DOT__u_EXU__DOT__dest 
                     = (vlSelf->top__DOT__u_EXU__DOT__src1 
-                       - vlSelf->top__DOT__u_EXU__DOT__src2);
+                       + vlSelf->top__DOT__u_EXU__DOT__src2);
             } else if ((0x20U == vlSelf->top__DOT__op)) {
                 vlSelf->top__DOT__u_EXU__DOT__temp 
                     = (vlSelf->top__DOT__u_EXU__DOT__src1 
