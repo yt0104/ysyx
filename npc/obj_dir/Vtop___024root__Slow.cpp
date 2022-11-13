@@ -35,7 +35,7 @@ void Vtop___024root___initial__TOP__1(Vtop___024root* vlSelf) {
     VL_DEBUG_IF(VL_DBG_MSGF("+    Vtop___024root___initial__TOP__1\n"); );
     // Body
     vlSelf->top__DOT__u_EXU__DOT__raddr = 0x80000000ULL;
-    vlSelf->top__DOT__u_EXU__DOT__waddr = 0x8000000ULL;
+    vlSelf->top__DOT__u_EXU__DOT__waddr = 0x80000000ULL;
     vlSelf->top__DOT__u_EXU__DOT__wdata = 0ULL;
     vlSelf->top__DOT__u_EXU__DOT__wmask = 0U;
     vlSelf->pc = 0x80000000ULL;
