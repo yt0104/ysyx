@@ -82,7 +82,7 @@ extern "C" void pmem_write(long long waddr, long long wdata, char wmask) {
       if( wmask & 0x01){
         wtemp = wdata&0xff ;
         wdata >> 8;
-        host_write(guest_to_host(waddr), 1, wtemp);
+        host_write(guest_to_host(waddr++), 1, wtemp);
       }
       wmask >> 1;
     }
