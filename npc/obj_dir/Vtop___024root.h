@@ -31,14 +31,18 @@ VL_MODULE(Vtop___024root) {
     CData/*4:0*/ top__DOT__rs1;
     CData/*4:0*/ top__DOT__rs2;
     CData/*0:0*/ top__DOT__u_EXU__DOT__wenR;
+    CData/*7:0*/ top__DOT__u_EXU__DOT__wmask;
     IData/*31:0*/ top__DOT__cpu;
     IData/*31:0*/ top__DOT__op;
     QData/*63:0*/ top__DOT__npc;
     QData/*63:0*/ top__DOT__imm;
     QData/*63:0*/ top__DOT__u_EXU__DOT__src1;
+    QData/*63:0*/ top__DOT__u_EXU__DOT__src2;
     QData/*63:0*/ top__DOT__u_EXU__DOT__dest;
     QData/*63:0*/ top__DOT__u_EXU__DOT__rdata;
     QData/*63:0*/ top__DOT__u_EXU__DOT__raddr;
+    QData/*63:0*/ top__DOT__u_EXU__DOT__waddr;
+    QData/*63:0*/ top__DOT__u_EXU__DOT__wdata;
     VlUnpacked<QData/*63:0*/, 32> top__DOT__u_EXU__DOT__u_reg__DOT__rf;
 
     // LOCAL VARIABLES
@@ -46,7 +50,7 @@ VL_MODULE(Vtop___024root) {
     CData/*0:0*/ __Vclklast__TOP__rst_n;
     IData/*31:0*/ __Vtask_top__DOT__ifetch__2__inst;
     QData/*63:0*/ __Vtask_top__DOT__u_EXU__DOT__pmem_read__3__rdata;
-    VlUnpacked<CData/*0:0*/, 4> __Vm_traceActivity;
+    VlUnpacked<CData/*0:0*/, 5> __Vm_traceActivity;
 
     // INTERNAL VARIABLES
     Vtop__Syms* vlSymsp;  // Symbol table
