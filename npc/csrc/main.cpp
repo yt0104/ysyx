@@ -62,7 +62,7 @@ extern "C" void sim_exit(int state){
   case 4:
     itrace_puts_iringbuf();
     Log(ANSI_FMT("DIFFTEST QUIT", ANSI_FG_RED));
-    Log(ANSI_FMT("break at:", ANSI_FG_RED));
+    Log(ANSI_FMT("break at: %s", ANSI_FG_RED), logbuf);
     puts(logbuf);
     break; 
   default:

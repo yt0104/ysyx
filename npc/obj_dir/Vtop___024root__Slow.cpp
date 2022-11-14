@@ -3276,7 +3276,9 @@ void Vtop___024root___settle__TOP__4(Vtop___024root* vlSelf) {
                                                        : 
                                                       ((6U 
                                                         == vlSelf->top__DOT__op)
-                                                        ? vlSelf->top__DOT__u_EXU__DOT__rdata
+                                                        ? 
+                                                       (1ULL 
+                                                        + vlSelf->top__DOT__u_EXU__DOT__rdata)
                                                         : 
                                                        ((7U 
                                                          == vlSelf->top__DOT__op)
