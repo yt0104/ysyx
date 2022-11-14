@@ -19,6 +19,7 @@
 #define   CONFIG_DIFFTEST     
 
 
+extern Vtop* top;
 
 /*main*/
 void cpu_exec(uint64_t n);

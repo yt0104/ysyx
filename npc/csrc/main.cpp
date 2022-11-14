@@ -10,7 +10,7 @@ int main_time = 0;     // 仿真时间戳
 int sim_time = 10000;   // 最大仿真时间戳
 
 
-static char logbuf[128];
+char logbuf[128];
 
 void update_logbuff(){
     char *p = logbuf;
