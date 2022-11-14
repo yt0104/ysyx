@@ -48,7 +48,7 @@ extern "C" void pmem_read(long long raddr, long long *rdata ) {
     *rdata = host_read(guest_to_host(raddr), 8);
     return;
   }
-  //out_of_bound(raddr);
+  out_of_bound(raddr);
   return;
 }
 
@@ -67,7 +67,7 @@ extern "C" void pmem_write(long long waddr, long long wdata, char wmask) {
       waddr ++;
     }
   }
-  //out_of_bound(waddr);
+  out_of_bound(waddr);
   return;
 }
 
