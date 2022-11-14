@@ -45,25 +45,24 @@ extern "C" void sim_exit(int state){
   switch (state)
   {
   case 0: 
-    printf("---SimMessage: HIT GOOD TRAP!\n");
     Log(ANSI_FMT("HIT GOOD TRAP", ANSI_FG_GREEN));
     break;
   case 1:
     itrace_puts_iringbuf();
-    printf("---SimMessage: HIT BAD TRAP\n");
-    printf("---break: ");
+    Log(ANSI_FMT("HIT BAD TRAP", ANSI_FG_RED));
+    Log(ANSI_FMT("break at:", ANSI_FG_RED));
     puts(logbuf);
     break;
   case 2:
-    printf("---SimMessage: TIME OUT!\n");
+    Log(ANSI_FMT("TIME OUT", ANSI_FG_YELLOW));
     break;
   case 3:
-    printf("---SimMessage: QUIT NPC!\n");
+    Log(ANSI_FMT("QUIT NPC", ANSI_FG_GREEN));
     break; 
   case 4:
     itrace_puts_iringbuf();
-    printf("---SimMessage: DIFFTEST QUIT!\n");
-    printf("---break: ");
+    Log(ANSI_FMT("DIFFTEST QUIT", ANSI_FG_RED));
+    Log(ANSI_FMT("break at:", ANSI_FG_RED));
     puts(logbuf);
     break; 
   default:
