@@ -9,28 +9,6 @@ static uint8_t pmem[CONFIG_MSIZE] PG_ALIGN = {};
 uint8_t* guest_to_host(uint64_t paddr) { return pmem + paddr - CONFIG_MBASE; }
 uint64_t host_to_guest(uint8_t *haddr) { return haddr - pmem + CONFIG_MBASE; }
 
-long load_img(char *bin) {
-  
-  char *img_file = bin;
-
-  if (img_file == NULL) assert(0);
-
-  FILE *fp = fopen(img_file, "rb");
-  if(fp == NULL) assert(0);
-
-  fseek(fp, 0, SEEK_END);
-  long size = ftell(fp);
-
-  Log(ANSI_FMT("The image is %s, size = %ld", ANSI_FG_BLUE), img_file, size);
-
-  fseek(fp, 0, SEEK_SET);
-  int ret = fread(guest_to_host(RESET_VECTOR), size, 1, fp);
-  assert(ret == 1);
-
-  fclose(fp);
-  return size;
-}
-
 
 static uint64_t host_read(void *addr, int len){
   switch (len) {

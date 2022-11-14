@@ -12,6 +12,29 @@ int sim_time = 10000;   // 最大仿真时间戳
 
 static char logbuf[128];
 
+static long load_img(char *bin) {
+  
+  char *img_file = bin;
+
+  if (img_file == NULL) assert(0);
+
+  FILE *fp = fopen(img_file, "rb");
+  if(fp == NULL) assert(0);
+
+  fseek(fp, 0, SEEK_END);
+  long size = ftell(fp);
+
+  Log(ANSI_FMT("The image is %s, size = %ld", ANSI_FG_BLUE), img_file, size);
+
+  fseek(fp, 0, SEEK_SET);
+  int ret = fread(guest_to_host(RESET_VECTOR), size, 1, fp);
+  assert(ret == 1);
+
+  fclose(fp);
+  return size;
+}
+
+
 void update_logbuff(){
     char *p = logbuf;
     p += snprintf(p, sizeof(logbuf), "#%2d  0x%016lx :", main_time, top->pc);
