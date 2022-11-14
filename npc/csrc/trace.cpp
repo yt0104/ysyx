@@ -189,11 +189,11 @@ void ftrace_matchFunc( uint64_t pc, uint64_t dnpc, uint32_t inst) { }
 
 #ifdef CONFIG_MTRACE
 void mtrace_read(uint64_t addr, int len, uint64_t data){
-	printf("MTRACE--> read : addr = %8lx  len = %d   data = %8lx\n", addr, len, data);
+	printf("MTRACE--> read : addr = %8lx  len = %d   data = %16lx\n", addr, len, data);
 }
 
 void mtrace_write(uint64_t addr, int len, uint64_t data){
-	printf("MTRACE--> write: addr = %8lx  len = %d   data = %8lx\n", addr, len, data);
+	printf("MTRACE--> write: addr = %8lx  len = %d   data = %16lx\n", addr, len, data);
 }
 #else
 void mtrace_read(uint64_t addr, int len, uint64_t data);
