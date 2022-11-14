@@ -46,6 +46,7 @@ static void out_of_bound(uint64_t addr) {
 extern "C" void pmem_read(long long raddr, long long *rdata ) {
   if (likely(in_pmem(raddr))) {
     *rdata = host_read(guest_to_host(raddr), 8);
+    mtrace_read(raddr, 8, *rdata);
     return;
   }
   out_of_bound(raddr);
@@ -55,6 +56,7 @@ extern "C" void pmem_read(long long raddr, long long *rdata ) {
 
 extern "C" void pmem_write(long long waddr, long long wdata, char wmask) {
   if (likely(in_pmem(waddr))){
+    int len = 0;
     uint64_t wtemp = 0;
     for (int i = 0; i < 8; i++)
     {
@@ -65,7 +67,9 @@ extern "C" void pmem_write(long long waddr, long long wdata, char wmask) {
       }
       wmask = wmask >> 1;
       waddr ++;
+      len ++;
     }
+    mtrace_write(waddr, len, wdata);
     return;
   }
   out_of_bound(waddr);
