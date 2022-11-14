@@ -53,12 +53,6 @@ static long load_img(char *bin) {
   return size;
 }
 
-static void step_and_dump_wave(){
-  top->eval();
-  contextp->timeInc(1);
-  tfp->dump(contextp->time());
-}
-
 static void sim_init(){
   contextp = new VerilatedContext;
   tfp = new VerilatedVcdC;
@@ -66,12 +60,6 @@ static void sim_init(){
   contextp->traceEverOn(true);
   top->trace(tfp, 0);
   tfp->open("wave.vcd");
-
-  top->clk = 0;
-  top->rst_n = 1; step_and_dump_wave();
-  top->rst_n = 0; step_and_dump_wave();
-  top->rst_n = 1; step_and_dump_wave();
-     //3s reset
 }
 
 extern "C" void sim_exit(int state){
@@ -105,6 +93,12 @@ extern "C" void sim_exit(int state){
   tfp->close();
   delete contextp;
   exit(0);
+}
+
+static void step_and_dump_wave(){
+  top->eval();
+  contextp->timeInc(1);
+  tfp->dump(contextp->time());
 }
 
 static void step_once(){
@@ -160,7 +154,11 @@ int main(int argc, char *argv[]) {
   
   init_disasm("riscv64-pc-linux-gnu");
 
-
+  top->clk = 0;
+  top->rst_n = 1; step_and_dump_wave();
+  top->rst_n = 0; step_and_dump_wave();
+  top->rst_n = 1; step_and_dump_wave();
+  step_and_dump_wave();   //5s reset
 
   init_difftest(argv[3], img_size, 1234);
 
