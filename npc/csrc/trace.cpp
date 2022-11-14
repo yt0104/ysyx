@@ -196,8 +196,8 @@ void mtrace_write(uint64_t addr, int len, uint64_t data){
 	printf("MTRACE--> write: addr = %8lx   data = %16lx   len = %d\n", addr, data, len);
 }
 #else
-void mtrace_read(uint64_t addr, int len, uint64_t data);
-void mtrace_write(uint64_t addr, int len, uint64_t data);
+void mtrace_read(uint64_t addr, int len, uint64_t data) {}
+void mtrace_write(uint64_t addr, int len, uint64_t data) {}
 #endif
 
 
