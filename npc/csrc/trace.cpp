@@ -188,8 +188,13 @@ void ftrace_matchFunc( uint64_t pc, uint64_t dnpc, uint32_t inst) { }
 
 
 #ifdef CONFIG_MTRACE
+
+uint64_t lraddr,lrdata;
+int lrlen;
 void mtrace_read(uint64_t addr, int len, uint64_t data){
+	if(lraddr == addr|| lrdata == data|| lrlen == len) return;
 	printf("MTRACE--> #%3d, pc = %8lx read : addr = %8lx   data = %16lx \n", main_time, top->pc, addr, data);
+	lraddr = addr; lrdata = data; lrlen = len;
 }
 
 uint64_t lwaddr,lwdata;
