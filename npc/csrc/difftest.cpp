@@ -53,7 +53,7 @@ void init_difftest(char *ref_so_file, long img_size, int port) {
   void (*ref_difftest_init)(int) = (void(*)(int))dlsym(handle, "difftest_init");
   assert(ref_difftest_init);
 
-  Log(ANSI_FMT("The result of every instruction will be compared with %s.", ANSI_FG_BLUE), ref_so_file );
+  Log(ANSI_FMT("The elf is %s.", ANSI_FG_BLUE), ref_so_file );
 
   ref_difftest_init(port);
   ref_difftest_memcpy(RESET_VECTOR, guest_to_host(RESET_VECTOR), img_size, DIFFTEST_TO_REF);
