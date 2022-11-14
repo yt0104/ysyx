@@ -78,9 +78,11 @@ extern "C" void pmem_write(long long waddr, long long wdata, char wmask) {
 
 
 extern "C" void ifetch(long long pc, int* inst) {
-  long long inst_t;
-  pmem_read(pc, &inst_t);
-  *inst = inst_t &0xffffffff;
+  if (likely(in_pmem(pc))) {
+    *inst = host_read(guest_to_host(pc), 4);
+    return;
+  }
+  out_of_bound(pc);
   return;
 }
 
