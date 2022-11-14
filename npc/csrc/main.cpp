@@ -155,7 +155,13 @@ int main(int argc, char *argv[]) {
 
   //while (!Verilated::gotFinish() && main_time < sim_time)
     
-  sdb_mainloop();
+  #ifdef CONFIG_AUTO_C	
+    cpu_exec(-1);	//define in build.mk
+  #else 
+  /* Receive commands from user. */
+    sdb_mainloop();
+  #endif
+
 
 }
 
