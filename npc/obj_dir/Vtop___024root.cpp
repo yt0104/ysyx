@@ -57,22 +57,6 @@ VL_INLINE_OPT void Vtop___024root____Vdpiimwrap_top__DOT__u_EXU__DOT__pmem_write
     pmem_write(waddr__Vcvt, wdata__Vcvt, wmask__Vcvt);
 }
 
-extern "C" void inst_print(long long dest, long long src1, long long src2, long long imm);
-
-VL_INLINE_OPT void Vtop___024root____Vdpiimwrap_top__DOT__u_EXU__DOT__inst_print_TOP(QData/*63:0*/ dest, QData/*63:0*/ src1, QData/*63:0*/ src2, QData/*63:0*/ imm) {
-    VL_DEBUG_IF(VL_DBG_MSGF("+    Vtop___024root____Vdpiimwrap_top__DOT__u_EXU__DOT__inst_print_TOP\n"); );
-    // Body
-    long long dest__Vcvt;
-    for (size_t dest__Vidx = 0; dest__Vidx < 1; ++dest__Vidx) dest__Vcvt = dest;
-    long long src1__Vcvt;
-    for (size_t src1__Vidx = 0; src1__Vidx < 1; ++src1__Vidx) src1__Vcvt = src1;
-    long long src2__Vcvt;
-    for (size_t src2__Vidx = 0; src2__Vidx < 1; ++src2__Vidx) src2__Vcvt = src2;
-    long long imm__Vcvt;
-    for (size_t imm__Vidx = 0; imm__Vidx < 1; ++imm__Vidx) imm__Vcvt = imm;
-    inst_print(dest__Vcvt, src1__Vcvt, src2__Vcvt, imm__Vcvt);
-}
-
 extern "C" void set_gpr_ptr(const svOpenArrayHandle a);
 
 VL_INLINE_OPT void Vtop___024root____Vdpiimwrap_top__DOT__u_EXU__DOT__u_reg__DOT__set_gpr_ptr__Vdpioc2_TOP(const VlUnpacked<QData/*63:0*/, 32> &a) {

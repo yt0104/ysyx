@@ -15,8 +15,6 @@ extern "C" {
     // DPI IMPORTS
     // DPI import at vsrc/top.sv:16:30
     extern void ifetch(long long pc, int* inst);
-    // DPI import at vsrc/EXU.sv:58:30
-    extern void inst_print(long long dest, long long src1, long long src2, long long imm);
     // DPI import at vsrc/EXU.sv:37:30
     extern void pmem_read(long long raddr, long long* rdata);
     // DPI import at vsrc/EXU.sv:39:30
