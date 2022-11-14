@@ -10,10 +10,10 @@ int sim_time = 1000;   // 最大仿真时间戳
 
 
 extern "C" void inst_print(long long dest, long long src1, long long src2, long long imm){
-  printf("dest = %lx\n", dest);
-  printf("src1 = %lx\n", src1);
-  printf("src2 = %lx\n", src2);
-  printf("imm  = %lx\n", imm );
+  printf("dest = %llx\n", dest);
+  printf("src1 = %llx\n", src1);
+  printf("src2 = %llx\n", src2);
+  printf("imm  = %llx\n", imm );
   return;
 
 }
