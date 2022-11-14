@@ -1,5 +1,5 @@
 #include "common.h"
-#include "util.h"
+
 
 VerilatedContext* contextp = NULL;
 VerilatedVcdC* tfp = NULL;

@@ -9,6 +9,7 @@
 #include "Vtop.h"
 #include "verilated_dpi.h"
 
+#include "util.h"
 
 #define   CONFIG_AUTO_C
 #define   CONFIG_WATCHPOINT   
