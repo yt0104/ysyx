@@ -3248,7 +3248,7 @@ VL_INLINE_OPT void Vtop___024root___combo__TOP__7(Vtop___024root* vlSelf) {
                        ^ vlSelf->top__DOT__imm);
             } else if ((0xdU == vlSelf->top__DOT__op)) {
                 vlSelf->top__DOT__u_EXU__DOT__dest 
-                    = VL_SHIFTRS_QQI(64,64,32, vlSelf->top__DOT__u_EXU__DOT__src1, 3U);
+                    = VL_SHIFTRS_QQQ(64,64,64, vlSelf->top__DOT__u_EXU__DOT__src1, vlSelf->top__DOT__imm);
             } else if ((0xeU == vlSelf->top__DOT__op)) {
                 vlSelf->top__DOT__u_EXU__DOT__dest 
                     = (vlSelf->top__DOT__u_EXU__DOT__src1 
