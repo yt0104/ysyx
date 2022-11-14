@@ -21,7 +21,7 @@ long load_img(char *bin) {
   fseek(fp, 0, SEEK_END);
   long size = ftell(fp);
 
-  printf("---The image is %s, size = %ld\n", img_file, size);
+  Log(ANSI_FMT("The image is %s, size = %ld", ANSI_FG_BLUE), img_file, size);
 
   fseek(fp, 0, SEEK_SET);
   int ret = fread(guest_to_host(RESET_VECTOR), size, 1, fp);
