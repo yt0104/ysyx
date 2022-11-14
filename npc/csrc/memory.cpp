@@ -39,7 +39,7 @@ static bool in_pmem(uint64_t addr) {
 }
 
 static void out_of_bound(uint64_t addr) {
-  printf("address = %16lx is out of bound\n", addr);
+  Log(ANSI_FMT("address = %16lx is out of bound", ANSI_FG_RED), addr);
   assert(0);
 }
 
