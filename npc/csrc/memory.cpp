@@ -67,7 +67,7 @@ extern "C" void pmem_write(long long waddr, long long wdata, char wmask) {
       waddr ++;
     }
   }
-  out_of_bound(waddr);
+  //out_of_bound(waddr);
   return;
 }
 
