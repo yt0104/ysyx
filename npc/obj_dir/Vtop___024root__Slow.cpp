@@ -3082,7 +3082,7 @@ void Vtop___024root___settle__TOP__4(Vtop___024root* vlSelf) {
                                                        == vlSelf->top__DOT__op)
                                                        ? 
                                                       ((vlSelf->top__DOT__u_EXU__DOT__src1 
-                                                        != vlSelf->top__DOT__u_EXU__DOT__src2)
+                                                        == vlSelf->top__DOT__u_EXU__DOT__src2)
                                                         ? 
                                                        (vlSelf->pc 
                                                         + vlSelf->top__DOT__imm)

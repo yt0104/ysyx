@@ -1,4 +1,5 @@
 #include "common.h"
+#include "util.h"
 
 VerilatedContext* contextp = NULL;
 VerilatedVcdC* tfp = NULL;
@@ -7,16 +8,6 @@ Vtop* top;
 
 int main_time = 0;     // 仿真时间戳
 int sim_time = 10000;   // 最大仿真时间戳
-
-
-extern "C" void inst_print(long long dest, long long src1, long long src2, long long imm){
-  printf("dest = %llx\n", dest);
-  printf("src1 = %llx\n", src1);
-  printf("src2 = %llx\n", src2);
-  printf("imm  = %llx\n", imm );
-  return;
-
-}
 
 
 static char logbuf[128];
@@ -55,6 +46,7 @@ extern "C" void sim_exit(int state){
   {
   case 0: 
     printf("---SimMessage: HIT GOOD TRAP!\n");
+    ANSI_FMT("HIT GOOD TRAP", ANSI_FG_GREEN);
     break;
   case 1:
     itrace_puts_iringbuf();
