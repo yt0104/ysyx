@@ -6,7 +6,7 @@ VerilatedVcdC* tfp = NULL;
 Vtop* top;
 
 int main_time = 0;     // 仿真时间戳
-int sim_time = 1000;   // 最大仿真时间戳
+int sim_time = 10000;   // 最大仿真时间戳
 
 
 extern "C" void inst_print(long long dest, long long src1, long long src2, long long imm){
