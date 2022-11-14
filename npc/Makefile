@@ -31,6 +31,9 @@ clean:
 	rm -rf obj_dir wave.vcd	
 
 
+cd:
+	cd ~/ysyx-workbench/am-kernels/tests/cpu-tests
+
 include ../Makefile
 
 
