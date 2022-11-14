@@ -157,7 +157,7 @@ void ftrace_matchFunc( uint64_t pc, uint64_t dnpc, uint32_t inst){
 			fseek(fp, str_offset + symtab[i].st_name, SEEK_SET);
 			a = fread(func, FUNC_SIZE, 1, fp);
             
-			printf("FTRACE--> pc = %8lx:", pc);
+			printf("FTRACE--> #%3d, pc = %8lx:", main_time, pc);
 			func_proc++ ;
 			for(int j=0;j<func_proc;j++){
 				printf("  ");
@@ -169,7 +169,7 @@ void ftrace_matchFunc( uint64_t pc, uint64_t dnpc, uint32_t inst){
 			fseek(fp, str_offset + symtab[i].st_name, SEEK_SET);
 			a = fread(func, FUNC_SIZE, 1, fp);
 
-			printf("pc = %lx:", pc);
+			printf("FTRACE--> #%3d, pc = %8lx:", main_time, pc);
 			func_proc-- ;
 			for(int j=0;j<func_proc;j++){
 				printf("  ");
