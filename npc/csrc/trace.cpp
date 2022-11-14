@@ -192,8 +192,14 @@ void mtrace_read(uint64_t addr, int len, uint64_t data){
 	printf("MTRACE--> #%3d, pc = %8lx read : addr = %8lx   data = %16lx \n", main_time, top->pc, addr, data);
 }
 
+uint64_t lwaddr,lwdata;
+int lwlen;
 void mtrace_write(uint64_t addr, int len, uint64_t data){
+	if(lwaddr == addr|| lwdata == data|| lwlen == len) return;
+
 	printf("MTRACE--> #%3d, pc = %8lx write: addr = %8lx   data = %16lx   len = %d\n", main_time, top->pc, addr, data, len);
+	lwaddr = addr; lwdata = data; lwlen = len;
+	return;
 }
 #else
 void mtrace_read(uint64_t addr, int len, uint64_t data) {}
