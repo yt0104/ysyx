@@ -12,6 +12,25 @@ int sim_time = 10000;   // 最大仿真时间戳
 
 static char logbuf[128];
 
+void update_logbuff(){
+    char *p = logbuf;
+    p += snprintf(p, sizeof(logbuf), "#%2d  0x%016lx :", main_time, top->pc);
+    int ilen = 4;
+    uint8_t *inst = (uint8_t *)&top->inst;
+    for (int i = ilen - 1; i >= 0; i --) {
+      p += snprintf(p, 4, " %02x", inst[i]);
+    }
+    int ilen_max = 4;
+    int space_len = ilen_max - ilen;
+    if (space_len < 0) space_len = 0;
+    space_len = space_len * 3 + 1;
+    memset(p, ' ', space_len);
+    p += space_len;
+
+    disassemble(p, logbuf + sizeof(logbuf) - p, top->pc, (uint8_t *)&top->inst, ilen);
+
+}
+
 static long load_img(char *bin) {
   
   char *img_file = bin;
@@ -34,26 +53,11 @@ static long load_img(char *bin) {
   return size;
 }
 
-
-void update_logbuff(){
-    char *p = logbuf;
-    p += snprintf(p, sizeof(logbuf), "#%2d  0x%016lx :", main_time, top->pc);
-    int ilen = 4;
-    uint8_t *inst = (uint8_t *)&top->inst;
-    for (int i = ilen - 1; i >= 0; i --) {
-      p += snprintf(p, 4, " %02x", inst[i]);
-    }
-    int ilen_max = 4;
-    int space_len = ilen_max - ilen;
-    if (space_len < 0) space_len = 0;
-    space_len = space_len * 3 + 1;
-    memset(p, ' ', space_len);
-    p += space_len;
-
-    disassemble(p, logbuf + sizeof(logbuf) - p, top->pc, (uint8_t *)&top->inst, ilen);
-
+static void step_and_dump_wave(){
+  top->eval();
+  contextp->timeInc(1);
+  tfp->dump(contextp->time());
 }
-
 
 static void sim_init(){
   contextp = new VerilatedContext;
@@ -62,6 +66,12 @@ static void sim_init(){
   contextp->traceEverOn(true);
   top->trace(tfp, 0);
   tfp->open("wave.vcd");
+
+  top->clk = 0;
+  top->rst_n = 1; step_and_dump_wave();
+  top->rst_n = 0; step_and_dump_wave();
+  top->rst_n = 1; step_and_dump_wave();
+     //3s reset
 }
 
 extern "C" void sim_exit(int state){
@@ -97,12 +107,6 @@ extern "C" void sim_exit(int state){
   exit(0);
 }
 
-static void step_and_dump_wave(){
-  top->eval();
-  contextp->timeInc(1);
-  tfp->dump(contextp->time());
-}
-
 static void step_once(){
     top->clk = 0;
     step_and_dump_wave();
@@ -114,7 +118,6 @@ static void step_once(){
 
 uint64_t lpc;
 uint32_t linst;
-
 void cpu_exec(uint64_t n){
 
   for (;n > 0; n --)
@@ -157,11 +160,7 @@ int main(int argc, char *argv[]) {
   
   init_disasm("riscv64-pc-linux-gnu");
 
-  top->clk = 0;
-  top->rst_n = 1; step_and_dump_wave();
-  top->rst_n = 0; step_and_dump_wave();
-  top->rst_n = 1; step_and_dump_wave();
-  step_and_dump_wave();   //5s reset
+
 
   init_difftest(argv[3], img_size, 1234);
 
