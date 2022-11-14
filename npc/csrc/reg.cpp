@@ -15,7 +15,7 @@ const char *regs[] = {
 };
 
 void isa_reg_display() {
-	printf("32 REGS is shown:\n");
+	Log(ANSI_FMT("32 REGS is shown:", ANSI_FG_BLUE));
 	printf("$0 \t\t 0x%lx \t\t %ld\n", cpu_gpr[0 ],cpu_gpr[ 0]);
 	printf("ra \t\t 0x%lx \t\t %ld\n", cpu_gpr[1 ],cpu_gpr[ 1]);
 	printf("sp \t\t 0x%lx \t\t %ld\n", cpu_gpr[2 ],cpu_gpr[ 2]);

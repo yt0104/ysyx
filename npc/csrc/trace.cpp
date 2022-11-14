@@ -16,7 +16,7 @@ void itrace_update_iringbuf(char *s){
 };
 
 void itrace_puts_iringbuf(){
-  printf("ITRACE--> %d LAST INSTS is shown:\n",MAX_INST_TO_SAVE);
+  Log(ANSI_FMT("%d LAST INSTS is shown:", ANSI_FG_BLUE), MAX_INST_TO_SAVE);
   for(int i = inst_p; i < inst_p + MAX_INST_TO_SAVE; i++){
     if(*iringbuf[i%MAX_INST_TO_SAVE] != '\0') printf("ITRACE--> %s\n",iringbuf[i%MAX_INST_TO_SAVE]);
   }
@@ -126,10 +126,10 @@ int ftrace_load_elf(char* elf) {
   char *elf_file = elf;
 
   if (elf_file == NULL) {
-	puts("---No elf is given, but ftrace is open.");
+	Log(ANSI_FMT("No elf is given, but ftrace is open.", ANSI_FG_BLUE));
     assert(0); 
   }
-  printf("---The elf is %s\n", elf_file);
+  Log(ANSI_FMT("The elf is %s.", ANSI_FG_BLUE), elf_file);
 
   return ftrace_getTab(elf_file);
 }

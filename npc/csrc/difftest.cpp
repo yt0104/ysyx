@@ -54,7 +54,7 @@ void init_difftest(char *ref_so_file, long img_size, int port) {
   assert(ref_difftest_init);
 
   puts("---Differential testing: ON");
-  Log(ANSI_FMT("The result of every instruction will be compared with %s.\n", ANSI_FG_BLUE), ref_so_file );
+  Log(ANSI_FMT("The result of every instruction will be compared with %s.", ANSI_FG_BLUE), ref_so_file );
 
   ref_difftest_init(port);
   ref_difftest_memcpy(RESET_VECTOR, guest_to_host(RESET_VECTOR), img_size, DIFFTEST_TO_REF);
