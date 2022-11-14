@@ -55,10 +55,6 @@ void init_difftest(char *ref_so_file, long img_size, int port) {
 
   puts("---Differential testing: ON");
   Log(ANSI_FMT("The result of every instruction will be compared with %s.\n", ANSI_FG_BLUE), ref_so_file );
-              /*
-  printf("---The result of every instruction will be compared with %s.\n"
-      "---This will help you a lot for debugging, but also significantly reduce the performance.\n"
-      "---If it is not necessary, you can turn it off\n", ref_so_file);*/
 
   ref_difftest_init(port);
   ref_difftest_memcpy(RESET_VECTOR, guest_to_host(RESET_VECTOR), img_size, DIFFTEST_TO_REF);
@@ -67,6 +63,7 @@ void init_difftest(char *ref_so_file, long img_size, int port) {
 
 }
 
+extern char *regs[];
 
 static bool isa_difftest_checkregs() {
   uint64_t ref_gpr[32];
@@ -78,7 +75,9 @@ static bool isa_difftest_checkregs() {
   {
     if(ref_gpr[i] != cpu_gpr[i]) {
 
-      printf("---difftest:ref_gpr[%d]=%lx, cpu_gpr[%d]=%lx\n ", i, ref_gpr[i], i, cpu_gpr[i] );
+      Log(ANSI_FMT("reg difftest::%s, dut=%lx, ref=%lx", ANSI_FG_RED), regs[i], cpu_gpr[i], ref_gpr[i]);
+
+      //printf("---difftest:%s, dut=%lx, ref=%lx\n ", i, ref_gpr[i], i, cpu_gpr[i] );
       return false;
     }
   }
