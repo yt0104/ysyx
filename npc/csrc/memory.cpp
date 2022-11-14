@@ -64,12 +64,12 @@ extern "C" void pmem_write(long long waddr, long long wdata, char wmask) {
         wtemp = wdata&0xff ;
         wdata = wdata >> 8;
         host_write(guest_to_host(waddr), 1, wtemp);
+        len ++;
       }
       wmask = wmask >> 1;
       waddr ++;
-      len ++;
     }
-    mtrace_write(waddr-len, len, wdata);
+    mtrace_write(waddr-8, len, wdata);
     return;
   }
   out_of_bound(waddr);
