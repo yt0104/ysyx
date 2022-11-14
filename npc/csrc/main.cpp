@@ -50,7 +50,7 @@ extern "C" void sim_exit(int state){
   case 1:
     itrace_puts_iringbuf();
     Log(ANSI_FMT("HIT BAD TRAP", ANSI_FG_RED));
-    Log(ANSI_FMT("break at:", ANSI_FG_RED));
+    Log(ANSI_FMT("break at: %s", ANSI_FG_RED), logbuf);
     puts(logbuf);
     break;
   case 2:
