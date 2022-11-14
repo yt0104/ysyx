@@ -2555,8 +2555,8 @@ VL_INLINE_OPT void Vtop___024root___combo__TOP__6(Vtop___024root* vlSelf) {
                     = (vlSelf->top__DOT__u_EXU__DOT__src1 
                        + vlSelf->top__DOT__imm);
                 vlSelf->top__DOT__npc = (4ULL + vlSelf->pc);
-                vlSelf->top__DOT__u_EXU__DOT__wenR = 1U;
                 Vtop___024root____Vdpiimwrap_top__DOT__u_EXU__DOT__pmem_read_TOP(vlSelf->top__DOT__u_EXU__DOT__raddr, vlSelf->__Vtask_top__DOT__u_EXU__DOT__pmem_read__3__rdata);
+                vlSelf->top__DOT__u_EXU__DOT__wenR = 1U;
                 vlSelf->top__DOT__u_EXU__DOT__rdata 
                     = vlSelf->__Vtask_top__DOT__u_EXU__DOT__pmem_read__3__rdata;
                 vlSelf->top__DOT__u_EXU__DOT__dest 
@@ -2566,8 +2566,8 @@ VL_INLINE_OPT void Vtop___024root___combo__TOP__6(Vtop___024root* vlSelf) {
                     = (vlSelf->top__DOT__u_EXU__DOT__src1 
                        + vlSelf->top__DOT__imm);
                 vlSelf->top__DOT__npc = (4ULL + vlSelf->pc);
-                vlSelf->top__DOT__u_EXU__DOT__wenR = 1U;
                 Vtop___024root____Vdpiimwrap_top__DOT__u_EXU__DOT__pmem_read_TOP(vlSelf->top__DOT__u_EXU__DOT__raddr, vlSelf->__Vtask_top__DOT__u_EXU__DOT__pmem_read__4__rdata);
+                vlSelf->top__DOT__u_EXU__DOT__wenR = 1U;
                 vlSelf->top__DOT__u_EXU__DOT__rdata 
                     = vlSelf->__Vtask_top__DOT__u_EXU__DOT__pmem_read__4__rdata;
                 vlSelf->top__DOT__u_EXU__DOT__dest 
@@ -2577,8 +2577,8 @@ VL_INLINE_OPT void Vtop___024root___combo__TOP__6(Vtop___024root* vlSelf) {
                     = (vlSelf->top__DOT__u_EXU__DOT__src1 
                        + vlSelf->top__DOT__imm);
                 vlSelf->top__DOT__npc = (4ULL + vlSelf->pc);
-                vlSelf->top__DOT__u_EXU__DOT__wenR = 1U;
                 Vtop___024root____Vdpiimwrap_top__DOT__u_EXU__DOT__pmem_read_TOP(vlSelf->top__DOT__u_EXU__DOT__raddr, vlSelf->__Vtask_top__DOT__u_EXU__DOT__pmem_read__5__rdata);
+                vlSelf->top__DOT__u_EXU__DOT__wenR = 1U;
                 vlSelf->top__DOT__u_EXU__DOT__rdata 
                     = vlSelf->__Vtask_top__DOT__u_EXU__DOT__pmem_read__5__rdata;
                 vlSelf->top__DOT__u_EXU__DOT__dest 
@@ -2588,8 +2588,8 @@ VL_INLINE_OPT void Vtop___024root___combo__TOP__6(Vtop___024root* vlSelf) {
                     = (vlSelf->top__DOT__u_EXU__DOT__src1 
                        + vlSelf->top__DOT__imm);
                 vlSelf->top__DOT__npc = (4ULL + vlSelf->pc);
-                vlSelf->top__DOT__u_EXU__DOT__wenR = 1U;
                 Vtop___024root____Vdpiimwrap_top__DOT__u_EXU__DOT__pmem_read_TOP(vlSelf->top__DOT__u_EXU__DOT__raddr, vlSelf->__Vtask_top__DOT__u_EXU__DOT__pmem_read__6__rdata);
+                vlSelf->top__DOT__u_EXU__DOT__wenR = 1U;
                 vlSelf->top__DOT__u_EXU__DOT__rdata 
                     = vlSelf->__Vtask_top__DOT__u_EXU__DOT__pmem_read__6__rdata;
                 vlSelf->top__DOT__u_EXU__DOT__dest 
@@ -2604,8 +2604,8 @@ VL_INLINE_OPT void Vtop___024root___combo__TOP__6(Vtop___024root* vlSelf) {
                     = (vlSelf->top__DOT__u_EXU__DOT__src1 
                        + vlSelf->top__DOT__imm);
                 vlSelf->top__DOT__npc = (4ULL + vlSelf->pc);
-                vlSelf->top__DOT__u_EXU__DOT__wenR = 1U;
                 Vtop___024root____Vdpiimwrap_top__DOT__u_EXU__DOT__pmem_read_TOP(vlSelf->top__DOT__u_EXU__DOT__raddr, vlSelf->__Vtask_top__DOT__u_EXU__DOT__pmem_read__7__rdata);
+                vlSelf->top__DOT__u_EXU__DOT__wenR = 1U;
                 vlSelf->top__DOT__u_EXU__DOT__rdata 
                     = vlSelf->__Vtask_top__DOT__u_EXU__DOT__pmem_read__7__rdata;
                 vlSelf->top__DOT__u_EXU__DOT__dest 
