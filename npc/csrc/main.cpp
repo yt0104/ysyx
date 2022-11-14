@@ -106,7 +106,8 @@ static void step_once(){
     step_and_dump_wave();
     top->clk = 1;
     step_and_dump_wave();
-    long long inst_t;
+    
+    main_time ++;
 
 }
 
@@ -135,7 +136,7 @@ void cpu_exec(uint64_t n){
 
     difftest_step();
 
-    if(main_time++ > sim_time) sim_exit(2);
+    if(main_time > sim_time) sim_exit(2);
   }
     
 }
