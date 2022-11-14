@@ -38,7 +38,7 @@ static char func[FUNC_SIZE];
 
 static uint64_t sym_offset,str_offset;
 static uint64_t sym_size;
-static FILE *fp; top->pc
+static FILE *fp; 
 static int func_proc = 0;
 
 
@@ -189,11 +189,11 @@ void ftrace_matchFunc( uint64_t pc, uint64_t dnpc, uint32_t inst) { }
 
 #ifdef CONFIG_MTRACE
 void mtrace_read(uint64_t addr, int len, uint64_t data){
-	printf("MTRACE--> pc = %8lx read : addr = %8lx   data = %16lx \n", top->pc, addr, data);
+	printf("MTRACE--> #%3d, pc = %8lx read : addr = %8lx   data = %16lx \n", main_time, top->pc, addr, data);
 }
 
 void mtrace_write(uint64_t addr, int len, uint64_t data){
-	printf("MTRACE--> pc = %8lx write: addr = %8lx   data = %16lx   len = %d\n", top->pc, addr, data, len);
+	printf("MTRACE--> #%3d, pc = %8lx write: addr = %8lx   data = %16lx   len = %d\n", main_time, top->pc, addr, data, len);
 }
 #else
 void mtrace_read(uint64_t addr, int len, uint64_t data) {}

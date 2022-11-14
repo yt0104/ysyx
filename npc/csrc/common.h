@@ -14,12 +14,13 @@
 #define   CONFIG_AUTO_C
 #define   CONFIG_WATCHPOINT   
 #define   CONFIG_ITRACE       
-//#define   CONFIG_FTRACE 
+#define   CONFIG_FTRACE 
 #define   CONFIG_MTRACE  
 #define   CONFIG_DIFFTEST     
 
 
 extern Vtop* top;
+extern int main_time;
 
 /*main*/
 void cpu_exec(uint64_t n);
