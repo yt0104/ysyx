@@ -65,7 +65,8 @@ void init_difftest(char *ref_so_file, long img_size, int port) {
 
 extern char *regs[];
 
-static bool isa_difftest_checkregs() {
+static void checkregs() {
+
   uint64_t ref_gpr[32];
   uint64_t ref_pc;
 
@@ -75,24 +76,18 @@ static bool isa_difftest_checkregs() {
   {
     if(ref_gpr[i] != cpu_gpr[i]) {
 
-      Log(ANSI_FMT("reg difftest::%s, dut=%lx, ref=%lx", ANSI_FG_RED), regs[i], cpu_gpr[i], ref_gpr[i]);
-
-      //printf("---difftest:%s, dut=%lx, ref=%lx\n ", i, ref_gpr[i], i, cpu_gpr[i] );
-      return false;
+      isa_reg_display();
+      Log(ANSI_FMT("reg difftest: %s, dut=%lx, ref=%lx", ANSI_FG_RED), regs[i], cpu_gpr[i], ref_gpr[i]);
+      sim_exit(4);
     }
   }
   
-  if(ref_pc != top->pc) return false;
-  
-  return true;
-}
-
-
-static void checkregs() {
-  if (!isa_difftest_checkregs()) {
-    isa_reg_display();
+  if(ref_pc != top->pc) {
+    Log(ANSI_FMT("pc difftest: dut=%lx, ref=%lx", ANSI_FG_RED), top->pc, ref_pc );
     sim_exit(4);
   }
+  
+  return;
 }
 
 
