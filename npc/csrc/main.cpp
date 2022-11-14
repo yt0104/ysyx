@@ -51,7 +51,6 @@ extern "C" void sim_exit(int state){
     itrace_puts_iringbuf();
     Log(ANSI_FMT("HIT BAD TRAP", ANSI_FG_RED));
     Log(ANSI_FMT("break at: %s", ANSI_FG_RED), logbuf);
-    puts(logbuf);
     break;
   case 2:
     Log(ANSI_FMT("TIME OUT", ANSI_FG_YELLOW));
@@ -63,10 +62,9 @@ extern "C" void sim_exit(int state){
     itrace_puts_iringbuf();
     Log(ANSI_FMT("DIFFTEST QUIT", ANSI_FG_RED));
     Log(ANSI_FMT("break at: %s", ANSI_FG_RED), logbuf);
-    puts(logbuf);
     break; 
   default:
-    printf("---SimMessage: Unknown EXIT!\n");
+    Log(ANSI_FMT("Unknown EXIT", ANSI_FG_RED));
     break;
   }
 
