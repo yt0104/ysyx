@@ -46,7 +46,7 @@ extern "C" void sim_exit(int state){
   {
   case 0: 
     printf("---SimMessage: HIT GOOD TRAP!\n");
-    ANSI_FMT("HIT GOOD TRAP", ANSI_FG_GREEN);
+    Log(ANSI_FMT("HIT GOOD TRAP", ANSI_FG_GREEN));
     break;
   case 1:
     itrace_puts_iringbuf();

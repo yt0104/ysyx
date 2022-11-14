@@ -20,20 +20,15 @@
 
 #define ANSI_FMT(str, fmt) fmt str ANSI_NONE
 
-#define log_write(...) \
-  do { \
-    extern FILE* log_fp; \
-    extern bool log_enable(); \
-    if (log_enable()) { \
-      fprintf(log_fp, __VA_ARGS__); \
-      fflush(log_fp); \
-    } \
-  } while (0) \
-
 
 #define _Log(...) \
   do { \
     printf(__VA_ARGS__); \
-    log_write(__VA_ARGS__); \
   } while (0)
+
+#define Log(format, ...) \
+    _Log(ANSI_FMT("[%s:%d %s] " format, ANSI_FG_BLUE) "\n", \
+        __FILE__, __LINE__, __func__, ## __VA_ARGS__)
+
+
 
