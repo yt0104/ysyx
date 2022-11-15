@@ -6,11 +6,11 @@ VerilatedVcdC* tfp = NULL;
 
 Vtop* top;
 
-int main_time = 0;     // 仿真时间戳
+int main_time = 0;      // 仿真时间戳
 int sim_time = 10000;   // 最大仿真时间戳
 
 
-char logbuf[128];
+char logbuf[128];       
 
 void update_logbuff(){
     char *p = logbuf;
@@ -106,8 +106,6 @@ static void step_once(){
     step_and_dump_wave();
     top->clk = 1;
     step_and_dump_wave();
-    
-    main_time ++;
 
 }
 
@@ -136,7 +134,7 @@ void cpu_exec(uint64_t n){
 
     difftest_step();
 
-    if(main_time > sim_time) sim_exit(2);
+    if(main_time++ > sim_time) sim_exit(2);
   }
     
 }
