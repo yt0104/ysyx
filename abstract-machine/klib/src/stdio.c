@@ -8,20 +8,22 @@
 
 
 //设置输出缓冲区，为1024字节大小
-//static char sprint_buf[1024];
+static char sprint_buf[1024];
 
 int printf(const char *fmt, ...) {
-  panic("Not implemented");
- /* va_list args; //用于存放参数列表的数据结构
+  va_list args; //用于存放参数列表的数据结构
   int n;
 
   va_start(args, fmt);
   n = vsprintf(sprint_buf, fmt, args);
+  for (const char *p = sprint_buf; *p; p++) {
+    putch(*p);
+  }
   va_end(args);//执行清理参数列表的工作
-  if (console_ops.write)
-  		console_ops.write(sprint_buf, n);
+  //if (console_ops.write)
+  //		console_ops.write(sprint_buf, n);
   return n;
-*/
+
 }
 
 int vsprintf(char *out, const char *fmt, va_list ap) {
