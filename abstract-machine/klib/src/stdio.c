@@ -66,6 +66,11 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
 		case 'd':	//十进制
       base = 10;
       break;
+    case 'c':
+      int c = va_arg(ap, int);
+      if (!c) c = 'N';
+      *str++ = (char)c;
+      continue;
 
     case 's':
       s = va_arg(ap, char *);//char*格式获取参数
