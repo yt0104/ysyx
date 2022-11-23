@@ -1,7 +1,7 @@
 #include <am.h>
 #include <nemu.h>
-#include <sys/time.h>
-#include <time.h>
+
+#include <stdio.h>
 
 
 void __am_timer_init() {
@@ -14,6 +14,7 @@ void __am_timer_uptime(AM_TIMER_UPTIME_T *uptime) {
   //uptime->us = 0;
   //uptime->us = RTC_ADDR;
   uptime->us = ind(RTC_ADDR);
+  printf("us:%d\n");
 
 }
 
