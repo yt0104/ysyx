@@ -101,7 +101,8 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
 		num = va_arg(ap, unsigned int);
     if(num == 0) {
       if(num_para != 0) { //add bits
-        for(i = 0; i < len-1; i++) *str++ = '0';
+        for(i = 0; i < num_para-1; i++) *str++ = '0';
+        
       }
       *str++ = '0';
     }
@@ -113,7 +114,7 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
       len = i;
       
       if(num_para != 0) { //add bits
-        for(i = 0; i < num_para - len; i++) *str++ = '0';
+        for(i = 0; i < num_para-len; i++) *str++ = '0';
       }
       for(i = 0; i < len; i++){
         *str++ = num_data[ temp[len-i-1] ];
