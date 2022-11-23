@@ -31,6 +31,7 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
   int temp[64];
   int i,len;
   const char *s;
+  unsigned int num_para;
 	unsigned int num;
   int base;
 
@@ -50,8 +51,14 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
         
 		//遇到%后执行下面代码	
 		++fmt;				//跳过第一个 '%'
-		base = 10;//默认十进制
-    
+
+		num_para = 0; //%xxd
+    while (*fmt >= '0' && *fmt <= '9')
+    {
+      num_para = num_para * 10 + *fmt - '0';
+    }
+
+    base = 10;//默认十进制
 		switch (*fmt) {
     
 		/* integer number formats - set up the flags and "break" */
@@ -91,13 +98,21 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
 
     //num --> string
 		num = va_arg(ap, unsigned int);
-    if(num == 0) *str++ = '0';
+    if(num == 0) {
+      if(num_para != 0) { //add bits
+        for(i = 0; i < len-1; i++) *str++ = '0';
+      }
+      *str++ = '0';
+    }
     else {
       for(i = 0; num != 0; i++ ){
         temp[i] = num % base;
         num = num / base;
       }
       len = i;
+      if(num_para != 0) { //add bits
+        for(i = 0; i < num_para - len; i++) *str++ = '0';
+      }
       for(i = 0; i < len; i++){
         *str++ = num_data[ temp[len-i-1] ];
       }
