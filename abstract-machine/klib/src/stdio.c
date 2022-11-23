@@ -53,9 +53,10 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
 		++fmt;				//跳过第一个 '%'
 
 		num_para = 0; //%xxd
-    while (*fmt >= '0' && *fmt <= '9')
+    while ((*fmt >= '0' && *fmt <= '9') || *fmt == '.')
     {
-      num_para = num_para * 10 + *fmt - '0';
+      if(*fmt >= '0' && *fmt <= '9') 
+        num_para = num_para * 10 + *fmt - '0';
       fmt++;
     }
 
