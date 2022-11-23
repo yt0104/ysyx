@@ -43,7 +43,7 @@ void device_update() {
   last = now;
 
   IFDEF(CONFIG_HAS_VGA, vga_update_screen());
-  IFDEF(CONFIG_HAS_TIMER, timer_update());
+  //IFDEF(CONFIG_HAS_TIMER, timer_update());
 
 #ifndef CONFIG_TARGET_AM
   SDL_Event event;
