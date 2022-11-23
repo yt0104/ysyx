@@ -56,6 +56,7 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
     while (*fmt >= '0' && *fmt <= '9')
     {
       num_para = num_para * 10 + *fmt - '0';
+      fmt++;
     }
 
     base = 10;//默认十进制
@@ -110,6 +111,7 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
         num = num / base;
       }
       len = i;
+      
       if(num_para != 0) { //add bits
         for(i = 0; i < num_para - len; i++) *str++ = '0';
       }
