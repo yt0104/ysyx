@@ -9,13 +9,12 @@ void __am_timer_init() {
 }
 
 void __am_timer_uptime(AM_TIMER_UPTIME_T *uptime) {
-  //uptime->us = uptime->us + 1;
+  uptime->us = uptime->us + 1;
   //outd(RTC_ADDR, uptime->us);
   //uptime->us = 0;
   //uptime->us = RTC_ADDR;
-  uptime->us = ind(RTC_ADDR - DEVICE_BASE + MMIO_BASE + (uintptr_t)&_pmem_start);
-  //*uptime = io_read(AM_TIMER_UPTIME);
-  printf("us:0x%x\n", uptime->us);
+  //uptime->us = ind(RTC_ADDR - DEVICE_BASE + MMIO_BASE + (uintptr_t)&_pmem_start);
+  printf("us:0x%x\n", &_pmem_start);
 
 }
 
