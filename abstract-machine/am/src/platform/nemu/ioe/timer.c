@@ -13,7 +13,7 @@ void __am_timer_uptime(AM_TIMER_UPTIME_T *uptime) {
   //outd(RTC_ADDR, uptime->us);
   uptime->us = 0;
   uptime->us = RTC_ADDR;
-  uptime->us = uptime->us/1000;
+  uptime->us = uptime->us/10;
 
 }
 
