@@ -8,9 +8,9 @@ uint32_t key_now,key_last;
 void __am_input_keybrd(AM_INPUT_KEYBRD_T *kbd) {
   kbd->keydown = 0;
   kbd->keycode = AM_KEY_NONE;
-  key_now = inl(KBD_ADDR);
-      kbd->keydown = 1;
-      kbd->keycode = key_now; 
+  //key_now = inl(KBD_ADDR);
+      //kbd->keydown = 1;
+  //kbd->keycode = key_now; 
   /*if(key_last != key_now){
     if(key_now == AM_KEY_NONE){
       kbd->keydown = 1;
@@ -21,5 +21,5 @@ void __am_input_keybrd(AM_INPUT_KEYBRD_T *kbd) {
       kbd->keycode = key_last;      
     }
   }*/
-  key_last = key_now;
+  //key_last = key_now;
 }
