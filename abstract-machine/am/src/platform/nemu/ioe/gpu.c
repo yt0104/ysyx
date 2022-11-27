@@ -29,7 +29,7 @@ void __am_gpu_fbdraw(AM_GPU_FBDRAW_T *ctl) {
     outl(SYNC_ADDR, 1);
   }*/
   int i;
-  int w = 400;  // TODO: get the correct width
+  int w = ctl->w;  // TODO: get the correct width
   int h = 300;  // TODO: get the correct height
   uint32_t *fb = (uint32_t *)(uintptr_t)FB_ADDR;
   for (i = 0; i < w * h; i ++) fb[i] = i;
