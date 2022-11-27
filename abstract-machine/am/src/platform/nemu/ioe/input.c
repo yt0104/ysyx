@@ -8,7 +8,7 @@ void __am_input_keybrd(AM_INPUT_KEYBRD_T *kbd) {
   kbd->keycode = AM_KEY_NONE;
   uint32_t key_state = inl(KBD_ADDR);
   if(key_state != AM_KEY_NONE){
-    kbd->keydown = 1;
+    kbd->keydown = 0;
     kbd->keycode = key_state;
   }
 
