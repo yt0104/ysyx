@@ -11,14 +11,14 @@ void __am_input_keybrd(AM_INPUT_KEYBRD_T *kbd) {
   //kbd->keycode = inl(KBD_ADDR);
   key_now = inl(KBD_ADDR);
   if(key_now != key_last){
-    if(key_last == AM_KEY_NONE){
+    if(key_now == AM_KEY_NONE){
       kbd->keydown = 1;
       kbd->keycode = key_last;
-    }
+    }/*
     else{
       kbd->keydown = 0;
       kbd->keycode = key_last;      
-    }
+    }*/
   }
   key_last = key_now;
 }
