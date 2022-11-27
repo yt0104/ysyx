@@ -26,8 +26,8 @@ void __am_gpu_fbdraw(AM_GPU_FBDRAW_T *ctl) {
   uint16_t x = ctl->x, y = ctl->y, w = ctl->w, h = ctl->h;
   uint32_t *image = ctl->pixels;
   uint32_t *fb = (uint32_t *)(uintptr_t)FB_ADDR;
-  for(int i = x; i < x + w; i++){
-    for(int j = y; j < y + h; j++){
+  for(int j = y; j < y + h; j++){
+    for(int i = x; i < x + w; i++){
       //fb[j*400 + i] = *image; //am test
       fb[i*300 + j] = *image;   //slider  image.bin
       image++;
