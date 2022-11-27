@@ -29,7 +29,7 @@ void __am_gpu_fbdraw(AM_GPU_FBDRAW_T *ctl) {
   for(int i = x; i < x + w; i++){
     for(int j = y; j < y + h; j++)
     //outl(fb, image[i]);
-    fb[i*300 + j] = *image;
+    fb[j*300 + i] = *image;
     image++;
   }
   if (ctl->sync) {
