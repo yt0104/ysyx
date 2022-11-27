@@ -20,5 +20,5 @@ void __am_input_keybrd(AM_INPUT_KEYBRD_T *kbd) {
       kbd->keycode = key_last;      
     }
   }
-  //key_last = key_now;
+  key_last = key_now;
 }
