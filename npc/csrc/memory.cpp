@@ -53,6 +53,7 @@ extern "C" void pmem_read(long long raddr, long long *rdata ) {
   }
   if(raddr == RTC_ADDR) {   //read time
     *rdata = get_time();
+    printf("get time : %ld us\n",*rdata );
     return;
   }
   out_of_bound(raddr);
