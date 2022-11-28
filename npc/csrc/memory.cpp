@@ -49,6 +49,7 @@ extern "C" void pmem_read(long long raddr, long long *rdata ) {
      mtrace_read(raddr, 8, *rdata);
     return;
   }
+  if(raddr == )
   out_of_bound(raddr);
   return;
 }
