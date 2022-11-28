@@ -50,11 +50,11 @@ extern "C" void pmem_read(long long raddr, long long *rdata ) {
     *rdata = host_read(guest_to_host(raddr), 8); 
      mtrace_read(raddr, 8, *rdata);
     return;
-  }/*
+  }
   if(raddr == RTC_ADDR) {   //read time
     *rdata = get_time();
     return;
-  }*/
+  }
   out_of_bound(raddr);
   return;
 }
