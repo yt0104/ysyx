@@ -58,6 +58,7 @@ extern "C" void pmem_read(long long raddr, long long *rdata ) {
     //printf("get time : %ld us\n",*rdata );
     return;
   }
+  *rdata = 0;
   out_of_bound(raddr);
   return;
 }
