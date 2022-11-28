@@ -80,7 +80,7 @@ extern "C" void pmem_write(long long waddr, long long wdata, char wmask) {
     return;
   }
   if(waddr == SERIAL_PORT) {   //serial print
-    printf("uart port: wdata = 0x%x, wmask = %x\n",wdata,wmask);
+    //printf("uart port: wdata = 0x%x, wmask = %x\n",wdata,wmask);
     return;
   }
   out_of_bound(waddr);
