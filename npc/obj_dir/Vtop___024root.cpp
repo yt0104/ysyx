@@ -2251,29 +2251,6 @@ VL_INLINE_OPT void Vtop___024root___combo__TOP__5(Vtop___024root* vlSelf) {
     Vtop__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
     VL_DEBUG_IF(VL_DBG_MSGF("+    Vtop___024root___combo__TOP__5\n"); );
     // Body
-    vlSelf->top__DOT__u_EXU__DOT__renM = ((IData)(vlSelf->rst_n) 
-                                          & (((((((((1U 
-                                                     == vlSelf->top__DOT__op) 
-                                                    | (2U 
-                                                       == vlSelf->top__DOT__op)) 
-                                                   | (3U 
-                                                      == vlSelf->top__DOT__op)) 
-                                                  | (4U 
-                                                     == vlSelf->top__DOT__op)) 
-                                                 | (5U 
-                                                    == vlSelf->top__DOT__op)) 
-                                                | (6U 
-                                                   == vlSelf->top__DOT__op)) 
-                                               | (7U 
-                                                  == vlSelf->top__DOT__op)) 
-                                              | (8U 
-                                                 == vlSelf->top__DOT__op)) 
-                                             & ((1U 
-                                                 != vlSelf->top__DOT__op) 
-                                                & ((2U 
-                                                    != vlSelf->top__DOT__op) 
-                                                   & (3U 
-                                                      != vlSelf->top__DOT__op)))));
     vlSelf->top__DOT__u_EXU__DOT__wenM = ((IData)(vlSelf->rst_n) 
                                           & ((~ (((
                                                    (((((1U 
@@ -2355,6 +2332,29 @@ VL_INLINE_OPT void Vtop___024root___combo__TOP__5(Vtop___024root* vlSelf) {
                                                         == vlSelf->top__DOT__op)) 
                                                     & (0x19U 
                                                        == vlSelf->top__DOT__op))))));
+    vlSelf->top__DOT__u_EXU__DOT__renM = ((IData)(vlSelf->rst_n) 
+                                          & (((((((((1U 
+                                                     == vlSelf->top__DOT__op) 
+                                                    | (2U 
+                                                       == vlSelf->top__DOT__op)) 
+                                                   | (3U 
+                                                      == vlSelf->top__DOT__op)) 
+                                                  | (4U 
+                                                     == vlSelf->top__DOT__op)) 
+                                                 | (5U 
+                                                    == vlSelf->top__DOT__op)) 
+                                                | (6U 
+                                                   == vlSelf->top__DOT__op)) 
+                                               | (7U 
+                                                  == vlSelf->top__DOT__op)) 
+                                              | (8U 
+                                                 == vlSelf->top__DOT__op)) 
+                                             & ((1U 
+                                                 != vlSelf->top__DOT__op) 
+                                                & ((2U 
+                                                    != vlSelf->top__DOT__op) 
+                                                   & (3U 
+                                                      != vlSelf->top__DOT__op)))));
     if (vlSelf->rst_n) {
         if ((1U & (~ ((((((((1U == vlSelf->top__DOT__op) 
                             | (2U == vlSelf->top__DOT__op)) 
@@ -3949,8 +3949,13 @@ VL_INLINE_OPT void Vtop___024root___combo__TOP__7(Vtop___024root* vlSelf) {
             }
         }
     }
-    Vtop___024root____Vdpiimwrap_top__DOT__u_EXU__DOT__pmem_read_TOP(vlSelf->top__DOT__u_EXU__DOT__raddr, vlSelf->__Vtask_top__DOT__u_EXU__DOT__pmem_read__3__rdata);
-    vlSelf->top__DOT__u_EXU__DOT__rdata = vlSelf->__Vtask_top__DOT__u_EXU__DOT__pmem_read__3__rdata;
+    if (vlSelf->top__DOT__u_EXU__DOT__renM) {
+        Vtop___024root____Vdpiimwrap_top__DOT__u_EXU__DOT__pmem_read_TOP(vlSelf->top__DOT__u_EXU__DOT__raddr, vlSelf->__Vtask_top__DOT__u_EXU__DOT__pmem_read__3__rdata);
+        vlSelf->top__DOT__u_EXU__DOT__rdata = vlSelf->__Vtask_top__DOT__u_EXU__DOT__pmem_read__3__rdata;
+    } else {
+        Vtop___024root____Vdpiimwrap_top__DOT__u_EXU__DOT__pmem_read_TOP(vlSelf->top__DOT__u_EXU__DOT__raddr, vlSelf->__Vtask_top__DOT__u_EXU__DOT__pmem_read__4__rdata);
+        vlSelf->top__DOT__u_EXU__DOT__rdata = vlSelf->__Vtask_top__DOT__u_EXU__DOT__pmem_read__4__rdata;
+    }
     if (vlSelf->top__DOT__u_EXU__DOT__wenM) {
         Vtop___024root____Vdpiimwrap_top__DOT__u_EXU__DOT__pmem_write_TOP(vlSelf->top__DOT__u_EXU__DOT__waddr, vlSelf->top__DOT__u_EXU__DOT__wdata, (IData)(vlSelf->top__DOT__u_EXU__DOT__wmask));
     }
