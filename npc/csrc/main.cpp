@@ -74,10 +74,10 @@ extern "C" void sim_exit(int state){
     Log(ANSI_FMT("break at: %s", ANSI_FG_RED), logbuf);
     break;
   case 2:
+    itrace_puts_iringbuf();
     Log(ANSI_FMT("TIME OUT", ANSI_FG_YELLOW));
     break;
   case 3:
-    itrace_puts_iringbuf();
     Log(ANSI_FMT("QUIT NPC", ANSI_FG_YELLOW));
     break; 
   case 4:
