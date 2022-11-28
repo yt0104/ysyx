@@ -38,8 +38,10 @@ static bool in_pmem(uint64_t addr) {
   return addr - CONFIG_MBASE < CONFIG_MSIZE;
 }
 
+
+extern Vtop* top;
 static void out_of_bound(uint64_t addr) {
-  Log(ANSI_FMT("address = %16lx is out of bound", ANSI_FG_RED), addr);
+  Log(ANSI_FMT("pc = 0x%8lx, address = %16lx is out of bound", ANSI_FG_RED),top->pc, addr);
   assert(0);
 }
 
