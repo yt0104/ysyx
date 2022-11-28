@@ -39,9 +39,9 @@ static bool in_pmem(uint64_t addr) {
 }
 
 
-extern Vtop* top;
+extern int main_time;
 static void out_of_bound(uint64_t addr) {
-  Log(ANSI_FMT("pc = 0x%8lx, address = %16lx is out of bound", ANSI_FG_RED),top->pc, addr);
+  Log(ANSI_FMT("time = %d, address = %16lx is out of bound", ANSI_FG_RED),main_time, addr);
   assert(0);
 }
 
