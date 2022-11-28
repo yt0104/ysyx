@@ -16,7 +16,7 @@ void __am_timer_init() {
 }
 
 void __am_timer_uptime(AM_TIMER_UPTIME_T *uptime) {
-  read_time();  /*???*/
+  //read_time();  /*???*/
   uptime->us = read_time() - boot_time;
 }
 
