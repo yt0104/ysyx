@@ -226,7 +226,7 @@ int dwlen;
 void dtrace_write(uint64_t addr, int len, uint64_t data){
 	if(dwaddr == addr&& dwdata == data&& dwlen == len) return;
 
-	printf("DTRACE--> #%3d, pc = %8lx write: addr = %8lx   data = %16lx   len = %d\n", main_time+1, top->pc, addr, data, len);
+	printf("DTRACE--> #%3d, pc = %8lx write: addr = %8lx   data = %c   len = %d\n", main_time+1, top->pc, addr, (char)data&0xff, len);
 	dwaddr = addr; dwdata = data; dwlen = len;
 	return;
 }
