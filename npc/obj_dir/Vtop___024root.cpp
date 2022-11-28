@@ -74,14 +74,10 @@ VL_INLINE_OPT void Vtop___024root___sequent__TOP__1(Vtop___024root* vlSelf) {
     VL_DEBUG_IF(VL_DBG_MSGF("+    Vtop___024root___sequent__TOP__1\n"); );
     // Variables
     QData/*63:0*/ __Vtask_top__DOT__u_EXU__DOT__pmem_read__3__rdata;
-    QData/*63:0*/ __Vtask_top__DOT__u_EXU__DOT__pmem_read__4__rdata;
     // Body
     if (vlSelf->top__DOT__u_EXU__DOT__renM) {
         Vtop___024root____Vdpiimwrap_top__DOT__u_EXU__DOT__pmem_read_TOP(vlSelf->top__DOT__u_EXU__DOT__raddr, __Vtask_top__DOT__u_EXU__DOT__pmem_read__3__rdata);
         vlSelf->top__DOT__u_EXU__DOT__rdata = __Vtask_top__DOT__u_EXU__DOT__pmem_read__3__rdata;
-    } else {
-        Vtop___024root____Vdpiimwrap_top__DOT__u_EXU__DOT__pmem_read_TOP(vlSelf->top__DOT__u_EXU__DOT__raddr, __Vtask_top__DOT__u_EXU__DOT__pmem_read__4__rdata);
-        vlSelf->top__DOT__u_EXU__DOT__rdata = __Vtask_top__DOT__u_EXU__DOT__pmem_read__4__rdata;
     }
     if (vlSelf->top__DOT__u_EXU__DOT__wenM) {
         Vtop___024root____Vdpiimwrap_top__DOT__u_EXU__DOT__pmem_write_TOP(vlSelf->top__DOT__u_EXU__DOT__waddr, vlSelf->top__DOT__u_EXU__DOT__wdata, (IData)(vlSelf->top__DOT__u_EXU__DOT__wmask));
