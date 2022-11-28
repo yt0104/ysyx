@@ -32,6 +32,8 @@ VL_MODULE(Vtop___024root) {
     CData/*4:0*/ top__DOT__rs2;
     CData/*0:0*/ top__DOT__u_EXU__DOT__wenR;
     CData/*7:0*/ top__DOT__u_EXU__DOT__wmask;
+    CData/*0:0*/ top__DOT__u_EXU__DOT__wenM;
+    CData/*0:0*/ top__DOT__u_EXU__DOT__renM;
     IData/*31:0*/ top__DOT__cpu;
     IData/*31:0*/ top__DOT__op;
     QData/*63:0*/ top__DOT__npc;

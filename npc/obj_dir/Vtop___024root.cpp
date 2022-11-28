@@ -181,41 +181,6 @@ VL_INLINE_OPT void Vtop___024root___sequent__TOP__2(Vtop___024root* vlSelf) {
                                                                       (vlSelf->inst 
                                                                        >> 0x14U)))))))))));
         vlSelf->top__DOT__rs2 = 0U;
-        vlSelf->top__DOT__op = ((0x13U == (0x707fU 
-                                           & vlSelf->inst))
-                                 ? 1U : ((0x67U == 
-                                          (0x707fU 
-                                           & vlSelf->inst))
-                                          ? 2U : ((0x2067U 
-                                                   == 
-                                                   (0x707fU 
-                                                    & vlSelf->inst))
-                                                   ? 3U
-                                                   : 
-                                                  ((0x4003U 
-                                                    == 
-                                                    (0x707fU 
-                                                     & vlSelf->inst))
-                                                    ? 4U
-                                                    : 
-                                                   ((0x5003U 
-                                                     == 
-                                                     (0x707fU 
-                                                      & vlSelf->inst))
-                                                     ? 5U
-                                                     : 
-                                                    ((0x3003U 
-                                                      == 
-                                                      (0x707fU 
-                                                       & vlSelf->inst))
-                                                      ? 6U
-                                                      : 
-                                                     ((0x2003U 
-                                                       == 
-                                                       (0x707fU 
-                                                        & vlSelf->inst))
-                                                       ? 7U
-                                                       : 8U)))))));
         vlSelf->top__DOT__rs1 = (0x1fU & ((0x13U == 
                                            (0x707fU 
                                             & vlSelf->inst))
@@ -268,6 +233,41 @@ VL_INLINE_OPT void Vtop___024root___sequent__TOP__2(Vtop___024root* vlSelf) {
                                                        : 
                                                       (vlSelf->inst 
                                                        >> 0xfU)))))))));
+        vlSelf->top__DOT__op = ((0x13U == (0x707fU 
+                                           & vlSelf->inst))
+                                 ? 1U : ((0x67U == 
+                                          (0x707fU 
+                                           & vlSelf->inst))
+                                          ? 2U : ((0x2067U 
+                                                   == 
+                                                   (0x707fU 
+                                                    & vlSelf->inst))
+                                                   ? 3U
+                                                   : 
+                                                  ((0x4003U 
+                                                    == 
+                                                    (0x707fU 
+                                                     & vlSelf->inst))
+                                                    ? 4U
+                                                    : 
+                                                   ((0x5003U 
+                                                     == 
+                                                     (0x707fU 
+                                                      & vlSelf->inst))
+                                                     ? 5U
+                                                     : 
+                                                    ((0x3003U 
+                                                      == 
+                                                      (0x707fU 
+                                                       & vlSelf->inst))
+                                                      ? 6U
+                                                      : 
+                                                     ((0x2003U 
+                                                       == 
+                                                       (0x707fU 
+                                                        & vlSelf->inst))
+                                                       ? 7U
+                                                       : 8U)))))));
     } else {
         vlSelf->top__DOT__imm = (((((((((0x1013U == 
                                          (0xfc00707fU 
@@ -1266,416 +1266,6 @@ VL_INLINE_OPT void Vtop___024root___sequent__TOP__2(Vtop___024root* vlSelf) {
                                                               (vlSelf->inst 
                                                                >> 0x14U))))))))
                                                         : 0U)))))));
-        vlSelf->top__DOT__op = (((((((((0x1013U == 
-                                        (0xfc00707fU 
-                                         & vlSelf->inst)) 
-                                       | (0x5013U == 
-                                          (0xfc00707fU 
-                                           & vlSelf->inst))) 
-                                      | (0x3013U == 
-                                         (0x707fU & vlSelf->inst))) 
-                                     | (0x4013U == 
-                                        (0x707fU & vlSelf->inst))) 
-                                    | (0x40005013U 
-                                       == (0xfc00707fU 
-                                           & vlSelf->inst))) 
-                                   | (0x7013U == (0x707fU 
-                                                  & vlSelf->inst))) 
-                                  | (0x1bU == (0x707fU 
-                                               & vlSelf->inst))) 
-                                 | (0x101bU == (0xfc00707fU 
-                                                & vlSelf->inst)))
-                                 ? ((0x1013U == (0xfc00707fU 
-                                                 & vlSelf->inst))
-                                     ? 9U : ((0x5013U 
-                                              == (0xfc00707fU 
-                                                  & vlSelf->inst))
-                                              ? 0xaU
-                                              : ((0x3013U 
-                                                  == 
-                                                  (0x707fU 
-                                                   & vlSelf->inst))
-                                                  ? 0xbU
-                                                  : 
-                                                 ((0x4013U 
-                                                   == 
-                                                   (0x707fU 
-                                                    & vlSelf->inst))
-                                                   ? 0xcU
-                                                   : 
-                                                  ((0x40005013U 
-                                                    == 
-                                                    (0xfc00707fU 
-                                                     & vlSelf->inst))
-                                                    ? 0xdU
-                                                    : 
-                                                   ((0x7013U 
-                                                     == 
-                                                     (0x707fU 
-                                                      & vlSelf->inst))
-                                                     ? 0xeU
-                                                     : 
-                                                    ((0x1bU 
-                                                      == 
-                                                      (0x707fU 
-                                                       & vlSelf->inst))
-                                                      ? 0xfU
-                                                      : 0x10U)))))))
-                                 : (((((((((0x501bU 
-                                            == (0xfc00707fU 
-                                                & vlSelf->inst)) 
-                                           | (0x4000501bU 
-                                              == (0xfc00707fU 
-                                                  & vlSelf->inst))) 
-                                          | (0x6013U 
-                                             == (0x707fU 
-                                                 & vlSelf->inst))) 
-                                         | (0x17U == 
-                                            (0x7fU 
-                                             & vlSelf->inst))) 
-                                        | (0x37U == 
-                                           (0x7fU & vlSelf->inst))) 
-                                       | (0x3023U == 
-                                          (0x707fU 
-                                           & vlSelf->inst))) 
-                                      | (0x2023U == 
-                                         (0x707fU & vlSelf->inst))) 
-                                     | (0x1023U == 
-                                        (0x707fU & vlSelf->inst)))
-                                     ? ((0x501bU == 
-                                         (0xfc00707fU 
-                                          & vlSelf->inst))
-                                         ? 0x11U : 
-                                        ((0x4000501bU 
-                                          == (0xfc00707fU 
-                                              & vlSelf->inst))
-                                          ? 0x12U : 
-                                         ((0x6013U 
-                                           == (0x707fU 
-                                               & vlSelf->inst))
-                                           ? 0x13U : 
-                                          ((0x17U == 
-                                            (0x7fU 
-                                             & vlSelf->inst))
-                                            ? 0x14U
-                                            : ((0x37U 
-                                                == 
-                                                (0x7fU 
-                                                 & vlSelf->inst))
-                                                ? 0x15U
-                                                : (
-                                                   (0x3023U 
-                                                    == 
-                                                    (0x707fU 
-                                                     & vlSelf->inst))
-                                                    ? 0x16U
-                                                    : 
-                                                   ((0x2023U 
-                                                     == 
-                                                     (0x707fU 
-                                                      & vlSelf->inst))
-                                                     ? 0x17U
-                                                     : 0x18U)))))))
-                                     : (((((((((0x23U 
-                                                == 
-                                                (0x707fU 
-                                                 & vlSelf->inst)) 
-                                               | (0x6fU 
-                                                  == 
-                                                  (0x7fU 
-                                                   & vlSelf->inst))) 
-                                              | (0x33U 
-                                                 == 
-                                                 (0xfe00707fU 
-                                                  & vlSelf->inst))) 
-                                             | (0x3033U 
-                                                == 
-                                                (0xfe00707fU 
-                                                 & vlSelf->inst))) 
-                                            | (0x7033U 
-                                               == (0xfe00707fU 
-                                                   & vlSelf->inst))) 
-                                           | (0x6033U 
-                                              == (0xfe00707fU 
-                                                  & vlSelf->inst))) 
-                                          | (0x4033U 
-                                             == (0xfe00707fU 
-                                                 & vlSelf->inst))) 
-                                         | (0x40000033U 
-                                            == (0xfe00707fU 
-                                                & vlSelf->inst)))
-                                         ? ((0x23U 
-                                             == (0x707fU 
-                                                 & vlSelf->inst))
-                                             ? 0x19U
-                                             : ((0x6fU 
-                                                 == 
-                                                 (0x7fU 
-                                                  & vlSelf->inst))
-                                                 ? 0x1aU
-                                                 : 
-                                                ((0x33U 
-                                                  == 
-                                                  (0xfe00707fU 
-                                                   & vlSelf->inst))
-                                                  ? 0x1bU
-                                                  : 
-                                                 ((0x3033U 
-                                                   == 
-                                                   (0xfe00707fU 
-                                                    & vlSelf->inst))
-                                                   ? 0x1cU
-                                                   : 
-                                                  ((0x7033U 
-                                                    == 
-                                                    (0xfe00707fU 
-                                                     & vlSelf->inst))
-                                                    ? 0x1dU
-                                                    : 
-                                                   ((0x6033U 
-                                                     == 
-                                                     (0xfe00707fU 
-                                                      & vlSelf->inst))
-                                                     ? 0x1eU
-                                                     : 
-                                                    ((0x4033U 
-                                                      == 
-                                                      (0xfe00707fU 
-                                                       & vlSelf->inst))
-                                                      ? 0x1fU
-                                                      : 0x20U)))))))
-                                         : ((((((((
-                                                   (0x2000033U 
-                                                    == 
-                                                    (0xfe00707fU 
-                                                     & vlSelf->inst)) 
-                                                   | (0x2033U 
-                                                      == 
-                                                      (0xfe00707fU 
-                                                       & vlSelf->inst))) 
-                                                  | (0x3bU 
-                                                     == 
-                                                     (0xfe00707fU 
-                                                      & vlSelf->inst))) 
-                                                 | (0x103bU 
-                                                    == 
-                                                    (0xfe00707fU 
-                                                     & vlSelf->inst))) 
-                                                | (0x503bU 
-                                                   == 
-                                                   (0xfe00707fU 
-                                                    & vlSelf->inst))) 
-                                               | (0x4000503bU 
-                                                  == 
-                                                  (0xfe00707fU 
-                                                   & vlSelf->inst))) 
-                                              | (0x200003bU 
-                                                 == 
-                                                 (0xfe00707fU 
-                                                  & vlSelf->inst))) 
-                                             | (0x4000003bU 
-                                                == 
-                                                (0xfe00707fU 
-                                                 & vlSelf->inst)))
-                                             ? ((0x2000033U 
-                                                 == 
-                                                 (0xfe00707fU 
-                                                  & vlSelf->inst))
-                                                 ? 0x21U
-                                                 : 
-                                                ((0x2033U 
-                                                  == 
-                                                  (0xfe00707fU 
-                                                   & vlSelf->inst))
-                                                  ? 0x22U
-                                                  : 
-                                                 ((0x3bU 
-                                                   == 
-                                                   (0xfe00707fU 
-                                                    & vlSelf->inst))
-                                                   ? 0x23U
-                                                   : 
-                                                  ((0x103bU 
-                                                    == 
-                                                    (0xfe00707fU 
-                                                     & vlSelf->inst))
-                                                    ? 0x24U
-                                                    : 
-                                                   ((0x503bU 
-                                                     == 
-                                                     (0xfe00707fU 
-                                                      & vlSelf->inst))
-                                                     ? 0x25U
-                                                     : 
-                                                    ((0x4000503bU 
-                                                      == 
-                                                      (0xfe00707fU 
-                                                       & vlSelf->inst))
-                                                      ? 0x26U
-                                                      : 
-                                                     ((0x200003bU 
-                                                       == 
-                                                       (0xfe00707fU 
-                                                        & vlSelf->inst))
-                                                       ? 0x27U
-                                                       : 0x28U)))))))
-                                             : ((((
-                                                   (((((0x200403bU 
-                                                        == 
-                                                        (0xfe00707fU 
-                                                         & vlSelf->inst)) 
-                                                       | (0x200603bU 
-                                                          == 
-                                                          (0xfe00707fU 
-                                                           & vlSelf->inst))) 
-                                                      | (0x200503bU 
-                                                         == 
-                                                         (0xfe00707fU 
-                                                          & vlSelf->inst))) 
-                                                     | (0x200703bU 
-                                                        == 
-                                                        (0xfe00707fU 
-                                                         & vlSelf->inst))) 
-                                                    | (0x2005033U 
-                                                       == 
-                                                       (0xfe00707fU 
-                                                        & vlSelf->inst))) 
-                                                   | (0x2007033U 
-                                                      == 
-                                                      (0xfe00707fU 
-                                                       & vlSelf->inst))) 
-                                                  | (0x1033U 
-                                                     == 
-                                                     (0xfe00707fU 
-                                                      & vlSelf->inst))) 
-                                                 | (0x5033U 
-                                                    == 
-                                                    (0xfe00707fU 
-                                                     & vlSelf->inst)))
-                                                 ? 
-                                                ((0x200403bU 
-                                                  == 
-                                                  (0xfe00707fU 
-                                                   & vlSelf->inst))
-                                                  ? 0x29U
-                                                  : 
-                                                 ((0x200603bU 
-                                                   == 
-                                                   (0xfe00707fU 
-                                                    & vlSelf->inst))
-                                                   ? 0x2aU
-                                                   : 
-                                                  ((0x200503bU 
-                                                    == 
-                                                    (0xfe00707fU 
-                                                     & vlSelf->inst))
-                                                    ? 0x2bU
-                                                    : 
-                                                   ((0x200703bU 
-                                                     == 
-                                                     (0xfe00707fU 
-                                                      & vlSelf->inst))
-                                                     ? 0x2cU
-                                                     : 
-                                                    ((0x2005033U 
-                                                      == 
-                                                      (0xfe00707fU 
-                                                       & vlSelf->inst))
-                                                      ? 0x2dU
-                                                      : 
-                                                     ((0x2007033U 
-                                                       == 
-                                                       (0xfe00707fU 
-                                                        & vlSelf->inst))
-                                                       ? 0x2eU
-                                                       : 
-                                                      ((0x1033U 
-                                                        == 
-                                                        (0xfe00707fU 
-                                                         & vlSelf->inst))
-                                                        ? 0x2fU
-                                                        : 0x30U)))))))
-                                                 : 
-                                                (((((((((0x2006033U 
-                                                         == 
-                                                         (0xfe00707fU 
-                                                          & vlSelf->inst)) 
-                                                        | (0x2004033U 
-                                                           == 
-                                                           (0xfe00707fU 
-                                                            & vlSelf->inst))) 
-                                                       | (0x63U 
-                                                          == 
-                                                          (0x707fU 
-                                                           & vlSelf->inst))) 
-                                                      | (0x1063U 
-                                                         == 
-                                                         (0x707fU 
-                                                          & vlSelf->inst))) 
-                                                     | (0x5063U 
-                                                        == 
-                                                        (0x707fU 
-                                                         & vlSelf->inst))) 
-                                                    | (0x4063U 
-                                                       == 
-                                                       (0x707fU 
-                                                        & vlSelf->inst))) 
-                                                   | (0x6063U 
-                                                      == 
-                                                      (0x707fU 
-                                                       & vlSelf->inst))) 
-                                                  | (0x7063U 
-                                                     == 
-                                                     (0x707fU 
-                                                      & vlSelf->inst)))
-                                                  ? 
-                                                 ((0x2006033U 
-                                                   == 
-                                                   (0xfe00707fU 
-                                                    & vlSelf->inst))
-                                                   ? 0x31U
-                                                   : 
-                                                  ((0x2004033U 
-                                                    == 
-                                                    (0xfe00707fU 
-                                                     & vlSelf->inst))
-                                                    ? 0x32U
-                                                    : 
-                                                   ((0x63U 
-                                                     == 
-                                                     (0x707fU 
-                                                      & vlSelf->inst))
-                                                     ? 0x33U
-                                                     : 
-                                                    ((0x1063U 
-                                                      == 
-                                                      (0x707fU 
-                                                       & vlSelf->inst))
-                                                      ? 0x34U
-                                                      : 
-                                                     ((0x5063U 
-                                                       == 
-                                                       (0x707fU 
-                                                        & vlSelf->inst))
-                                                       ? 0x35U
-                                                       : 
-                                                      ((0x4063U 
-                                                        == 
-                                                        (0x707fU 
-                                                         & vlSelf->inst))
-                                                        ? 0x36U
-                                                        : 
-                                                       ((0x6063U 
-                                                         == 
-                                                         (0x707fU 
-                                                          & vlSelf->inst))
-                                                         ? 0x37U
-                                                         : 0x38U)))))))
-                                                  : 
-                                                 ((0x100073U 
-                                                   == vlSelf->inst)
-                                                   ? 0x39U
-                                                   : 0U)))))));
         vlSelf->top__DOT__rs1 = (0x1fU & (((((((((0x1013U 
                                                   == 
                                                   (0xfc00707fU 
@@ -2215,6 +1805,416 @@ VL_INLINE_OPT void Vtop___024root___sequent__TOP__2(Vtop___024root* vlSelf) {
                                                             (vlSelf->inst 
                                                              >> 0xfU))))))))
                                                       : 0U)))))));
+        vlSelf->top__DOT__op = (((((((((0x1013U == 
+                                        (0xfc00707fU 
+                                         & vlSelf->inst)) 
+                                       | (0x5013U == 
+                                          (0xfc00707fU 
+                                           & vlSelf->inst))) 
+                                      | (0x3013U == 
+                                         (0x707fU & vlSelf->inst))) 
+                                     | (0x4013U == 
+                                        (0x707fU & vlSelf->inst))) 
+                                    | (0x40005013U 
+                                       == (0xfc00707fU 
+                                           & vlSelf->inst))) 
+                                   | (0x7013U == (0x707fU 
+                                                  & vlSelf->inst))) 
+                                  | (0x1bU == (0x707fU 
+                                               & vlSelf->inst))) 
+                                 | (0x101bU == (0xfc00707fU 
+                                                & vlSelf->inst)))
+                                 ? ((0x1013U == (0xfc00707fU 
+                                                 & vlSelf->inst))
+                                     ? 9U : ((0x5013U 
+                                              == (0xfc00707fU 
+                                                  & vlSelf->inst))
+                                              ? 0xaU
+                                              : ((0x3013U 
+                                                  == 
+                                                  (0x707fU 
+                                                   & vlSelf->inst))
+                                                  ? 0xbU
+                                                  : 
+                                                 ((0x4013U 
+                                                   == 
+                                                   (0x707fU 
+                                                    & vlSelf->inst))
+                                                   ? 0xcU
+                                                   : 
+                                                  ((0x40005013U 
+                                                    == 
+                                                    (0xfc00707fU 
+                                                     & vlSelf->inst))
+                                                    ? 0xdU
+                                                    : 
+                                                   ((0x7013U 
+                                                     == 
+                                                     (0x707fU 
+                                                      & vlSelf->inst))
+                                                     ? 0xeU
+                                                     : 
+                                                    ((0x1bU 
+                                                      == 
+                                                      (0x707fU 
+                                                       & vlSelf->inst))
+                                                      ? 0xfU
+                                                      : 0x10U)))))))
+                                 : (((((((((0x501bU 
+                                            == (0xfc00707fU 
+                                                & vlSelf->inst)) 
+                                           | (0x4000501bU 
+                                              == (0xfc00707fU 
+                                                  & vlSelf->inst))) 
+                                          | (0x6013U 
+                                             == (0x707fU 
+                                                 & vlSelf->inst))) 
+                                         | (0x17U == 
+                                            (0x7fU 
+                                             & vlSelf->inst))) 
+                                        | (0x37U == 
+                                           (0x7fU & vlSelf->inst))) 
+                                       | (0x3023U == 
+                                          (0x707fU 
+                                           & vlSelf->inst))) 
+                                      | (0x2023U == 
+                                         (0x707fU & vlSelf->inst))) 
+                                     | (0x1023U == 
+                                        (0x707fU & vlSelf->inst)))
+                                     ? ((0x501bU == 
+                                         (0xfc00707fU 
+                                          & vlSelf->inst))
+                                         ? 0x11U : 
+                                        ((0x4000501bU 
+                                          == (0xfc00707fU 
+                                              & vlSelf->inst))
+                                          ? 0x12U : 
+                                         ((0x6013U 
+                                           == (0x707fU 
+                                               & vlSelf->inst))
+                                           ? 0x13U : 
+                                          ((0x17U == 
+                                            (0x7fU 
+                                             & vlSelf->inst))
+                                            ? 0x14U
+                                            : ((0x37U 
+                                                == 
+                                                (0x7fU 
+                                                 & vlSelf->inst))
+                                                ? 0x15U
+                                                : (
+                                                   (0x3023U 
+                                                    == 
+                                                    (0x707fU 
+                                                     & vlSelf->inst))
+                                                    ? 0x16U
+                                                    : 
+                                                   ((0x2023U 
+                                                     == 
+                                                     (0x707fU 
+                                                      & vlSelf->inst))
+                                                     ? 0x17U
+                                                     : 0x18U)))))))
+                                     : (((((((((0x23U 
+                                                == 
+                                                (0x707fU 
+                                                 & vlSelf->inst)) 
+                                               | (0x6fU 
+                                                  == 
+                                                  (0x7fU 
+                                                   & vlSelf->inst))) 
+                                              | (0x33U 
+                                                 == 
+                                                 (0xfe00707fU 
+                                                  & vlSelf->inst))) 
+                                             | (0x3033U 
+                                                == 
+                                                (0xfe00707fU 
+                                                 & vlSelf->inst))) 
+                                            | (0x7033U 
+                                               == (0xfe00707fU 
+                                                   & vlSelf->inst))) 
+                                           | (0x6033U 
+                                              == (0xfe00707fU 
+                                                  & vlSelf->inst))) 
+                                          | (0x4033U 
+                                             == (0xfe00707fU 
+                                                 & vlSelf->inst))) 
+                                         | (0x40000033U 
+                                            == (0xfe00707fU 
+                                                & vlSelf->inst)))
+                                         ? ((0x23U 
+                                             == (0x707fU 
+                                                 & vlSelf->inst))
+                                             ? 0x19U
+                                             : ((0x6fU 
+                                                 == 
+                                                 (0x7fU 
+                                                  & vlSelf->inst))
+                                                 ? 0x1aU
+                                                 : 
+                                                ((0x33U 
+                                                  == 
+                                                  (0xfe00707fU 
+                                                   & vlSelf->inst))
+                                                  ? 0x1bU
+                                                  : 
+                                                 ((0x3033U 
+                                                   == 
+                                                   (0xfe00707fU 
+                                                    & vlSelf->inst))
+                                                   ? 0x1cU
+                                                   : 
+                                                  ((0x7033U 
+                                                    == 
+                                                    (0xfe00707fU 
+                                                     & vlSelf->inst))
+                                                    ? 0x1dU
+                                                    : 
+                                                   ((0x6033U 
+                                                     == 
+                                                     (0xfe00707fU 
+                                                      & vlSelf->inst))
+                                                     ? 0x1eU
+                                                     : 
+                                                    ((0x4033U 
+                                                      == 
+                                                      (0xfe00707fU 
+                                                       & vlSelf->inst))
+                                                      ? 0x1fU
+                                                      : 0x20U)))))))
+                                         : ((((((((
+                                                   (0x2000033U 
+                                                    == 
+                                                    (0xfe00707fU 
+                                                     & vlSelf->inst)) 
+                                                   | (0x2033U 
+                                                      == 
+                                                      (0xfe00707fU 
+                                                       & vlSelf->inst))) 
+                                                  | (0x3bU 
+                                                     == 
+                                                     (0xfe00707fU 
+                                                      & vlSelf->inst))) 
+                                                 | (0x103bU 
+                                                    == 
+                                                    (0xfe00707fU 
+                                                     & vlSelf->inst))) 
+                                                | (0x503bU 
+                                                   == 
+                                                   (0xfe00707fU 
+                                                    & vlSelf->inst))) 
+                                               | (0x4000503bU 
+                                                  == 
+                                                  (0xfe00707fU 
+                                                   & vlSelf->inst))) 
+                                              | (0x200003bU 
+                                                 == 
+                                                 (0xfe00707fU 
+                                                  & vlSelf->inst))) 
+                                             | (0x4000003bU 
+                                                == 
+                                                (0xfe00707fU 
+                                                 & vlSelf->inst)))
+                                             ? ((0x2000033U 
+                                                 == 
+                                                 (0xfe00707fU 
+                                                  & vlSelf->inst))
+                                                 ? 0x21U
+                                                 : 
+                                                ((0x2033U 
+                                                  == 
+                                                  (0xfe00707fU 
+                                                   & vlSelf->inst))
+                                                  ? 0x22U
+                                                  : 
+                                                 ((0x3bU 
+                                                   == 
+                                                   (0xfe00707fU 
+                                                    & vlSelf->inst))
+                                                   ? 0x23U
+                                                   : 
+                                                  ((0x103bU 
+                                                    == 
+                                                    (0xfe00707fU 
+                                                     & vlSelf->inst))
+                                                    ? 0x24U
+                                                    : 
+                                                   ((0x503bU 
+                                                     == 
+                                                     (0xfe00707fU 
+                                                      & vlSelf->inst))
+                                                     ? 0x25U
+                                                     : 
+                                                    ((0x4000503bU 
+                                                      == 
+                                                      (0xfe00707fU 
+                                                       & vlSelf->inst))
+                                                      ? 0x26U
+                                                      : 
+                                                     ((0x200003bU 
+                                                       == 
+                                                       (0xfe00707fU 
+                                                        & vlSelf->inst))
+                                                       ? 0x27U
+                                                       : 0x28U)))))))
+                                             : ((((
+                                                   (((((0x200403bU 
+                                                        == 
+                                                        (0xfe00707fU 
+                                                         & vlSelf->inst)) 
+                                                       | (0x200603bU 
+                                                          == 
+                                                          (0xfe00707fU 
+                                                           & vlSelf->inst))) 
+                                                      | (0x200503bU 
+                                                         == 
+                                                         (0xfe00707fU 
+                                                          & vlSelf->inst))) 
+                                                     | (0x200703bU 
+                                                        == 
+                                                        (0xfe00707fU 
+                                                         & vlSelf->inst))) 
+                                                    | (0x2005033U 
+                                                       == 
+                                                       (0xfe00707fU 
+                                                        & vlSelf->inst))) 
+                                                   | (0x2007033U 
+                                                      == 
+                                                      (0xfe00707fU 
+                                                       & vlSelf->inst))) 
+                                                  | (0x1033U 
+                                                     == 
+                                                     (0xfe00707fU 
+                                                      & vlSelf->inst))) 
+                                                 | (0x5033U 
+                                                    == 
+                                                    (0xfe00707fU 
+                                                     & vlSelf->inst)))
+                                                 ? 
+                                                ((0x200403bU 
+                                                  == 
+                                                  (0xfe00707fU 
+                                                   & vlSelf->inst))
+                                                  ? 0x29U
+                                                  : 
+                                                 ((0x200603bU 
+                                                   == 
+                                                   (0xfe00707fU 
+                                                    & vlSelf->inst))
+                                                   ? 0x2aU
+                                                   : 
+                                                  ((0x200503bU 
+                                                    == 
+                                                    (0xfe00707fU 
+                                                     & vlSelf->inst))
+                                                    ? 0x2bU
+                                                    : 
+                                                   ((0x200703bU 
+                                                     == 
+                                                     (0xfe00707fU 
+                                                      & vlSelf->inst))
+                                                     ? 0x2cU
+                                                     : 
+                                                    ((0x2005033U 
+                                                      == 
+                                                      (0xfe00707fU 
+                                                       & vlSelf->inst))
+                                                      ? 0x2dU
+                                                      : 
+                                                     ((0x2007033U 
+                                                       == 
+                                                       (0xfe00707fU 
+                                                        & vlSelf->inst))
+                                                       ? 0x2eU
+                                                       : 
+                                                      ((0x1033U 
+                                                        == 
+                                                        (0xfe00707fU 
+                                                         & vlSelf->inst))
+                                                        ? 0x2fU
+                                                        : 0x30U)))))))
+                                                 : 
+                                                (((((((((0x2006033U 
+                                                         == 
+                                                         (0xfe00707fU 
+                                                          & vlSelf->inst)) 
+                                                        | (0x2004033U 
+                                                           == 
+                                                           (0xfe00707fU 
+                                                            & vlSelf->inst))) 
+                                                       | (0x63U 
+                                                          == 
+                                                          (0x707fU 
+                                                           & vlSelf->inst))) 
+                                                      | (0x1063U 
+                                                         == 
+                                                         (0x707fU 
+                                                          & vlSelf->inst))) 
+                                                     | (0x5063U 
+                                                        == 
+                                                        (0x707fU 
+                                                         & vlSelf->inst))) 
+                                                    | (0x4063U 
+                                                       == 
+                                                       (0x707fU 
+                                                        & vlSelf->inst))) 
+                                                   | (0x6063U 
+                                                      == 
+                                                      (0x707fU 
+                                                       & vlSelf->inst))) 
+                                                  | (0x7063U 
+                                                     == 
+                                                     (0x707fU 
+                                                      & vlSelf->inst)))
+                                                  ? 
+                                                 ((0x2006033U 
+                                                   == 
+                                                   (0xfe00707fU 
+                                                    & vlSelf->inst))
+                                                   ? 0x31U
+                                                   : 
+                                                  ((0x2004033U 
+                                                    == 
+                                                    (0xfe00707fU 
+                                                     & vlSelf->inst))
+                                                    ? 0x32U
+                                                    : 
+                                                   ((0x63U 
+                                                     == 
+                                                     (0x707fU 
+                                                      & vlSelf->inst))
+                                                     ? 0x33U
+                                                     : 
+                                                    ((0x1063U 
+                                                      == 
+                                                      (0x707fU 
+                                                       & vlSelf->inst))
+                                                      ? 0x34U
+                                                      : 
+                                                     ((0x5063U 
+                                                       == 
+                                                       (0x707fU 
+                                                        & vlSelf->inst))
+                                                       ? 0x35U
+                                                       : 
+                                                      ((0x4063U 
+                                                        == 
+                                                        (0x707fU 
+                                                         & vlSelf->inst))
+                                                        ? 0x36U
+                                                        : 
+                                                       ((0x6063U 
+                                                         == 
+                                                         (0x707fU 
+                                                          & vlSelf->inst))
+                                                         ? 0x37U
+                                                         : 0x38U)))))))
+                                                  : 
+                                                 ((0x100073U 
+                                                   == vlSelf->inst)
+                                                   ? 0x39U
+                                                   : 0U)))))));
     }
 }
 
@@ -2251,6 +2251,110 @@ VL_INLINE_OPT void Vtop___024root___combo__TOP__5(Vtop___024root* vlSelf) {
     Vtop__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
     VL_DEBUG_IF(VL_DBG_MSGF("+    Vtop___024root___combo__TOP__5\n"); );
     // Body
+    vlSelf->top__DOT__u_EXU__DOT__renM = ((IData)(vlSelf->rst_n) 
+                                          & (((((((((1U 
+                                                     == vlSelf->top__DOT__op) 
+                                                    | (2U 
+                                                       == vlSelf->top__DOT__op)) 
+                                                   | (3U 
+                                                      == vlSelf->top__DOT__op)) 
+                                                  | (4U 
+                                                     == vlSelf->top__DOT__op)) 
+                                                 | (5U 
+                                                    == vlSelf->top__DOT__op)) 
+                                                | (6U 
+                                                   == vlSelf->top__DOT__op)) 
+                                               | (7U 
+                                                  == vlSelf->top__DOT__op)) 
+                                              | (8U 
+                                                 == vlSelf->top__DOT__op)) 
+                                             & ((1U 
+                                                 != vlSelf->top__DOT__op) 
+                                                & ((2U 
+                                                    != vlSelf->top__DOT__op) 
+                                                   & (3U 
+                                                      != vlSelf->top__DOT__op)))));
+    vlSelf->top__DOT__u_EXU__DOT__wenM = ((IData)(vlSelf->rst_n) 
+                                          & ((~ (((
+                                                   (((((1U 
+                                                        == vlSelf->top__DOT__op) 
+                                                       | (2U 
+                                                          == vlSelf->top__DOT__op)) 
+                                                      | (3U 
+                                                         == vlSelf->top__DOT__op)) 
+                                                     | (4U 
+                                                        == vlSelf->top__DOT__op)) 
+                                                    | (5U 
+                                                       == vlSelf->top__DOT__op)) 
+                                                   | (6U 
+                                                      == vlSelf->top__DOT__op)) 
+                                                  | (7U 
+                                                     == vlSelf->top__DOT__op)) 
+                                                 | (8U 
+                                                    == vlSelf->top__DOT__op))) 
+                                             & ((~ 
+                                                 ((((((((9U 
+                                                         == vlSelf->top__DOT__op) 
+                                                        | (0xaU 
+                                                           == vlSelf->top__DOT__op)) 
+                                                       | (0xbU 
+                                                          == vlSelf->top__DOT__op)) 
+                                                      | (0xcU 
+                                                         == vlSelf->top__DOT__op)) 
+                                                     | (0xdU 
+                                                        == vlSelf->top__DOT__op)) 
+                                                    | (0xeU 
+                                                       == vlSelf->top__DOT__op)) 
+                                                   | (0xfU 
+                                                      == vlSelf->top__DOT__op)) 
+                                                  | (0x10U 
+                                                     == vlSelf->top__DOT__op))) 
+                                                & (((((((((0x11U 
+                                                           == vlSelf->top__DOT__op) 
+                                                          | (0x12U 
+                                                             == vlSelf->top__DOT__op)) 
+                                                         | (0x13U 
+                                                            == vlSelf->top__DOT__op)) 
+                                                        | (0x14U 
+                                                           == vlSelf->top__DOT__op)) 
+                                                       | (0x15U 
+                                                          == vlSelf->top__DOT__op)) 
+                                                      | (0x16U 
+                                                         == vlSelf->top__DOT__op)) 
+                                                     | (0x17U 
+                                                        == vlSelf->top__DOT__op)) 
+                                                    | (0x18U 
+                                                       == vlSelf->top__DOT__op))
+                                                    ? 
+                                                   ((0x11U 
+                                                     != vlSelf->top__DOT__op) 
+                                                    & ((0x12U 
+                                                        != vlSelf->top__DOT__op) 
+                                                       & ((0x13U 
+                                                           != vlSelf->top__DOT__op) 
+                                                          & ((0x14U 
+                                                              != vlSelf->top__DOT__op) 
+                                                             & (0x15U 
+                                                                != vlSelf->top__DOT__op)))))
+                                                    : 
+                                                   (((((((((0x19U 
+                                                            == vlSelf->top__DOT__op) 
+                                                           | (0x1aU 
+                                                              == vlSelf->top__DOT__op)) 
+                                                          | (0x1bU 
+                                                             == vlSelf->top__DOT__op)) 
+                                                         | (0x1cU 
+                                                            == vlSelf->top__DOT__op)) 
+                                                        | (0x1dU 
+                                                           == vlSelf->top__DOT__op)) 
+                                                       | (0x1eU 
+                                                          == vlSelf->top__DOT__op)) 
+                                                      | (0x1fU 
+                                                         == vlSelf->top__DOT__op)) 
+                                                     | (0x20U 
+                                                        == vlSelf->top__DOT__op)) 
+                                                    & (0x19U 
+                                                       == vlSelf->top__DOT__op))))));
     if (vlSelf->rst_n) {
         if ((1U & (~ ((((((((1U == vlSelf->top__DOT__op) 
                             | (2U == vlSelf->top__DOT__op)) 
@@ -3847,7 +3951,9 @@ VL_INLINE_OPT void Vtop___024root___combo__TOP__7(Vtop___024root* vlSelf) {
     }
     Vtop___024root____Vdpiimwrap_top__DOT__u_EXU__DOT__pmem_read_TOP(vlSelf->top__DOT__u_EXU__DOT__raddr, vlSelf->__Vtask_top__DOT__u_EXU__DOT__pmem_read__3__rdata);
     vlSelf->top__DOT__u_EXU__DOT__rdata = vlSelf->__Vtask_top__DOT__u_EXU__DOT__pmem_read__3__rdata;
-    Vtop___024root____Vdpiimwrap_top__DOT__u_EXU__DOT__pmem_write_TOP(vlSelf->top__DOT__u_EXU__DOT__waddr, vlSelf->top__DOT__u_EXU__DOT__wdata, (IData)(vlSelf->top__DOT__u_EXU__DOT__wmask));
+    if (vlSelf->top__DOT__u_EXU__DOT__wenM) {
+        Vtop___024root____Vdpiimwrap_top__DOT__u_EXU__DOT__pmem_write_TOP(vlSelf->top__DOT__u_EXU__DOT__waddr, vlSelf->top__DOT__u_EXU__DOT__wdata, (IData)(vlSelf->top__DOT__u_EXU__DOT__wmask));
+    }
     if (vlSelf->rst_n) {
         if (((((((((1U == vlSelf->top__DOT__op) | (2U 
                                                    == vlSelf->top__DOT__op)) 
