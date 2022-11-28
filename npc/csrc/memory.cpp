@@ -56,13 +56,14 @@ extern "C" void pmem_read(long long raddr, long long *rdata ) {
   if(raddr == RTC_ADDR) {   //read time
     *rdata = get_time();
     //printf("get time : %ld us\n",*rdata );
+    //dtrace_read(raddr, 8, *rdata);
     return;
   }
   out_of_bound(raddr);
   return;
 }
 
-uint64_t lwdata;
+bool memw_state;
 extern "C" void pmem_write(long long waddr, long long wdata, char wmask) {
   if (likely(in_pmem(waddr))){
     int len = 0;
@@ -81,11 +82,10 @@ extern "C" void pmem_write(long long waddr, long long wdata, char wmask) {
     mtrace_write(waddr-8, len, wdata);
     return;
   }
-  if(waddr == SERIAL_PORT) {   //serial print
-    
-    printf("%c",(char)wdata & 0xFF);
-    //dtrace_write(waddr, wmask, wdata);
-    lwdata = wdata;       /*record last wdata*/
+  if(waddr == SERIAL_PORT) {   /*serial print*/
+    if(memw_state) printf("%c",(char)wdata & 0xFF);
+    memw_state = ~memw_state;
+    //dtrace_write(waddr, 1, wdata);
     return;
   }
   out_of_bound(waddr);
