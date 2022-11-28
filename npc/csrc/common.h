@@ -16,6 +16,7 @@
 #define   CONFIG_ITRACE       
 //#define   CONFIG_FTRACE 
 //#define   CONFIG_MTRACE  
+#define   CONFIG_DTRACE
 //#define   CONFIG_DIFFTEST   
 
 
@@ -78,6 +79,10 @@ void ftrace_matchFunc( uint64_t pc, uint64_t dnpc, uint32_t inst);
 /*mtrace*/
 void mtrace_read(uint64_t addr, int len, uint64_t data);
 void mtrace_write(uint64_t addr, int len, uint64_t data);
+
+/*dtrace*/
+void dtrace_read(uint64_t addr, int len, uint64_t data);
+void dtrace_write(uint64_t addr, int len, uint64_t data);
 
 /*disasm*/
 extern "C" void init_disasm(const char *triple);

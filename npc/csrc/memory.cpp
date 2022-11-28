@@ -53,7 +53,7 @@ extern "C" void pmem_read(long long raddr, long long *rdata ) {
   }
   if(raddr == RTC_ADDR) {   //read time
     *rdata = get_time();
-    printf("get time : %ld us\n",*rdata );
+    //printf("get time : %ld us\n",*rdata );
     return;
   }
   out_of_bound(raddr);
@@ -81,6 +81,7 @@ extern "C" void pmem_write(long long waddr, long long wdata, char wmask) {
   }
   if(waddr == SERIAL_PORT) {   //serial print
     //printf("%ld:uart:%c\n",cnt++,wdata & 0xFF);
+    dtrace_write(waddr, 1, wdata);
     return;
   }
   out_of_bound(waddr);

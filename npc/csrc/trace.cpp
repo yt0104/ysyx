@@ -211,4 +211,31 @@ void mtrace_read(uint64_t addr, int len, uint64_t data) {}
 void mtrace_write(uint64_t addr, int len, uint64_t data) {}
 #endif
 
+#ifdef CONFIG_DTRACE
+
+uint64_t draddr,drdata;
+int drlen;
+void dtrace_read(uint64_t addr, int len, uint64_t data){
+	if(draddr == addr&& drdata == data&& drlen == len) return;
+	printf("DTRACE--> #%3d, pc = %8lx read : addr = %8lx   data = %16lx \n", main_time+1, top->pc, addr, data);
+	draddr = addr; drdata = data; drlen = len;
+}
+
+uint64_t dwaddr,dwdata;
+int dwlen;
+void dtrace_write(uint64_t addr, int len, uint64_t data){
+	if(dwaddr == addr&& dwdata == data&& dwlen == len) return;
+
+	printf("DTRACE--> #%3d, pc = %8lx write: addr = %8lx   data = %16lx   len = %d\n", main_time+1, top->pc, addr, data, len);
+	dwaddr = addr; dwdata = data; dwlen = len;
+	return;
+}
+#else
+void dtrace_read(uint64_t addr, int len, uint64_t data) {}
+void dtrace_write(uint64_t addr, int len, uint64_t data) {}
+#endif
+
+
+
+
 
