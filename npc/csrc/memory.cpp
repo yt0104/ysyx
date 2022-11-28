@@ -43,13 +43,18 @@ static void out_of_bound(uint64_t addr) {
   assert(0);
 }
 
+
+
 extern "C" void pmem_read(long long raddr, long long *rdata ) {
   if (likely(in_pmem(raddr))) {
     *rdata = host_read(guest_to_host(raddr), 8); 
      mtrace_read(raddr, 8, *rdata);
     return;
-  }
-  if(raddr == )
+  }/*
+  if(raddr == RTC_ADDR) {   //read time
+    *rdata = get_time();
+    return;
+  }*/
   out_of_bound(raddr);
   return;
 }
@@ -72,7 +77,11 @@ extern "C" void pmem_write(long long waddr, long long wdata, char wmask) {
     }
     mtrace_write(waddr-8, len, wdata);
     return;
-  }
+  }/*
+  if(waddr == SERIAL_PORT) {   //serial print
+    printf("uart port: wdata = 0x%x, wmask = %x\n",wdata,wmask);
+    return;
+  }*/
   out_of_bound(waddr);
   return;
 }

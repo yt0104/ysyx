@@ -16,7 +16,7 @@
 #define   CONFIG_ITRACE       
 #define   CONFIG_FTRACE 
 #define   CONFIG_MTRACE  
-#define   CONFIG_DIFFTEST     
+#define   CONFIG_DIFFTEST   
 
 
 extern Vtop* top;
@@ -40,10 +40,13 @@ void update_logbuff();
 uint8_t* guest_to_host(uint64_t paddr);
 uint64_t host_to_guest(uint8_t *haddr);
 
+#define DEVICE_BASE     0xa0000000
+#define RTC_ADDR        (DEVICE_BASE + 0x0000048)
+#define SERIAL_PORT     (DEVICE_BASE + 0x00003f8)
+
 extern "C" void pmem_read(long long raddr, long long *rdata );
 extern "C" void pmem_write(long long waddr, long long wdata, char wmask);
 extern "C" void ifetch(long long pc, int* inst);
-
 
 /*reg*/
 void isa_reg_display();
@@ -93,4 +96,7 @@ extern void (*ref_difftest_regcpy)(void *dut_gpr, void *dut_pc, bool direction);
 extern void (*ref_difftest_exec)(uint64_t n);
 extern void (*ref_difftest_raise_intr)(uint64_t NO);
 }
+
+/*timer*/
+uint64_t get_time();
 

@@ -51,6 +51,7 @@ VM_USER_CLASSES = \
 	memory \
 	reg \
 	sdb \
+	timer \
 	trace \
 	watchpoint \
 
@@ -81,6 +82,8 @@ memory.o: ./csrc/memory.cpp
 reg.o: ./csrc/reg.cpp
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
 sdb.o: ./csrc/sdb.cpp
+	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
+timer.o: ./csrc/timer.cpp
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
 trace.o: ./csrc/trace.cpp
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<

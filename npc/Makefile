@@ -1,5 +1,6 @@
 VSRC = $(wildcard ./vsrc/top.sv)
 CSRC = $(wildcard ./csrc/*.cpp)
+CSRC+= $(wildcard ./csrc/*.c)
 NPC  = $(wildcard ./obj_dir/Vtop)
 TOPNAME = top
 IMG ?=  
