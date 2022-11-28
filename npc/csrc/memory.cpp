@@ -82,7 +82,7 @@ extern "C" void pmem_write(long long waddr, long long wdata, char wmask) {
     return;
   }
   if(waddr == SERIAL_PORT) {   //serial print
-    if(lwdata &&0xff ==' ' && wdata &&0xff ==' ') return;
+    
     printf("%c",(char)wdata & 0xFF);
     //dtrace_write(waddr, wmask, wdata);
     lwdata = wdata;       /*record last wdata*/
