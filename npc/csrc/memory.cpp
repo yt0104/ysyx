@@ -84,7 +84,8 @@ extern "C" void pmem_write(long long waddr, long long wdata, char wmask) {
   }
   if(waddr == SERIAL_PORT) {   /*serial print*/
     if(memw_state) printf("%c",(char)wdata & 0xFF);
-    memw_state = ~memw_state;
+    if(memw_state)  memw_state = false;
+    else memw_state = true;
     //dtrace_write(waddr, 1, wdata);
     return;
   }
