@@ -60,7 +60,7 @@ extern "C" void pmem_read(long long raddr, long long *rdata ) {
   return;
 }
 
-
+uint64_t cnt = 0;
 extern "C" void pmem_write(long long waddr, long long wdata, char wmask) {
   if (likely(in_pmem(waddr))){
     int len = 0;
@@ -80,7 +80,7 @@ extern "C" void pmem_write(long long waddr, long long wdata, char wmask) {
     return;
   }
   if(waddr == SERIAL_PORT) {   //serial print
-    printf("%c",wdata & 0xFF);
+    printf("%ld:uart:%c\n",cnt++,wdata & 0xFF);
     return;
   }
   out_of_bound(waddr);
