@@ -3958,6 +3958,8 @@ VL_INLINE_OPT void Vtop___024root___combo__TOP__7(Vtop___024root* vlSelf) {
     }
     if (vlSelf->top__DOT__u_EXU__DOT__wenM) {
         Vtop___024root____Vdpiimwrap_top__DOT__u_EXU__DOT__pmem_write_TOP(vlSelf->top__DOT__u_EXU__DOT__waddr, vlSelf->top__DOT__u_EXU__DOT__wdata, (IData)(vlSelf->top__DOT__u_EXU__DOT__wmask));
+    } else {
+        Vtop___024root____Vdpiimwrap_top__DOT__u_EXU__DOT__pmem_write_TOP(vlSelf->top__DOT__u_EXU__DOT__waddr, vlSelf->top__DOT__u_EXU__DOT__wdata, (IData)(vlSelf->top__DOT__u_EXU__DOT__wmask));
     }
     if (vlSelf->rst_n) {
         if (((((((((1U == vlSelf->top__DOT__op) | (2U 
