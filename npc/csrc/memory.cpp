@@ -55,7 +55,7 @@ extern "C" void pmem_read(long long raddr, long long *rdata ) {
   }
   if(raddr == RTC_ADDR) {   /*mmio:rtc*/
     *rdata = get_time();
-    //printf("get time : %ld us\n",*rdata );
+    printf("get time : %ld us\n",*rdata );
     return;
   }
   *rdata = 0;
