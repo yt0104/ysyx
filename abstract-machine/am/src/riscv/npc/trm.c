@@ -19,7 +19,7 @@ static const char mainargs[] = MAINARGS;
 #define SERIAL_PORT     (DEVICE_BASE + 0x00003f8)
 
 void putch(char ch) {
-    *(uint8_t*)SERIAL_PORT = ch;
+    //*(uint8_t*)SERIAL_PORT = ch;
 }
 
 void halt(int code) {
