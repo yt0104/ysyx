@@ -135,7 +135,7 @@ void cpu_exec(uint64_t n){
     difftest_step();
 
     main_time++;
-    //if(main_time > sim_time) sim_exit(2);
+    if(main_time > sim_time) sim_exit(2);
   }
     
 }
