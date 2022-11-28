@@ -25,8 +25,6 @@ VL_MODULE(Vtop___024root) {
     VL_OUT64(pc,63,0);
 
     // LOCAL SIGNALS
-    CData/*0:0*/ top__DOT__u_EXU__DOT__wenM;
-    CData/*0:0*/ top__DOT__u_EXU__DOT__renM;
     CData/*0:0*/ top__DOT__exit_flag;
     CData/*0:0*/ top__DOT__halt_ret;
     CData/*4:0*/ top__DOT__rd;
@@ -34,6 +32,8 @@ VL_MODULE(Vtop___024root) {
     CData/*4:0*/ top__DOT__rs2;
     CData/*0:0*/ top__DOT__u_EXU__DOT__wenR;
     CData/*7:0*/ top__DOT__u_EXU__DOT__wmask;
+    CData/*0:0*/ top__DOT__u_EXU__DOT__wenM;
+    CData/*0:0*/ top__DOT__u_EXU__DOT__renM;
     IData/*31:0*/ top__DOT__cpu;
     IData/*31:0*/ top__DOT__op;
     QData/*63:0*/ top__DOT__npc;
@@ -49,14 +49,8 @@ VL_MODULE(Vtop___024root) {
     VlUnpacked<QData/*63:0*/, 32> top__DOT__u_EXU__DOT__u_reg__DOT__rf;
 
     // LOCAL VARIABLES
-    CData/*0:0*/ __VinpClk__TOP__top__DOT__u_EXU__DOT__renM;
-    CData/*0:0*/ __VinpClk__TOP__top__DOT__u_EXU__DOT__wenM;
-    CData/*0:0*/ __Vclklast__TOP____VinpClk__TOP__top__DOT__u_EXU__DOT__renM;
-    CData/*0:0*/ __Vclklast__TOP____VinpClk__TOP__top__DOT__u_EXU__DOT__wenM;
     CData/*0:0*/ __Vclklast__TOP__clk;
     CData/*0:0*/ __Vclklast__TOP__rst_n;
-    CData/*0:0*/ __Vchglast__TOP__top__DOT__u_EXU__DOT__wenM;
-    CData/*0:0*/ __Vchglast__TOP__top__DOT__u_EXU__DOT__renM;
     IData/*31:0*/ __Vtask_top__DOT__ifetch__2__inst;
     VlUnpacked<CData/*0:0*/, 5> __Vm_traceActivity;
 
