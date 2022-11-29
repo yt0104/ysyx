@@ -26,6 +26,7 @@ static void rtc_io_handler(uint32_t offset, int len, bool is_write) {
     rtc_port_base[0] = (uint32_t)us;
     rtc_port_base[1] = us >> 32;
   }
+  
 }
 
 #ifndef CONFIG_TARGET_AM
@@ -46,3 +47,5 @@ void init_timer() {
 #endif
   IFNDEF(CONFIG_TARGET_AM, add_alarm_handle(timer_intr));
 }
+
+

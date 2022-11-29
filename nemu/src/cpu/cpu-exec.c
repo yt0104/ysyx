@@ -17,6 +17,7 @@
 #include <cpu/decode.h>
 #include <cpu/difftest.h>
 #include <locale.h>
+#include <sdb.h>
 
 /* The assembly code of instructions executed is only output to the screen
  * when the number of instructions executed is less than this value.
@@ -25,25 +26,40 @@
  */
 #define MAX_INST_TO_PRINT 10
 
+
 CPU_state cpu = {};
 uint64_t g_nr_guest_inst = 0;
 static uint64_t g_timer = 0; // unit: us
 static bool g_print_step = false;
 
-void device_update();
+void device_update(); 
+
+extern int elf_exist;
 
 static void trace_and_difftest(Decode *_this, vaddr_t dnpc) {
 #ifdef CONFIG_ITRACE_COND
   if (ITRACE_COND) { log_write("%s\n", _this->logbuf); }
 #endif
+  IFDEF(CONFIG_FTRACE, if(elf_exist) ftrace_matchFunc(_this->pc, _this->dnpc, _this->isa.inst.val) ) ; 
+  IFDEF(CONFIG_ITRACE, update_iringbuf(_this->logbuf));   //update buf   (inst.c) 
   if (g_print_step) { IFDEF(CONFIG_ITRACE, puts(_this->logbuf)); }
   IFDEF(CONFIG_DIFFTEST, difftest_step(_this->pc, dnpc));
+
+#ifdef CONFIG_WATCHPOINT
+    int NO; char expr[32]; word_t val1,val2;
+    if ( trace_point(&NO, expr, &val1, &val2) ){
+      printf("watchpoint %d: %s has changed from %ld to %ld\n",NO,expr,val1,val2 ); 
+      nemu_state.state = NEMU_STOP;
+    }
+    //else printf("No watchpoint changes\n");
+#endif
+
 }
 
 static void exec_once(Decode *s, vaddr_t pc) {
   s->pc = pc;
   s->snpc = pc;
-  isa_exec_once(s);
+  isa_exec_once(s);	
   cpu.pc = s->dnpc;
 #ifdef CONFIG_ITRACE
   char *p = s->logbuf;
@@ -89,22 +105,23 @@ static void statistic() {
 
 void assert_fail_msg() {
   isa_reg_display();
+  IFDEF(CONFIG_ITRACE, puts_iringbuf());   //print buf   (inst.c) 
   statistic();
 }
 
 /* Simulate how the CPU works. */
 void cpu_exec(uint64_t n) {
   g_print_step = (n < MAX_INST_TO_PRINT);
-  switch (nemu_state.state) {
+  switch (nemu_state.state) {  			//state=1
     case NEMU_END: case NEMU_ABORT:
       printf("Program execution has ended. To restart the program, exit NEMU and run again.\n");
       return;
-    default: nemu_state.state = NEMU_RUNNING;
+    default: nemu_state.state = NEMU_RUNNING;	//state=0
   }
 
   uint64_t timer_start = get_time();
 
-  execute(n);
+  execute(n); //state=2 进入END/ABORT
 
   uint64_t timer_end = get_time();
   g_timer += timer_end - timer_start;

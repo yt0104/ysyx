@@ -1,20 +1,37 @@
-VSRC = $(wildcard ./vsrc/sw.v)
-CSRC = $(wildcard ./csrc/sw_main.cpp)
+VSRC = $(wildcard ./vsrc/top.sv)
+CSRC = $(wildcard ./csrc/*.cpp)
+CSRC+= $(wildcard ./csrc/*.c)
+NPC  = $(wildcard ./obj_dir/Vtop)
+TOPNAME = top
+IMG ?=  
+ELF ?=
+DIFF = $(NEMU_HOME)/build/riscv64-nemu-interpreter-so
+
+
+LDFLAGS += -LDFLAGS -lreadline #Linker pre-object arguments for makefile
+LDFLAGS += -LDFLAGS -lLLVM-13
+#C++ compiler arguments for makefile
+CFLAGS += -CFLAGS -I/usr/lib/llvm-13/include -D_GNU_SOURCE -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS
 
 all:
-	@echo "Write this Makefile by your self."
-
-sim:
+	@echo "verilator!"
+	verilator -Wall $(VSRC) $(CSRC) --top-module $(TOPNAME) $(LDFLAGS) $(CFLAGS) --cc --trace --exe --build 
+	
+run:all
 	$(call git_commit, "sim RTL") # DO NOT REMOVE THIS LINE!!!
-	verilator -Wall $(VSRC) $(CSRC) --cc --trace --exe --build
-	#make -C obj_dir -f Vsw.mk Vsw
-	./obj_dir/Vsw
+	@echo "sim RTL!"
+	$(NPC) $(IMG) $(ELF) $(DIFF)
+	
+gtk:sim
+	@echo "gtkwave!"
 	gtkwave wave.vcd
-	@echo "Write this Makefile by your self."
+	
 
- .PHONY:clean
 clean:
 	rm -rf obj_dir wave.vcd	
-
+	
 
 include ../Makefile
+
+
+ .PHONY:clean sim all gtk

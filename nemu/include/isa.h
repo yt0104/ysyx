@@ -55,4 +55,17 @@ word_t isa_query_intr();
 bool isa_difftest_checkregs(CPU_state *ref_r, vaddr_t pc);
 void isa_difftest_attach();
 
+//itrace
+#ifdef CONFIG_ITRACE
+void update_iringbuf(char *s);
+void puts_iringbuf();
+#endif
+
+//ftrace
+int ftrace_getTab(char *elf_name);
+void ftrace_matchFunc( word_t pc, word_t dnpc, uint32_t inst);
+
+
+
+
 #endif

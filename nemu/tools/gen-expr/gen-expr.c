@@ -31,39 +31,80 @@ static char *code_format =
 "  return 0; "
 "}";
 
-static void gen_rand_expr() {
-  buf[0] = '\0';
+static int nr_buf = 0; 
+
+static void gen_num(uint32_t max){
+  uint32_t num = rand() % max;
+  char str_num[32];
+  sprintf(str_num, "%d", num); 
+  for(int i=0;str_num[i]!='\0';i++){
+    buf[nr_buf++] = str_num[i];
+  }
 }
+
+
+static void gen_op(){
+  switch(rand()%4){
+  case 0: buf[nr_buf++] = '+';break;
+  case 1: buf[nr_buf++] = '-';break;
+  case 2: buf[nr_buf++] = '*';break;
+  default: buf[nr_buf++] = '/';break;
+  }
+
+}
+
+
+static void gen(char c){
+  buf[nr_buf++] = c;
+}
+
+
+static void gen_rand_expr() {
+  int cmd;
+  if(nr_buf>10) cmd = 1;
+  else if(nr_buf>1) cmd = rand()%3;
+  else cmd = rand()%4;
+  
+  switch(cmd){
+    case 0: gen('('); gen_rand_expr(); gen(')'); break;
+    case 1: gen_num(100);break;
+    default: gen_rand_expr(); gen_op(); gen_rand_expr(); break;
+  }
+  buf[nr_buf] = '\0';
+}
+
+
 
 int main(int argc, char *argv[]) {
   int seed = time(0);
   srand(seed);
-  int loop = 1;
+  int loop = 10;
   if (argc > 1) {
     sscanf(argv[1], "%d", &loop);
   }
   int i;
   for (i = 0; i < loop; i ++) {
+    nr_buf = 0;
     gen_rand_expr();
 
-    sprintf(code_buf, code_format, buf);
+    sprintf(code_buf, code_format, buf);	//  buf --> codebuf(main)
 
     FILE *fp = fopen("/tmp/.code.c", "w");
     assert(fp != NULL);
-    fputs(code_buf, fp);
+    fputs(code_buf, fp);			// codebuf(main) --> fp:code.c
     fclose(fp);
 
-    int ret = system("gcc /tmp/.code.c -o /tmp/.expr");
+    int ret = system("gcc /tmp/.code.c -o /tmp/.expr");	//gcc code.c --> expr
     if (ret != 0) continue;
 
     fp = popen("/tmp/.expr", "r");
     assert(fp != NULL);
 
     int result;
-    fscanf(fp, "%d", &result);
+    if(fscanf(fp, "%d", &result) >0){			//fp:expr --> int result
+	printf("%u %s\n", result, buf);
+	}
     pclose(fp);
-
-    printf("%u %s\n", result, buf);
   }
   return 0;
 }

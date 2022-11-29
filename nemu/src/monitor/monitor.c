@@ -32,8 +32,8 @@ static void welcome() {
   Log("Build time: %s, %s", __TIME__, __DATE__);
   printf("Welcome to %s-NEMU!\n", ANSI_FMT(str(__GUEST_ISA__), ANSI_FG_YELLOW ANSI_BG_RED));
   printf("For help, type \"help\"\n");
-  Log("Exercise: Please remove me in the source code and compile NEMU again.");
-  assert(0);
+  //Log("Exercise: Please remove me in the source code and compile NEMU again.");
+  //assert(0);
 }
 
 #ifndef CONFIG_TARGET_AM
@@ -44,7 +44,9 @@ void sdb_set_batch_mode();
 static char *log_file = NULL;
 static char *diff_so_file = NULL;
 static char *img_file = NULL;
+static char *elf_file = NULL;
 static int difftest_port = 1234;
+int elf_exist = 0;
 
 static long load_img() {
   if (img_file == NULL) {
@@ -68,6 +70,19 @@ static long load_img() {
   return size;
 }
 
+static int load_elf() {
+  IFDEF(CONFIG_DIS_FTRACE, return 2);
+  if (elf_file == NULL) {
+    Log("No elf is given, but ftrace is open.");
+    elf_exist = 0;
+    return 2; 
+  }
+  Log("The elf is %s", elf_file);
+  elf_exist = 1;
+  return ftrace_getTab(elf_file);
+}
+
+
 static int parse_args(int argc, char *argv[]) {
   const struct option table[] = {
     {"batch"    , no_argument      , NULL, 'b'},
@@ -78,13 +93,15 @@ static int parse_args(int argc, char *argv[]) {
     {0          , 0                , NULL,  0 },
   };
   int o;
+  
   while ( (o = getopt_long(argc, argv, "-bhl:d:p:", table, NULL)) != -1) {
     switch (o) {
       case 'b': sdb_set_batch_mode(); break;
       case 'p': sscanf(optarg, "%d", &difftest_port); break;
       case 'l': log_file = optarg; break;
       case 'd': diff_so_file = optarg; break;
-      case 1: img_file = optarg; return 0;
+      case 1: if(img_file != NULL){ elf_file = optarg; } 
+              else { img_file = optarg; } break;
       default:
         printf("Usage: %s [OPTION...] IMAGE [args]\n\n", argv[0]);
         printf("\t-b,--batch              run with batch mode\n");
@@ -121,6 +138,9 @@ void init_monitor(int argc, char *argv[]) {
 
   /* Load the image to memory. This will overwrite the built-in image. */
   long img_size = load_img();
+
+  /* Load the elf to ftrace*/
+ if(2 != load_elf()) assert(0);
 
   /* Initialize differential testing. */
   init_difftest(diff_so_file, img_size, difftest_port);

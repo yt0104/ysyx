@@ -147,6 +147,43 @@ config ITRACE_COND
   default "true"
 
 
+choice
+  prompt "Watchpoint Configure"
+  default WATCHPOINT
+config WATCHPOINT
+  bool "Enable Watchpoint"
+config DIS_WATCHPOINT
+  bool "Disable Watchpoint"
+endchoice
+
+choice
+  prompt "Memory Trace Configure"
+  default MTRACE
+config MTRACE
+  bool "Enable Memory Trace"
+config DIS_MTRACE
+  bool "Disable Memory Trace"
+endchoice
+
+choice
+  prompt "Func Trace Configure"
+  default FTRACE
+config FTRACE
+  bool "Enable Func Trace"
+config DIS_FTRACE
+  bool "Disable Func Trace"
+endchoice
+
+choice
+  prompt "Device Trace Configure"
+  default DTRACE
+config DTRACE
+  bool "Enable Device Trace"
+config DIS_DTRACE
+  bool "Disable Device Trace"
+endchoice
+
+
 config DIFFTEST
   depends on TARGET_NATIVE_ELF
   bool "Enable differential testing"
