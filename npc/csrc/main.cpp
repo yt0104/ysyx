@@ -55,11 +55,11 @@ static long load_img(char *bin) {
 
 static void sim_init(){
   contextp = new VerilatedContext;
-  tfp = new VerilatedVcdC;
+  //tfp = new VerilatedVcdC;
   top = new Vtop;
   contextp->traceEverOn(true);
   //top->trace(tfp, 0);
-  tfp->open("wave.vcd");
+  //tfp->open("wave.vcd");
 }
 
 extern "C" void sim_exit(int state){
@@ -91,7 +91,7 @@ extern "C" void sim_exit(int state){
   }
 
   delete top;
-  tfp->close();
+  //tfp->close();
   delete contextp;
   exit(0);
 }
@@ -99,7 +99,7 @@ extern "C" void sim_exit(int state){
 static void step_and_dump_wave(){
   top->eval();
   contextp->timeInc(1);
-  tfp->dump(contextp->time());
+  //tfp->dump(contextp->time());
 }
 
 static void step_once(){
