@@ -58,7 +58,7 @@ static void sim_init(){
   tfp = new VerilatedVcdC;
   top = new Vtop;
   contextp->traceEverOn(true);
-  top->trace(tfp, 0);
+  //top->trace(tfp, 0);
   tfp->open("wave.vcd");
 }
 
