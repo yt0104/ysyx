@@ -55,9 +55,9 @@ static long load_img(char *bin) {
 
 static void sim_init(){
   contextp = new VerilatedContext;
-  //tfp = new VerilatedVcdC;
   top = new Vtop;
   contextp->traceEverOn(true);
+  //tfp = new VerilatedVcdC;
   //top->trace(tfp, 0);
   //tfp->open("wave.vcd");
 }
