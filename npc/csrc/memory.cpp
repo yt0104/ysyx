@@ -38,6 +38,9 @@ static bool in_pmem(uint64_t addr) {
   return addr - CONFIG_MBASE < CONFIG_MSIZE;
 }
 
+static bool in_device(uint64_t addr) {
+  return addr - DEVICE_BASE < DEVICE_SIZE;
+}
 
 extern int main_time;
 static void out_of_bound(uint64_t addr) {
@@ -46,6 +49,7 @@ static void out_of_bound(uint64_t addr) {
 }
 
 
+bool device_inst = false;   //difftest: skip device inst
 
 extern "C" void pmem_read(long long raddr, long long *rdata ) {
   if (likely(in_pmem(raddr))) {
@@ -53,11 +57,19 @@ extern "C" void pmem_read(long long raddr, long long *rdata ) {
      mtrace_read(raddr, 8, *rdata);
     return;
   }
-  if(raddr == RTC_ADDR) {   /*mmio:rtc*/
-    *rdata = get_time();
-    //printf("get time : %ld us\n",*rdata );
+  else if (likely(in_device(raddr))){
+
+    device_inst = true;
+
+    dtrace_read(raddr, 8, *rdata);
+
+    if(raddr == RTC_ADDR) {   /*mmio:rtc*/
+      *rdata = get_time();
+      return;
+    }
     return;
   }
+
   *rdata = 0;
   out_of_bound(raddr);
   return;
@@ -82,10 +94,18 @@ extern "C" void pmem_write(long long waddr, long long wdata, char wmask) {
     mtrace_write(waddr-8, len, wdata);
     return;
   }
-  if(waddr == SERIAL_PORT) {   /*mmio:uart*/
-    if(memw_state) printf("%c",(char)wdata & 0xFF);
-    if(memw_state)  memw_state = false;   /*every two times print once*/
-    else memw_state = true;
+  else if (likely(in_device(waddr))){
+
+    device_inst = true;
+
+    dtrace_write(waddr, wmask, wdata);
+
+    if(waddr == SERIAL_PORT) {   /*mmio:uart*/
+      if(memw_state) printf("%c",(char)wdata & 0xFF);
+      if(memw_state)  memw_state = false;   /*every two times print once*/
+      else memw_state = true;
+      return;
+    }
     return;
   }
   out_of_bound(waddr);

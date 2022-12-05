@@ -62,15 +62,22 @@ static void sim_init(){
   //tfp->open("wave.vcd");
 }
 
+
+extern uint64_t *cpu_gpr;
+
 extern "C" void sim_exit(int state){
   switch (state)
   {
   case 0: 
-    Log(ANSI_FMT("HIT GOOD TRAP", ANSI_FG_GREEN));
+    if(cpu_gpr[10] == 0 ) Log(ANSI_FMT("HIT GOOD TRAP", ANSI_FG_GREEN));
+    else  {
+      itrace_puts_iringbuf();
+      Log(ANSI_FMT("HIT BAD TRAP", ANSI_FG_RED));
+    }
     break;
   case 1:
     itrace_puts_iringbuf();
-    Log(ANSI_FMT("HIT BAD TRAP", ANSI_FG_RED));
+    Log(ANSI_FMT("INST ERROR", ANSI_FG_RED));
     Log(ANSI_FMT("break at: %s", ANSI_FG_RED), logbuf);
     break;
   case 2:
@@ -82,7 +89,7 @@ extern "C" void sim_exit(int state){
     break; 
   case 4:
     itrace_puts_iringbuf();
-    Log(ANSI_FMT("DIFFTEST QUIT", ANSI_FG_RED));
+    Log(ANSI_FMT("DIFFTEST ERROR", ANSI_FG_RED));
     Log(ANSI_FMT("break at: %s", ANSI_FG_RED), logbuf);
     break; 
   default:
@@ -112,6 +119,7 @@ static void step_once(){
 
 uint64_t lpc;
 uint32_t linst;
+extern bool device_inst;   //difftest: skip device inst
 void cpu_exec(uint64_t n){
 
   for (;n > 0; n --)
@@ -133,7 +141,7 @@ void cpu_exec(uint64_t n){
 
     ftrace_matchFunc(lpc, top->pc, linst);
 
-    difftest_step();
+    difftest_step(&device_inst);
 
     main_time++;
     //if(main_time > sim_time) sim_exit(2);

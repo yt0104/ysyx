@@ -90,14 +90,25 @@ static void checkregs() {
 }
 
 
-void difftest_step() {
+void difftest_step(bool *skip) {
+
+
+  if(*skip) {
+    ref_difftest_regcpy(cpu_gpr, &top->pc, DIFFTEST_TO_REF); //sys device data
+    //ref_difftest_memcpy(DEVICE_BASE, guest_to_host(DEVICE_BASE), DEVICE_SIZE, DIFFTEST_TO_REF);
+    //Log(ANSI_FMT("difftest skip: pc = 0x%lx", ANSI_FG_YELLOW), top->pc);
+    return;
+  }
 
   ref_difftest_exec(1);
-
   checkregs();
+
 }
+
+
+
 #else
 void init_difftest(char *ref_so_file, long img_size, int port) { }
-void difftest_step() { }
+void difftest_step(bool *skip)  { }
 #endif
 

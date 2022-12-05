@@ -17,7 +17,7 @@
 //#define   CONFIG_FTRACE 
 //#define   CONFIG_MTRACE  
 //#define   CONFIG_DTRACE
-//#define   CONFIG_DIFFTEST   
+#define   CONFIG_DIFFTEST   
 
 
 extern Vtop* top;
@@ -42,6 +42,7 @@ uint8_t* guest_to_host(uint64_t paddr);
 uint64_t host_to_guest(uint8_t *haddr);
 
 #define DEVICE_BASE     0xa0000000
+#define DEVICE_SIZE     0x1000
 #define RTC_ADDR        (DEVICE_BASE + 0x0000048)
 #define SERIAL_PORT     (DEVICE_BASE + 0x00003f8)
 
@@ -93,7 +94,7 @@ extern "C" void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int
 
 enum { DIFFTEST_TO_DUT, DIFFTEST_TO_REF };
 void init_difftest(char *ref_so_file, long img_size, int port);
-void difftest_step();
+void difftest_step(bool *skip) ;
 
 extern "C" {
 extern void (*ref_difftest_memcpy)(uint32_t addr, void *buf, size_t n, bool direction);

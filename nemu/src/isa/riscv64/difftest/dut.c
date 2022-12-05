@@ -21,11 +21,16 @@ bool isa_difftest_checkregs(CPU_state *ref_r, vaddr_t pc) {
 
   for (int i = 0; i < 32; i++)
   {
-    if(ref_r->gpr[i] != cpu.gpr[i]) return false;
+    if(ref_r->gpr[i] != cpu.gpr[i]) {
+      Log("%s at reg = %s: dut = 0x%lx, ref = 0x%lx",ANSI_FMT("Differential testing ERROR", ANSI_FG_RED), regs[i], cpu.gpr[i], ref_r->gpr[i]);
+      return false;
+      }
   }
 
-  if(ref_r->pc != cpu.pc) return false;
-  
+  if(ref_r->pc != cpu.pc) {
+    Log("%s at pc: dut = 0x%lx, ref = 0x%lx",ANSI_FMT("Differential testing ERROR", ANSI_FG_RED), cpu.pc, ref_r->pc);
+    return false;
+  }
   return true;
 }
 

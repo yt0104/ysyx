@@ -31,22 +31,32 @@ VL_MODULE(Vtop___024root) {
     CData/*4:0*/ top__DOT__rs1;
     CData/*4:0*/ top__DOT__rs2;
     CData/*0:0*/ top__DOT__u_EXU__DOT__wenR;
+    CData/*0:0*/ top__DOT__u_EXU__DOT__wenC;
     CData/*7:0*/ top__DOT__u_EXU__DOT__wmask;
     CData/*0:0*/ top__DOT__u_EXU__DOT__wenM;
     CData/*0:0*/ top__DOT__u_EXU__DOT__renM;
+    SData/*11:0*/ top__DOT__u_EXU__DOT__addrCSR;
     IData/*31:0*/ top__DOT__cpu;
     IData/*31:0*/ top__DOT__op;
     QData/*63:0*/ top__DOT__npc;
     QData/*63:0*/ top__DOT__imm;
+    QData/*63:0*/ top__DOT__u_EXU__DOT__temp;
     QData/*63:0*/ top__DOT__u_EXU__DOT__src1;
     QData/*63:0*/ top__DOT__u_EXU__DOT__src2;
     QData/*63:0*/ top__DOT__u_EXU__DOT__dest;
+    QData/*63:0*/ top__DOT__u_EXU__DOT__rCSR;
+    QData/*63:0*/ top__DOT__u_EXU__DOT__wCSR;
+    QData/*63:0*/ top__DOT__u_EXU__DOT__intr_pc;
+    QData/*63:0*/ top__DOT__u_EXU__DOT__intr_NO;
     QData/*63:0*/ top__DOT__u_EXU__DOT__rdata;
     QData/*63:0*/ top__DOT__u_EXU__DOT__raddr;
     QData/*63:0*/ top__DOT__u_EXU__DOT__waddr;
     QData/*63:0*/ top__DOT__u_EXU__DOT__wdata;
-    QData/*63:0*/ top__DOT__u_EXU__DOT__temp;
-    VlUnpacked<QData/*63:0*/, 32> top__DOT__u_EXU__DOT__u_reg__DOT__rf;
+    QData/*63:0*/ top__DOT__u_EXU__DOT__u_csr__DOT__mcause;
+    QData/*63:0*/ top__DOT__u_EXU__DOT__u_csr__DOT__mstatus;
+    QData/*63:0*/ top__DOT__u_EXU__DOT__u_csr__DOT__mepc;
+    QData/*63:0*/ top__DOT__u_EXU__DOT__u_csr__DOT__mtvec;
+    VlUnpacked<QData/*63:0*/, 32> top__DOT__u_EXU__DOT__u_gpr__DOT__rf;
 
     // LOCAL VARIABLES
     CData/*0:0*/ __Vclklast__TOP__clk;

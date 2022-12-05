@@ -147,47 +147,32 @@ config ITRACE_COND
   default "true"
 
 
-choice
-  prompt "Watchpoint Configure"
-  default WATCHPOINT
 config WATCHPOINT
   bool "Enable Watchpoint"
-config DIS_WATCHPOINT
-  bool "Disable Watchpoint"
-endchoice
+  default y
 
-choice
-  prompt "Memory Trace Configure"
-  default MTRACE
 config MTRACE
-  bool "Enable Memory Trace"
-config DIS_MTRACE
-  bool "Disable Memory Trace"
-endchoice
+  bool "Enable Memory Trace "
+  default y
 
-choice
-  prompt "Func Trace Configure"
-  default FTRACE
 config FTRACE
-  bool "Enable Func Trace"
-config DIS_FTRACE
-  bool "Disable Func Trace"
-endchoice
+  bool "Enable Func Trace "
+  default y
 
-choice
-  prompt "Device Trace Configure"
-  default DTRACE
 config DTRACE
-  bool "Enable Device Trace"
-config DIS_DTRACE
-  bool "Disable Device Trace"
-endchoice
+  bool "Enable Device Trace "
+  default y
+
+config ETRACE
+  bool "Enable Exception Trace "
+  default y
+
 
 
 config DIFFTEST
   depends on TARGET_NATIVE_ELF
   bool "Enable differential testing"
-  default n
+  default y
   help
     Enable differential testing with a reference design.
     Note that this will significantly reduce the performance of NEMU.

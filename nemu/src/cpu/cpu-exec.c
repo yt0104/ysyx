@@ -76,7 +76,8 @@ static void exec_once(Decode *s, vaddr_t pc) {
   space_len = space_len * 3 + 1;
   memset(p, ' ', space_len);
   p += space_len;
-
+  //printf("space_len = %d\n",space_len);
+  //printf("s->logbuf = %ld, sizeof(s->logbuf) = %ld, p = %ld\n", (uint64_t)s->logbuf, sizeof(s->logbuf), (uint64_t)p);
   void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
   disassemble(p, s->logbuf + sizeof(s->logbuf) - p,
       MUXDEF(CONFIG_ISA_x86, s->snpc, s->pc), (uint8_t *)&s->isa.inst.val, ilen);
@@ -92,6 +93,7 @@ static void execute(uint64_t n) {
     if (nemu_state.state != NEMU_RUNNING) break;
     IFDEF(CONFIG_DEVICE, device_update());
   }
+
 }
 
 static void statistic() {
@@ -126,6 +128,7 @@ void cpu_exec(uint64_t n) {
   uint64_t timer_end = get_time();
   g_timer += timer_end - timer_start;
 
+
   switch (nemu_state.state) {
     case NEMU_RUNNING: nemu_state.state = NEMU_STOP; break;
 
@@ -135,6 +138,7 @@ void cpu_exec(uint64_t n) {
            (nemu_state.halt_ret == 0 ? ANSI_FMT("HIT GOOD TRAP", ANSI_FG_GREEN) :
             ANSI_FMT("HIT BAD TRAP", ANSI_FG_RED))),
           nemu_state.halt_pc);
+      //if(nemu_state.state != NEMU_ABORT || nemu_state.halt_ret != 0) assert_fail_msg(); //hit bad trap
       // fall through
     case NEMU_QUIT: statistic();
   }

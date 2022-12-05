@@ -71,7 +71,7 @@ static long load_img() {
 }
 
 static int load_elf() {
-  IFDEF(CONFIG_DIS_FTRACE, return 2);
+  IFNDEF(CONFIG_FTRACE, return 2);
   if (elf_file == NULL) {
     Log("No elf is given, but ftrace is open.");
     elf_exist = 0;

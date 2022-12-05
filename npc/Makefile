@@ -7,7 +7,6 @@ IMG ?=
 ELF ?=
 DIFF = $(NEMU_HOME)/build/riscv64-nemu-interpreter-so
 
-
 LDFLAGS += -LDFLAGS -lreadline #Linker pre-object arguments for makefile
 LDFLAGS += -LDFLAGS -lLLVM-13
 #C++ compiler arguments for makefile
