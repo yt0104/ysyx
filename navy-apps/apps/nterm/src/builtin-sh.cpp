@@ -23,6 +23,9 @@ static void sh_prompt() {
 }
 
 static void sh_handle_cmd(const char *cmd) {
+  setenv("PATH","/bin",0);
+  printf("sh_handle_cmd : %s",cmd);
+  execvp(cmd, NULL);
 }
 
 void builtin_sh_run() {

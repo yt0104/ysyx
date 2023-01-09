@@ -4,7 +4,7 @@
 #include <stdlib.h>
 
 //ITRACE
-#define MAX_INST_TO_SAVE 20
+#define MAX_INST_TO_SAVE 40
 static char iringbuf [MAX_INST_TO_SAVE][128];
 static int inst_p = 0;
 
@@ -132,6 +132,8 @@ void ftrace_matchFunc( word_t pc, word_t dnpc, uint32_t inst){
 			rewind(fp);
 			fseek(fp, str_offset + symtab[i].st_name, SEEK_SET);
 			a = fread(func, FUNC_SIZE, 1, fp);
+
+			if(strcmp(func, "putch") == 0) return;	//jump putch
             
 			printf("pc = %lx:", pc);
 			func_proc++ ;
@@ -144,6 +146,8 @@ void ftrace_matchFunc( word_t pc, word_t dnpc, uint32_t inst){
 			rewind(fp);
 			fseek(fp, str_offset + symtab[i].st_name, SEEK_SET);
 			a = fread(func, FUNC_SIZE, 1, fp);
+
+			if(strcmp(func, "printf") == 0) return;	//jump printf
 
 			printf("pc = %lx:", pc);
 			func_proc-- ;

@@ -7,15 +7,17 @@ Context* __am_irq_handle(Context *c) {
   if (user_handler) {
     Event ev = {0};
     switch (c->mcause) {
-      case 11: ev.event = EVENT_YIELD; break;
+      //case 0xb: ev.event = EVENT_YIELD; break;
+      case 0xb: ev.event = EVENT_SYSCALL; break;  //difftest : mcause : ox0b
       default: ev.event = EVENT_ERROR; break;
     }
     c->mepc = c->mepc + 4;
 
+    //printf("am_irq_handle: mcause = %d\n", c->mcause);
+
     c = user_handler(ev, c);
     assert(c != NULL);
   }
-
   return c;
 }
 

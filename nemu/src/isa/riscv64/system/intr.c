@@ -21,7 +21,7 @@ word_t isa_raise_intr(word_t NO, vaddr_t epc) {
    */
   cpu.csr[mepc] = epc;
   cpu.csr[mcause] = NO;
-  IFDEF(CONFIG_ETRACE, printf("raise intr NO = %ld, epc = %8lx, npc = %8lx", NO, epc, cpu.csr[mtvec]) );
+  IFDEF(CONFIG_ETRACE, printf("ETRACE--->raise intr NO = %ld, epc = %8lx, npc = %8lx\n", NO, epc, cpu.csr[mtvec]) );
   return cpu.csr[mtvec];
 }
 

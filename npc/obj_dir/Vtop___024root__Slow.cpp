@@ -43,7 +43,7 @@ void Vtop___024root___initial__TOP__1(Vtop___024root* vlSelf) {
     Vtop___024root____Vdpiimwrap_top__DOT__u_EXU__DOT__u_gpr__DOT__set_gpr_ptr__Vdpioc2_TOP(vlSelf->top__DOT__u_EXU__DOT__u_gpr__DOT__rf);
 }
 
-void Vtop___024root____Vdpiimwrap_top__DOT__ifetch_TOP(QData/*63:0*/ pc, IData/*31:0*/ &inst);
+void Vtop___024unit____Vdpiimwrap_ifetch_TOP____024unit(QData/*63:0*/ pc, IData/*31:0*/ &inst);
 void Vtop___024root____Vdpiimwrap_top__DOT__u_EXU__DOT__pmem_read_TOP(QData/*63:0*/ raddr, QData/*63:0*/ &rdata);
 void Vtop___024root____Vdpiimwrap_top__DOT__u_EXU__DOT__pmem_write_TOP(QData/*63:0*/ waddr, QData/*63:0*/ wdata, CData/*7:0*/ wmask);
 
@@ -52,8 +52,8 @@ void Vtop___024root___settle__TOP__4(Vtop___024root* vlSelf) {
     Vtop__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
     VL_DEBUG_IF(VL_DBG_MSGF("+    Vtop___024root___settle__TOP__4\n"); );
     // Body
-    Vtop___024root____Vdpiimwrap_top__DOT__ifetch_TOP(vlSelf->pc, vlSelf->__Vtask_top__DOT__ifetch__2__inst);
-    vlSelf->inst = vlSelf->__Vtask_top__DOT__ifetch__2__inst;
+    Vtop___024unit____Vdpiimwrap_ifetch_TOP____024unit(vlSelf->pc, vlSelf->__Vtask_ifetch__2__inst);
+    vlSelf->inst = vlSelf->__Vtask_ifetch__2__inst;
     if (((((((((0x13U == (0x707fU & vlSelf->inst)) 
                | (0x67U == (0x707fU & vlSelf->inst))) 
               | (0x2067U == (0x707fU & vlSelf->inst))) 
@@ -5157,7 +5157,7 @@ void Vtop___024root___ctor_var_reset(Vtop___024root* vlSelf) {
     vlSelf->top__DOT__u_EXU__DOT__u_csr__DOT__mstatus = VL_RAND_RESET_Q(64);
     vlSelf->top__DOT__u_EXU__DOT__u_csr__DOT__mepc = VL_RAND_RESET_Q(64);
     vlSelf->top__DOT__u_EXU__DOT__u_csr__DOT__mtvec = VL_RAND_RESET_Q(64);
-    vlSelf->__Vtask_top__DOT__ifetch__2__inst = 0;
+    vlSelf->__Vtask_ifetch__2__inst = 0;
     vlSelf->__Vtask_top__DOT__u_EXU__DOT__pmem_read__3__rdata = 0;
     for (int __Vi0=0; __Vi0<5; ++__Vi0) {
         vlSelf->__Vm_traceActivity[__Vi0] = VL_RAND_RESET_I(1);

@@ -42,16 +42,26 @@ static bool in_device(uint64_t addr) {
   return addr - DEVICE_BASE < DEVICE_SIZE;
 }
 
+extern uint32_t screen_size();
+static bool in_vgafb(uint64_t addr) {
+  return addr - FB_ADDR < screen_size();
+}
+
 extern int main_time;
 static void out_of_bound(uint64_t addr) {
   Log(ANSI_FMT("time = %d, address = %16lx is out of bound", ANSI_FG_RED),main_time, addr);
   assert(0);
 }
 
-
+bool memr_state;
 bool device_inst = false;   //difftest: skip device inst
 
 extern "C" void pmem_read(long long raddr, long long *rdata ) {
+
+  if(memr_state)  memr_state = false;   /*every two times read once*/
+  else memr_state = true;
+  if(memr_state) return;
+
   if (likely(in_pmem(raddr))) {
     *rdata = host_read(guest_to_host(raddr), 8); 
      mtrace_read(raddr, 8, *rdata);
@@ -67,7 +77,11 @@ extern "C" void pmem_read(long long raddr, long long *rdata ) {
       *rdata = get_time();
       return;
     }
-    return;
+    if(raddr == KBD_ADDR) {   /*mmio:kbd*/ 
+      *rdata = read_key();
+      return;
+    }
+    Log("read device not found: addr = %8x, data = %16x", raddr, rdata);
   }
 
   *rdata = 0;
@@ -75,8 +89,15 @@ extern "C" void pmem_read(long long raddr, long long *rdata ) {
   return;
 }
 
+
 bool memw_state;
+
 extern "C" void pmem_write(long long waddr, long long wdata, char wmask) {
+
+  if(memw_state)  memw_state = false;   /*every two times print once*/
+  else memw_state = true;
+  if(memw_state) return;
+
   if (likely(in_pmem(waddr))){
     int len = 0;
     uint64_t wtemp = 0;
@@ -101,13 +122,25 @@ extern "C" void pmem_write(long long waddr, long long wdata, char wmask) {
     dtrace_write(waddr, wmask, wdata);
 
     if(waddr == SERIAL_PORT) {   /*mmio:uart*/
-      if(memw_state) printf("%c",(char)wdata & 0xFF);
-      if(memw_state)  memw_state = false;   /*every two times print once*/
-      else memw_state = true;
+      printf("%c",(char)wdata & 0xFF);
       return;
     }
+    else if(waddr == VGACTL_ADDR){ /*mmio:vgactl*/
+      write_vgactl(wdata);
+      return;
+    }
+    else if(waddr == SYNC_ADDR){ /*mmio:vgactl*/
+      write_vgasync(wdata);
+      return;
+    }
+    Log("write device not found: addr = %8x, data = %16x", waddr, wdata);
+  }
+
+  else if(likely(in_vgafb(waddr))){
+    write_vgafb(waddr, wdata);
     return;
   }
+
   out_of_bound(waddr);
   return;
 }

@@ -143,6 +143,9 @@ void cpu_exec(uint64_t n){
 
     difftest_step(&device_inst);
 
+    update_key();
+    vga_update_screen();
+
     main_time++;
     //if(main_time > sim_time) sim_exit(2);
   }
@@ -162,6 +165,9 @@ int main(int argc, char *argv[]) {
   init_sdb();
   
   init_disasm("riscv64-pc-linux-gnu");
+
+  init_vga();
+  init_key();
 
   top->clk = 0;
   top->rst_n = 1; step_and_dump_wave();

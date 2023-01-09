@@ -11,12 +11,15 @@
 
 class Vtop__Syms;
 class Vtop_VerilatedVcd;
+class Vtop___024unit;
 
 
 //----------
 
 VL_MODULE(Vtop___024root) {
   public:
+    // CELLS
+    Vtop___024unit* __PVT____024unit;
 
     // PORTS
     VL_IN8(clk,0,0);
@@ -61,7 +64,7 @@ VL_MODULE(Vtop___024root) {
     // LOCAL VARIABLES
     CData/*0:0*/ __Vclklast__TOP__clk;
     CData/*0:0*/ __Vclklast__TOP__rst_n;
-    IData/*31:0*/ __Vtask_top__DOT__ifetch__2__inst;
+    IData/*31:0*/ __Vtask_ifetch__2__inst;
     QData/*63:0*/ __Vtask_top__DOT__u_EXU__DOT__pmem_read__3__rdata;
     VlUnpacked<CData/*0:0*/, 5> __Vm_traceActivity;
 

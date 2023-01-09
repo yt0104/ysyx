@@ -13,7 +13,12 @@ int main() {
   NDL_DrawRect(bmp, 0, 0, w, h);
   free(bmp);
   NDL_Quit();
+
+  //char buf[64];
+  //sprintf(buf, "Test ends! Spinning...\n");
+  //write(1,buf,64);
+
   printf("Test ends! Spinning...\n");
-  while (1);
+  while (1); 
   return 0;
 }

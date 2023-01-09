@@ -1,20 +1,6 @@
 #include <am.h>
+#include <klib-macros.h>
 #include <riscv/riscv.h>
-
-#define DEVICE_BASE     0xa0000000
-#define KBD_ADDR        (DEVICE_BASE + 0x0000060)
-#define KEYDOWN_MASK 0x8000
-
-void __am_input_keybrd(AM_INPUT_KEYBRD_T *kbd) {
-  kbd->keydown = 0;
-  kbd->keycode = AM_KEY_NONE;
-  //kbd->keycode = inl(KBD_ADDR);
-  uint32_t key= inl(KBD_ADDR);
-  if(key != AM_KEY_NONE){
-    kbd->keydown = (key & KEYDOWN_MASK ? true : false);
-    kbd->keycode = key & ~KEYDOWN_MASK;
-  }
-}
 
 #define DEVICE_BASE 0xa0000000
 #define VGACTL_ADDR     (DEVICE_BASE + 0x0000100)
@@ -62,4 +48,3 @@ void __am_gpu_fbdraw(AM_GPU_FBDRAW_T *ctl) {
 void __am_gpu_status(AM_GPU_STATUS_T *status) {
   status->ready = true;
 }
-

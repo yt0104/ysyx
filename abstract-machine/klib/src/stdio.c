@@ -71,7 +71,10 @@ int vsprintf(char *out, const char *fmt, va_list ap) {
 		case 'x':  //十六进制
 			base = 16;
 			break;
-	
+		case 'p':  //十六进制 print address
+			base = 16;
+      num_para = 16;
+			break;
 		case 'd':	//十进制
       base = 10;
       break;

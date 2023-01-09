@@ -11,13 +11,13 @@
 
 #include "util.h"
 
-//#define   CONFIG_AUTO_C
+#define   CONFIG_AUTO_C
 //#define   CONFIG_WATCHPOINT   
 #define   CONFIG_ITRACE       
 //#define   CONFIG_FTRACE 
 //#define   CONFIG_MTRACE  
 //#define   CONFIG_DTRACE
-#define   CONFIG_DIFFTEST   
+//#define   CONFIG_DIFFTEST   
 
 
 extern Vtop* top;
@@ -37,6 +37,7 @@ void update_logbuff();
 #define PMEM_LEFT  ((uint32_t)CONFIG_MBASE)
 #define PMEM_RIGHT ((uint32_t)CONFIG_MBASE + CONFIG_MSIZE - 1)
 #define RESET_VECTOR (PMEM_LEFT + CONFIG_PC_RESET_OFFSET)
+#define IO_SPACE_MAX (2 * 1024 * 1024)
 
 uint8_t* guest_to_host(uint64_t paddr);
 uint64_t host_to_guest(uint8_t *haddr);
@@ -45,10 +46,31 @@ uint64_t host_to_guest(uint8_t *haddr);
 #define DEVICE_SIZE     0x1000
 #define RTC_ADDR        (DEVICE_BASE + 0x0000048)
 #define SERIAL_PORT     (DEVICE_BASE + 0x00003f8)
+#define KBD_ADDR        (DEVICE_BASE + 0x0000060)
+#define VGACTL_ADDR     (DEVICE_BASE + 0x0000100)
+#define SYNC_ADDR (VGACTL_ADDR + 4)
+#define MMIO_BASE       0xa0000000
+#define FB_ADDR         (MMIO_BASE   + 0x1000000)
 
 extern "C" void pmem_read(long long raddr, long long *rdata );
 extern "C" void pmem_write(long long waddr, long long wdata, char wmask);
 extern "C" void ifetch(long long pc, int* inst);
+
+#define PAGE_SHIFT        12
+#define PAGE_SIZE         (1ul << PAGE_SHIFT)
+#define PAGE_MASK         (PAGE_SIZE - 1)
+
+static uint8_t *io_space = (uint8_t*)malloc(IO_SPACE_MAX);;
+static uint8_t *p_space = io_space;
+
+static inline uint8_t* new_space(int size) {
+  uint8_t *p = p_space;
+  // page aligned;
+  size = (size + (PAGE_SIZE - 1)) & ~PAGE_MASK;
+  p_space += size;
+  assert(p_space - io_space < IO_SPACE_MAX);
+  return p;
+}
 
 /*reg*/
 void isa_reg_display();
@@ -106,3 +128,14 @@ extern void (*ref_difftest_raise_intr)(uint64_t NO);
 /*timer*/
 uint64_t get_time();
 
+/*key*/
+void update_key();
+uint32_t read_key();
+void init_key();
+
+/*vga*/
+void vga_update_screen();
+void write_vgactl(uint64_t data);
+void write_vgasync(uint64_t data);
+void write_vgafb(uint64_t addr, uint64_t data);
+void init_vga();

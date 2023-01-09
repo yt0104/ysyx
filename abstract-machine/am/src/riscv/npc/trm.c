@@ -1,5 +1,6 @@
 #include <am.h>
 #include <klib-macros.h>
+#include <riscv/riscv.h>
 
 extern char _heap_start;
 int main(const char *args);
@@ -18,7 +19,6 @@ static const char mainargs[] = MAINARGS;
 #define DEVICE_BASE     0xa0000000
 #define SERIAL_PORT     (DEVICE_BASE + 0x00003f8)
 
-static inline void outb(uintptr_t addr, uint8_t  data) { *(volatile uint8_t  *)addr = data; }
 void putch(char ch) {
     //*(uint8_t*)SERIAL_PORT = ch;
     outb(SERIAL_PORT, ch);

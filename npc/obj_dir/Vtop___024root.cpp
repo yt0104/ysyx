@@ -19,18 +19,6 @@ VL_INLINE_OPT void Vtop___024root____Vdpiimwrap_top__DOT__sim_exit_TOP(IData/*31
     sim_exit(state__Vcvt);
 }
 
-extern "C" void ifetch(long long pc, int* inst);
-
-VL_INLINE_OPT void Vtop___024root____Vdpiimwrap_top__DOT__ifetch_TOP(QData/*63:0*/ pc, IData/*31:0*/ &inst) {
-    VL_DEBUG_IF(VL_DBG_MSGF("+    Vtop___024root____Vdpiimwrap_top__DOT__ifetch_TOP\n"); );
-    // Body
-    long long pc__Vcvt;
-    for (size_t pc__Vidx = 0; pc__Vidx < 1; ++pc__Vidx) pc__Vcvt = pc;
-    int inst__Vcvt;
-    ifetch(pc__Vcvt, &inst__Vcvt);
-    inst = inst__Vcvt;
-}
-
 extern "C" void pmem_read(long long raddr, long long* rdata);
 
 VL_INLINE_OPT void Vtop___024root____Vdpiimwrap_top__DOT__u_EXU__DOT__pmem_read_TOP(QData/*63:0*/ raddr, QData/*63:0*/ &rdata) {
@@ -68,6 +56,8 @@ VL_INLINE_OPT void Vtop___024root____Vdpiimwrap_top__DOT__u_EXU__DOT__u_gpr__DOT
     set_gpr_ptr(&a__Vopenarray);
 }
 
+void Vtop___024unit____Vdpiimwrap_ifetch_TOP____024unit(QData/*63:0*/ pc, IData/*31:0*/ &inst);
+
 VL_INLINE_OPT void Vtop___024root___sequent__TOP__2(Vtop___024root* vlSelf) {
     if (false && vlSelf) {}  // Prevent unused
     Vtop__Syms* const __restrict vlSymsp VL_ATTR_UNUSED = vlSelf->vlSymsp;
@@ -87,8 +77,8 @@ VL_INLINE_OPT void Vtop___024root___sequent__TOP__2(Vtop___024root* vlSelf) {
         vlSelf->pc = 0x80000000ULL;
     }
     vlSelf->top__DOT__cpu = __Vdly__top__DOT__cpu;
-    Vtop___024root____Vdpiimwrap_top__DOT__ifetch_TOP(vlSelf->pc, vlSelf->__Vtask_top__DOT__ifetch__2__inst);
-    vlSelf->inst = vlSelf->__Vtask_top__DOT__ifetch__2__inst;
+    Vtop___024unit____Vdpiimwrap_ifetch_TOP____024unit(vlSelf->pc, vlSelf->__Vtask_ifetch__2__inst);
+    vlSelf->inst = vlSelf->__Vtask_ifetch__2__inst;
     if (((((((((0x13U == (0x707fU & vlSelf->inst)) 
                | (0x67U == (0x707fU & vlSelf->inst))) 
               | (0x2067U == (0x707fU & vlSelf->inst))) 

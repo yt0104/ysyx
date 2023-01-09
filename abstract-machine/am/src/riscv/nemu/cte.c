@@ -8,19 +8,15 @@ Context* __am_irq_handle(Context *c) {
   if (user_handler) {
     Event ev = {0};
     switch (c->mcause) {
-      case 11: ev.event = EVENT_YIELD; break;
+      //case 0xb: ev.event = EVENT_YIELD; break;
+      case 0xb: ev.event = EVENT_SYSCALL; break;  //difftest : mcause : ox0b
       default: ev.event = EVENT_ERROR; break;
     }
     c->mepc = c->mepc + 4;
-/*
-    uint64_t *p = (uint64_t *)c;      //output context
-    for (size_t i = 0; i < 36; i++)   
-    {
-      printf("context[%d] = 0x%x\n", i, *p);
-      p++;
-    }
-    */
-    c = user_handler(ev, c);
+    
+    //printf("am_irq_handle: mcause = %d\n", c->mcause);
+
+    c = user_handler(ev, c);    //do_event
     assert(c != NULL);
   }
 

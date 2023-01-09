@@ -39,6 +39,8 @@ void Vtop___024root__traceInitSub0(Vtop___024root* vlSelf, VerilatedVcd* tracep)
         tracep->declBus(c+3,"top rs2", false,-1, 4,0);
         tracep->declQuad(c+4,"top imm", false,-1, 63,0);
         tracep->declBus(c+6,"top op", false,-1, 31,0);
+        tracep->declQuad(c+117,"top u_IFU pc", false,-1, 63,0);
+        tracep->declBus(c+116,"top u_IFU inst", false,-1, 31,0);
         tracep->declBus(c+116,"top u_IDU inst", false,-1, 31,0);
         tracep->declBus(c+109,"top u_IDU rd", false,-1, 4,0);
         tracep->declBus(c+2,"top u_IDU rs1", false,-1, 4,0);
