@@ -14,10 +14,13 @@
 ***************************************************************************************/
 
 #include <cpu/cpu.h>
+#include <isa.h>
 
 void sdb_mainloop();
 
 void engine_start() {
+
+//cpu.csr[mstatus] = 0xa00001800;
 
 #ifdef CONFIG_TARGET_AM
   cpu_exec(-1);

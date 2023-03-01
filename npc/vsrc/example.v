@@ -24,7 +24,7 @@ module sync_async_reset(clock,reset_n,rst_n);
 endmodule							// sync_async_reset
 
 // 触发器模板
-module Reg #(WIDTH = 1, RESET_VAL = 0) (
+module Reg #( WIDTH = 1, RESET_VAL = 0) (
   input clk,
   input rst,
   input [WIDTH-1:0] din,

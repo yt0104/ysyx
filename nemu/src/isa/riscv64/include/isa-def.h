@@ -25,7 +25,6 @@ typedef struct {
 } riscv64_CPU_state;
 
 
-
 // decode
 typedef struct {
   union {

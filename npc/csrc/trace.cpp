@@ -5,7 +5,7 @@
 
 #ifdef CONFIG_ITRACE
 
-#define MAX_INST_TO_SAVE 10
+#define MAX_INST_TO_SAVE 20
 static char iringbuf [MAX_INST_TO_SAVE][128];
 static int inst_p = 0;
 
@@ -187,47 +187,60 @@ void ftrace_matchFunc( uint64_t pc, uint64_t dnpc, uint32_t inst) { }
 #endif
 
 
-#ifdef CONFIG_MTRACE
+#ifdef CONFIG_MTRACE_OUT
 
-uint64_t lraddr,lrdata;
-int lrlen;
 void mtrace_read(uint64_t addr, int len, uint64_t data){
-	if(lraddr == addr&& lrdata == data&& lrlen == len) return;
+
 	printf("MTRACE--> #%3d, pc = %8lx read : addr = %8lx   data = %16lx \n", main_time+1, top->pc, addr, data);
-	lraddr = addr; lrdata = data; lrlen = len;
 }
 
-uint64_t lwaddr,lwdata;
-int lwlen;
 void mtrace_write(uint64_t addr, int len, uint64_t data){
-	if(lwaddr == addr&& lwdata == data&& lwlen == len) return;
 
 	printf("MTRACE--> #%3d, pc = %8lx write: addr = %8lx   data = %16lx   len = %d\n", main_time+1, top->pc, addr, data, len);
-	lwaddr = addr; lwdata = data; lwlen = len;
-	return;
 }
+
 #else
 void mtrace_read(uint64_t addr, int len, uint64_t data) {}
 void mtrace_write(uint64_t addr, int len, uint64_t data) {}
 #endif
 
+
+#ifdef CONFIG_MTRACE
+
+#define MAX_MTRACE_TO_SAVE 20
+static char mtracebuf [MAX_MTRACE_TO_SAVE][128];
+static int mtrace_p = 0;
+
+void mtrace_update_mtracebuf(char *s){
+  strcpy(mtracebuf[mtrace_p], s);
+  mtrace_p = (mtrace_p+1) % MAX_MTRACE_TO_SAVE;
+
+};
+
+void mtrace_puts_mtracebuf(){
+  Log(ANSI_FMT("%d LAST MTRACE is shown:", ANSI_FG_BLUE), MAX_MTRACE_TO_SAVE);
+  for(int i = mtrace_p; i < mtrace_p + MAX_MTRACE_TO_SAVE; i++){
+    if(*mtracebuf[i%MAX_MTRACE_TO_SAVE] != '\0') printf("%s", mtracebuf[i%MAX_MTRACE_TO_SAVE]);
+  }
+};
+
+#else
+void mtrace_update_mtracebuf(char *s) {}
+void mtrace_puts_mtracebuf() {}
+#endif
+
+
+
 #ifdef CONFIG_DTRACE
 
-uint64_t draddr,drdata;
-int drlen;
 void dtrace_read(uint64_t addr, int len, uint64_t data){
-	if(draddr == addr&& drdata == data&& drlen == len) return;
+
 	printf("DTRACE--> #%3d, pc = %8lx read : addr = %8lx   data = %16lx \n", main_time+1, top->pc, addr, data);
-	draddr = addr; drdata = data; drlen = len;
 }
 
-uint64_t dwaddr,dwdata;
-int dwlen;
 void dtrace_write(uint64_t addr, int len, uint64_t data){
-	if(dwaddr == addr&& dwdata == data&& dwlen == len) return;
+
 	printf("DTRACE--> #%3d, pc = %8lx write: addr = %8lx   data = %c   len = %d\n", main_time+1, top->pc, addr, (char)data&0xff, len);
-	dwaddr = addr; dwdata = data; dwlen = len;
-	return;
 }
 #else
 void dtrace_read(uint64_t addr, int len, uint64_t data) {}

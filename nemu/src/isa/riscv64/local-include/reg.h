@@ -17,6 +17,7 @@
 #define __RISCV64_REG_H__
 
 #include <common.h>
+#include <isa.h>
 
 extern const char *regs[];
 

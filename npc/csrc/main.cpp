@@ -9,14 +9,16 @@ Vtop* top;
 int main_time = 0;      // 仿真时间戳
 long sim_time = 10000000;   // 最大仿真时间戳
 
+uint64_t lpc = 0x80000000;
+uint64_t linst = 0x00000413;
 
 char logbuf[128];       
 
-void update_logbuff(){
+void update_logbuff(uint64_t logpc, uint64_t loginst){
     char *p = logbuf;
-    p += snprintf(p, sizeof(logbuf), "#%2d  0x%016lx :", main_time, top->pc);
+    p += snprintf(p, sizeof(logbuf), "#%2d  0x%016lx :", main_time, logpc);
     int ilen = 4;
-    uint8_t *inst = (uint8_t *)&top->inst;
+    uint8_t *inst = (uint8_t *)&loginst;
     for (int i = ilen - 1; i >= 0; i --) {
       p += snprintf(p, 4, " %02x", inst[i]);
     }
@@ -27,7 +29,7 @@ void update_logbuff(){
     memset(p, ' ', space_len);
     p += space_len;
 
-    disassemble(p, logbuf + sizeof(logbuf) - p, top->pc, (uint8_t *)&top->inst, ilen);
+    disassemble(p, logbuf + sizeof(logbuf) - p, logpc, (uint8_t *)&loginst, ilen);
 
 }
 
@@ -57,30 +59,40 @@ static void sim_init(){
   contextp = new VerilatedContext;
   top = new Vtop;
   contextp->traceEverOn(true);
-  //tfp = new VerilatedVcdC;
-  //top->trace(tfp, 0);
-  //tfp->open("wave.vcd");
+#ifdef CONFIG_GTK
+    tfp = new VerilatedVcdC;
+    top->trace(tfp, 0);
+    tfp->open("wave.vcd");
+#endif
 }
 
 
 extern uint64_t *cpu_gpr;
 
 extern "C" void sim_exit(int state){
+
+  #ifdef CONFIG_CACHE
+    free_cache();
+  #endif
+
   switch (state)
   {
   case 0: 
     if(cpu_gpr[10] == 0 ) Log(ANSI_FMT("HIT GOOD TRAP", ANSI_FG_GREEN));
     else  {
+      mtrace_puts_mtracebuf();
       itrace_puts_iringbuf();
       Log(ANSI_FMT("HIT BAD TRAP", ANSI_FG_RED));
     }
     break;
   case 1:
+    mtrace_puts_mtracebuf();
     itrace_puts_iringbuf();
     Log(ANSI_FMT("INST ERROR", ANSI_FG_RED));
     Log(ANSI_FMT("break at: %s", ANSI_FG_RED), logbuf);
     break;
   case 2:
+    mtrace_puts_mtracebuf();
     itrace_puts_iringbuf();
     Log(ANSI_FMT("TIME OUT", ANSI_FG_YELLOW));
     break;
@@ -88,17 +100,22 @@ extern "C" void sim_exit(int state){
     Log(ANSI_FMT("QUIT NPC", ANSI_FG_YELLOW));
     break; 
   case 4:
+    mtrace_puts_mtracebuf();
     itrace_puts_iringbuf();
     Log(ANSI_FMT("DIFFTEST ERROR", ANSI_FG_RED));
     Log(ANSI_FMT("break at: %s", ANSI_FG_RED), logbuf);
     break; 
   default:
-    Log(ANSI_FMT("Unknown EXIT", ANSI_FG_RED));
+    mtrace_puts_mtracebuf();
+    itrace_puts_iringbuf();
+    Log(ANSI_FMT("Sim EXIT: 0x%x", ANSI_FG_RED), state);
     break;
   }
 
   delete top;
-  //tfp->close();
+#ifdef CONFIG_GTK
+    tfp->close();
+#endif
   delete contextp;
   exit(0);
 }
@@ -106,7 +123,9 @@ extern "C" void sim_exit(int state){
 static void step_and_dump_wave(){
   top->eval();
   contextp->timeInc(1);
-  //tfp->dump(contextp->time());
+#ifdef CONFIG_GTK
+  tfp->dump(contextp->time());
+#endif
 }
 
 static void step_once(){
@@ -117,37 +136,66 @@ static void step_once(){
 
 }
 
-uint64_t lpc;
-uint32_t linst;
+static void init_device(){
+  init_vga();
+  init_key();
+
+}
+
+
+#define TIMER_HZ  60
+static void update_device(){
+  static uint64_t last = 0;
+  uint64_t now = get_time();
+  if (now - last < 1000000 / TIMER_HZ) {
+    return;
+  }
+  last = now;
+
+  update_key();
+  vga_update_screen();
+
+}
+
+
+
 extern bool device_inst;   //difftest: skip device inst
 void cpu_exec(uint64_t n){
 
-  for (;n > 0; n --)
+  while(n > 0)
   { 
-    /*last pc + inst*/
-    lpc = top->pc;
-    linst = top->inst;
 
     /*cpu-exec*/
-    update_logbuff();
-    if(n <= 20) puts(logbuf);
     step_once();
 
     /*debug*/
-    
-    if ( trace_point() ){ puts(logbuf); break; }
+    if(top->mainUpdate_valid){
 
-    itrace_update_iringbuf(logbuf);
+      /*logbuff*/
+      update_logbuff(lpc, linst);
+      if(n <= 20) puts(logbuf);
 
-    ftrace_matchFunc(lpc, top->pc, linst);
+      if ( trace_point() ){ puts(logbuf); n = 1; }
 
-    difftest_step(&device_inst);
+      itrace_update_iringbuf(logbuf);
 
-    update_key();
-    vga_update_screen();
+      ftrace_matchFunc(lpc, top->pc, linst);
+      lpc = top->pc;
+      linst = top->inst;
 
-    main_time++;
-    //if(main_time > sim_time) sim_exit(2);
+      update_device();
+
+      difftest_step(&device_inst);
+
+      main_time++;
+#ifdef CONFIG_GTK
+      if(main_time > sim_time) sim_exit(2);
+#endif
+      n--;
+
+    }
+
+
   }
     
 }
@@ -166,8 +214,11 @@ int main(int argc, char *argv[]) {
   
   init_disasm("riscv64-pc-linux-gnu");
 
-  init_vga();
-  init_key();
+  init_device();
+
+  #ifdef CONFIG_CACHE
+    init_cache(14, 2);
+  #endif
 
   top->clk = 0;
   top->rst_n = 1; step_and_dump_wave();

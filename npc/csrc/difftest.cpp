@@ -90,6 +90,7 @@ static void checkregs() {
 }
 
 
+
 void difftest_step(bool *skip) {
 
 
@@ -97,11 +98,12 @@ void difftest_step(bool *skip) {
     ref_difftest_regcpy(cpu_gpr, &top->pc, DIFFTEST_TO_REF); //sys device data
     //ref_difftest_memcpy(DEVICE_BASE, guest_to_host(DEVICE_BASE), DEVICE_SIZE, DIFFTEST_TO_REF);
     //Log(ANSI_FMT("difftest skip: pc = 0x%lx", ANSI_FG_YELLOW), top->pc);
+    *skip = false;
     return;
   }
-
   ref_difftest_exec(1);
   checkregs();
+  
 
 }
 

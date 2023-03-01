@@ -15,9 +15,13 @@
 //#define   CONFIG_WATCHPOINT   
 #define   CONFIG_ITRACE       
 //#define   CONFIG_FTRACE 
-//#define   CONFIG_MTRACE  
+//#define   CONFIG_MTRACE_OUT  
+#define   CONFIG_MTRACE
 //#define   CONFIG_DTRACE
 //#define   CONFIG_DIFFTEST   
+#define   CONFIG_CACHE
+
+//#define   CONFIG_GTK
 
 
 extern Vtop* top;
@@ -54,11 +58,15 @@ uint64_t host_to_guest(uint8_t *haddr);
 
 extern "C" void pmem_read(long long raddr, long long *rdata );
 extern "C" void pmem_write(long long waddr, long long wdata, char wmask);
-extern "C" void ifetch(long long pc, int* inst);
+extern "C" void ifetch(long long pc, long long* inst);
 
 #define PAGE_SHIFT        12
 #define PAGE_SIZE         (1ul << PAGE_SHIFT)
 #define PAGE_MASK         (PAGE_SIZE - 1)
+
+#define exp2(x) (1 << (x))
+#define BLOCK_WIDTH  6  // 64B
+#define BLOCK_SIZE exp2(BLOCK_WIDTH)
 
 static uint8_t *io_space = (uint8_t*)malloc(IO_SPACE_MAX);;
 static uint8_t *p_space = io_space;
@@ -71,6 +79,14 @@ static inline uint8_t* new_space(int size) {
   assert(p_space - io_space < IO_SPACE_MAX);
   return p;
 }
+
+
+/*cache*/
+uint64_t cache_read(uint64_t addr);
+void cache_write(uint64_t addr, uint64_t data, char wmask8);
+void init_cache(int total_size_width, int associativity_width);
+void free_cache();
+
 
 /*reg*/
 void isa_reg_display();
@@ -102,6 +118,8 @@ void ftrace_matchFunc( uint64_t pc, uint64_t dnpc, uint32_t inst);
 /*mtrace*/
 void mtrace_read(uint64_t addr, int len, uint64_t data);
 void mtrace_write(uint64_t addr, int len, uint64_t data);
+void mtrace_update_mtracebuf(char *s);
+void mtrace_puts_mtracebuf();
 
 /*dtrace*/
 void dtrace_read(uint64_t addr, int len, uint64_t data);

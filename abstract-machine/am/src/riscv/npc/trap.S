@@ -12,7 +12,7 @@ f(30) f(31)
 #define PUSH(n) sd concat(x, n), (n * 8)(sp);
 #define POP(n)  ld concat(x, n), (n * 8)(sp);
 
-#define CONTEXT_SIZE ((32 + 3) * 8)
+#define CONTEXT_SIZE ((32 + 3 ) * 8)
 #define OFFSET_SP     ( 2 * 8)
 #define OFFSET_CAUSE  (32 * 8)
 #define OFFSET_STATUS (33 * 8)
@@ -35,6 +35,12 @@ __am_asm_trap:
   sd t0, OFFSET_CAUSE(sp)
   sd t1, OFFSET_STATUS(sp)
   sd t2, OFFSET_EPC(sp)
+
+  # set mstatus.MPRV to pass difftest 0xa00001800
+  li a0, (1 << 17)
+  or t1, t1, a0
+  csrw mstatus, t1
+
 
   mv a0, sp
   jal __am_irq_handle
