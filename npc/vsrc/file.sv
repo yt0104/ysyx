@@ -1,0 +1,15 @@
+`include "vsrc/inst.sv"
+`include "vsrc/para.sv"
+`include "vsrc/IFU.sv"
+`include "vsrc/IDU.sv"
+`include "vsrc/EXU.sv"
+`include "vsrc/mul.sv"
+`include "vsrc/div.sv"
+`include "vsrc/RegisterFile.sv"
+`include "vsrc/RegisterCSFile.sv"
+`include "vsrc/AXI_slave_SRAM.sv"
+`include "vsrc/AXI_slave_ifench.sv"
+`include "vsrc/AXI_master_SRAM.sv"
+`include "vsrc/AXI_arbiter_SRAM.sv"
+
+
