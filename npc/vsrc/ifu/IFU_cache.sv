@@ -4,14 +4,13 @@ module IFU_cache(
 input clk,
 input rst_n,
 
-output logic [63:0 ] pc,
-output logic [63:0 ] inst,
-output reg      IDU_valid,
-input 			IDU_ready,
+output  	IFU_vld,
+output logic [63:0 ] IFU_pc,
+output logic [63:0 ] IFU_inst,
 
-input  [63:0 ]  npc,
-input      	IFU_valid,
-output  	IFU_ready,
+input  [63:0 ]  ifetch_pc,
+input      	    ifetch_req,
+
 
 //AXI
 output  [63 : 0] 	axi_AW_ADDR,
@@ -36,48 +35,28 @@ output  			axi_R_READY
 
 );
 
+	logic [63:0 ] inst_addr;
+
   //===================================================
   //===control
 
 	reg [5:0] pre_cnt;
-	always@(posedge clk )
+	always_ff @( posedge clk ) begin : pre_count
 		if(~rst_n) pre_cnt <= 0;
 		else if(pre_cnt < 6'd10) pre_cnt <= pre_cnt + 1;
+	end
 
+	initial IFU_pc = 64'h80000000;
+	always_ff @( posedge clk ) begin
+		if(~rst_n) IFU_pc <= 64'h80000000;
+		else if(ifetch_req) IFU_pc <= ifetch_pc;
+	end
 
-    always @(posedge clk) begin
-    	if(~rst_n) rreq <= 0;
-    	else if(IFU_valid & IFU_ready) rreq <= 1;
-    	else if(pre_cnt == 6'd9) rreq <= 1;
-    	else if(rask) rreq <= 0;
-        //else rreq <= 0;
-    end
-    
+	assign inst_addr = ifetch_pc;
+	assign rreq = ifetch_req || (pre_cnt == 6'd9);
 
-	always @(posedge clk) 
-		if(~rst_n) IDU_valid <= 0;
-		else if(IDU_ready && IDU_valid) IDU_valid <= 0;
-		else if(rask) IDU_valid <= 1;
-		
-
-	initial IFU_ready = 1;
-	always @(posedge clk) 
-		if(~rst_n) IFU_ready <= 0;
-		else if(IDU_valid && IDU_ready) IFU_ready <= 1;	//ifetch finish
-		else if(IFU_valid & IFU_ready) IFU_ready <= 0;		//ifetch start
-
-
-	always @(posedge clk) 
-		if(~rst_n) inst <= 0;
-        else if(rask) inst <= mem_inst64 & 64'h00000000ffffffff;
-
-
-	initial pc = 64'h80000000;
-
-	always@(posedge clk )
-		if(~rst_n) pc <= 64'h80000000;
-		else if(IFU_valid & IFU_ready) pc <= npc;
-		else pc <= pc;
+	assign IFU_vld = rask;
+	assign IFU_inst = rask? mem_inst64 & 64'h00000000ffffffff : 0;
 
 
   //===================================================
@@ -99,7 +78,7 @@ output  			axi_R_READY
 
     /*user interface*/
     .WREQ(0), .IN_WADDR(0), .IN_WDATA(0), .IN_WMASK(0),
-    .RREQ(rreq), .IN_RADDR(pc), .RDATA_OUT(mem_inst64),
+    .RREQ(rreq), .IN_RADDR(inst_addr), .RDATA_OUT(mem_inst64),
     .ASK(rask),
     .direct_memory(0)
     );
@@ -134,7 +113,7 @@ output  			axi_R_READY
 	(
 	//user interface
 	.WREQ(0), .IN_WADDR(0), .IN_WDATA(0), .IN_WMASK(0), 
-	.RREQ(rreq), .IN_RADDR(pc), .DATA_OUT(mem_inst64),
+	.RREQ(rreq), .IN_RADDR(inst_addr), .DATA_OUT(mem_inst64),
 
 	.CLK(clk), .RESETN(rst_n),
     .AW_ADDR(axi_AW_ADDR), .AW_VALID(axi_AW_VALID), .AW_READY(axi_AW_READY),

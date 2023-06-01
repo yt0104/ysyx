@@ -5,23 +5,22 @@ module EXU_cache(
 input clk,
 input rst_n,
 
-input      EXU_valid,
-output reg EXU_ready,
 
 input [`REG_ADDR_WIDTH-1:0] i_rd,
 input [`REG_ADDR_WIDTH-1:0] i_rs1,
 input [`REG_ADDR_WIDTH-1:0] i_rs2,
 input [`ISA_WIDTH-1:0]      i_imm,
 input opType                i_op,
-
 input [`IDUf_WIDTH-1:0] i_flags,
 
-input [`ISA_WIDTH-1:0]      i_pc,
-input [`ISA_WIDTH-1:0]      i_inst,
+input                       IDU_vld,
+input [`ISA_WIDTH-1:0]      IDU_pc,
+input [`ISA_WIDTH-1:0]      IDU_inst,
 
-output logic [`ISA_WIDTH-1:0] npc,
-output logic                  IFU_valid,
-input  logic                  IFU_ready,
+
+output logic [`ISA_WIDTH-1:0] ifetch_pc,
+output logic                  ifetch_req,
+
 
 output                  main_valid,
 output [`ISA_WIDTH-1:0] main_pc,
@@ -53,16 +52,15 @@ output  			axi_R_READY
   //===================================================
   //===control signal
 
-  assign main_valid = EXU_valid && EXU_ready;
-  assign main_pc = pc;
-  assign main_inst = inst;
+  assign main_valid = IDU_vld;
+  assign main_pc = IDU_pc;
+  assign main_inst = IDU_inst;
 
-
-  initial EXU_ready = 1;
-  always@(posedge clk)
-    if(~rst_n)  EXU_ready <= 1;
-    else if(exe_finish_valid) EXU_ready <= 1; //exe finish
-    else if(EXU_valid && EXU_ready) EXU_ready <= 0;//exe start
+  
+  always_ff @( posedge clk ) begin
+    if(~rst_n) ifetch_req <= 0;
+    else ifetch_req <= exe_finish_valid;
+  end
     
 
   reg [`REG_ADDR_WIDTH-1:0] rd_r;
@@ -77,9 +75,13 @@ output  			axi_R_READY
 
   initial pc_r = 64'h80000000;
   always@(posedge clk)
-    if(~rst_n)   {rd_r, rs1_r, rs2_r, imm_r, op_r, pc_r, inst_r, flags_r} <= 0; 
-    else if(EXU_valid && EXU_ready) 
-      {rd_r, rs1_r, rs2_r, imm_r, op_r, pc_r, inst_r, flags_r} <= {i_rd, i_rs1, i_rs2, i_imm, i_op, i_pc, i_inst, i_flags};
+    if(~rst_n) pc_r <= 64'h80000000;
+    else pc_r <= IDU_pc;
+
+  always@(posedge clk)
+    if(~rst_n)   {rd_r, rs1_r, rs2_r, imm_r, op_r, inst_r, flags_r} <= 0; 
+    else if(IDU_vld) 
+      {rd_r, rs1_r, rs2_r, imm_r, op_r, inst_r, flags_r} <= {i_rd, i_rs1, i_rs2, i_imm, i_op, IDU_inst, i_flags};
 
 
   reg [`REG_ADDR_WIDTH-1:0] rd;
@@ -93,8 +95,8 @@ output  			axi_R_READY
 
   
   always @(*) 
-    if(EXU_valid && EXU_ready) 
-      {rd, rs1, rs2, imm, op, pc, inst, flags} = {i_rd, i_rs1, i_rs2, i_imm, i_op, i_pc, i_inst, i_flags};
+    if(IDU_vld) 
+      {rd, rs1, rs2, imm, op, pc, inst, flags} = {i_rd, i_rs1, i_rs2, i_imm, i_op, IDU_pc, IDU_inst, i_flags};
     else 
       {rd, rs1, rs2, imm, op, pc, inst, flags} = {rd_r, rs1_r, rs2_r, imm_r, op_r, pc_r, inst_r, flags_r};
 
@@ -127,8 +129,9 @@ output  			axi_R_READY
       op_rem   : exe_valid = div_out_valid;
       op_div   : exe_valid = div_out_valid;
       op_inv   : exe_valid = 0;
-      default  : exe_valid = EXU_valid && EXU_ready;
+      default  : exe_valid = IDU_vld;
       endcase
+
 
   reg exe_finish_valid;
   always@(posedge clk)
@@ -246,8 +249,8 @@ output  			axi_R_READY
 
   logic mul_valid, div_valid;
 
-  assign mul_valid = EXU_valid & EXU_ready & flags[1];
-  assign div_valid = EXU_valid & EXU_ready & flags[2];
+  assign mul_valid = IDU_vld & flags[1];
+  assign div_valid = IDU_vld & flags[2];
 
 
   wire mul_out_valid;
@@ -285,31 +288,35 @@ output  			axi_R_READY
     );
 
   //===================================================
-  //===npc block
+  //===ifetch_pc block
   
+  initial begin
+    ifetch_pc = 64'h80000000;
+  end
+
   always@(posedge clk)
       if(~rst_n)  begin 
-        npc <= 0;
+        ifetch_pc <= 64'h80000000;
       end
-      else if(EXU_valid & EXU_ready) begin   //branch_taken_flag
+      else if(IDU_vld) begin   //branch_taken_flag
           case(op)
-          op_ret   : begin npc <= (src1 + imm)&(~64'd1); end
-          op_jalr  : begin npc <= (src1 + imm)&(~64'd1); end
+          op_ret   : begin ifetch_pc <= (src1 + imm)&(~64'd1); end
+          op_jalr  : begin ifetch_pc <= (src1 + imm)&(~64'd1); end
 
-          op_jal   : begin npc <= pc + imm; end
+          op_jal   : begin ifetch_pc <= pc + imm; end
 
-          op_beq   : begin npc <= (src1 == src2)? pc + imm : pc + 4; end
-          op_bne   : begin npc <= (src1 != src2)? pc + imm : pc + 4; end
-          op_bge   : begin npc <= ($signed(src1) >= $signed(src2))? pc + imm : pc + 4; end
-          op_blt   : begin npc <= ($signed(src1) <  $signed(src2))? pc + imm : pc + 4; end
-          op_bltu  : begin npc <= (src1 <  src2)? pc + imm : pc + 4; end
-          op_bgeu  : begin npc <= (src1 >= src2)? pc + imm : pc + 4; end
+          op_beq   : begin ifetch_pc <= (src1 == src2)? pc + imm : pc + 4; end
+          op_bne   : begin ifetch_pc <= (src1 != src2)? pc + imm : pc + 4; end
+          op_bge   : begin ifetch_pc <= ($signed(src1) >= $signed(src2))? pc + imm : pc + 4; end
+          op_blt   : begin ifetch_pc <= ($signed(src1) <  $signed(src2))? pc + imm : pc + 4; end
+          op_bltu  : begin ifetch_pc <= (src1 <  src2)? pc + imm : pc + 4; end
+          op_bgeu  : begin ifetch_pc <= (src1 >= src2)? pc + imm : pc + 4; end
 
-          op_mret  : begin npc <= rCSR; end
-          op_ecall : begin npc <= rCSR; end
-          op_ebreak: begin npc <= pc ;  end
-          op_inv   : begin npc <= pc ;  end
-          default  : begin npc <= pc + 4; end 
+          op_mret  : begin ifetch_pc <= rCSR; end
+          op_ecall : begin ifetch_pc <= rCSR; end
+          op_ebreak: begin ifetch_pc <= pc ;  end
+          op_inv   : begin ifetch_pc <= pc ;  end
+          default  : begin ifetch_pc <= pc + 4; end 
           endcase
       end
 
@@ -318,12 +325,6 @@ output  			axi_R_READY
 //    if(pc==64'h83009854)$display("pc = %x, inst = %x", pc, inst);
 //end
   
-
-
-  always@(posedge clk)
-      if(~rst_n) IFU_valid <= 0;
-      else if(IFU_ready & IFU_valid) IFU_valid <= 0;
-      else if(EXU_valid & EXU_ready) IFU_valid <= 1;
 
 
 
@@ -398,8 +399,8 @@ output  			axi_R_READY
 `endif 
 
 
-  assign renM = EXU_valid & EXU_ready & flags[3];
-  assign wenM = EXU_valid & EXU_ready & flags[4];
+  assign renM = IDU_vld & flags[3];
+  assign wenM = IDU_vld & flags[4];
   assign raddrM = src1 + imm;
   assign waddrM = src1 + imm;
   assign wdataM = src2;
@@ -460,12 +461,12 @@ output  			axi_R_READY
 
   always@(posedge clk)
       if(~rst_n)  begin  wenC <= 0; wCSR1 <= 0; wCSR2 <= 0; end
-      else if(EXU_valid && EXU_ready) begin
+      else if(IDU_vld) begin
           case(op)  
           //dest = rCSR;
           op_csrrw : begin  wenC <= 1; wCSR1 <= src1; wCSR2 <= 0; end
           op_csrrs : begin  wenC <= 1; wCSR1 <= src1 | rCSR; wCSR2 <= 0; end
-          //npc = rCSR;
+          //ifetch_pc = rCSR;
           op_mret  : begin  wenC <= 0; wCSR1 <= 0; wCSR2 <= 0;  end
           op_ecall : begin  wenC <= 1; wCSR1 <= pc; wCSR2 <= 64'hb; end
 
@@ -483,7 +484,7 @@ output  			axi_R_READY
   import "DPI-C" function void sim_exit(int state);
 
   always@(posedge clk)
-      if(EXU_valid && EXU_ready) begin
+      if(IDU_vld) begin
           case(op) 
           op_ebreak: begin sim_exit(0); end   //exit program
           op_inv   : begin sim_exit(1); end   //inst error

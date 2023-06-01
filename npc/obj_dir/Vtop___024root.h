@@ -28,12 +28,8 @@ VL_MODULE(Vtop___024root) {
     // LOCAL SIGNALS
     // Anonymous structures to workaround compiler member-count bugs
     struct {
-        CData/*0:0*/ top__DOT__IFU_valid;
-        CData/*0:0*/ top__DOT__IFU_ready;
-        CData/*0:0*/ top__DOT__IDU_valid;
-        CData/*0:0*/ top__DOT__IDU_ready;
-        CData/*0:0*/ top__DOT__EXU_valid;
-        CData/*0:0*/ top__DOT__EXU_ready;
+        CData/*0:0*/ top__DOT__ifetch_req;
+        CData/*0:0*/ top__DOT__IDU_vld;
         CData/*6:0*/ top__DOT__flags;
         CData/*0:0*/ top__DOT__axis1_AW_READY;
         CData/*0:0*/ top__DOT__axis1_W_READY;
@@ -53,7 +49,6 @@ VL_MODULE(Vtop___024root) {
         CData/*0:0*/ top__DOT__axis2_R_READY;
         CData/*0:0*/ top__DOT__in_channel;
         CData/*0:0*/ top__DOT__itrace_en;
-        CData/*0:0*/ top__DOT__main_valid;
         CData/*5:0*/ top__DOT__u_IFU__DOT__pre_cnt;
         CData/*0:0*/ top__DOT__u_IFU__DOT__rask;
         CData/*0:0*/ top__DOT__u_IFU__DOT__rreq;
@@ -92,13 +87,13 @@ VL_MODULE(Vtop___024root) {
         CData/*0:0*/ top__DOT__u_EXU__DOT__u1_AXI_master_SRAM__DOT__aw_valid_reg;
         CData/*0:0*/ top__DOT__u_EXU__DOT__u1_AXI_master_SRAM__DOT__w_valid_reg;
         CData/*0:0*/ top__DOT__u_EXU__DOT__u1_AXI_master_SRAM__DOT__ar_valid_reg;
-    };
-    struct {
         CData/*0:0*/ top__DOT__u_EXU__DOT__u1_AXI_master_SRAM__DOT__r_ready_reg;
         CData/*0:0*/ top__DOT__u_AXI_arbiter_SRAM__DOT__AW_VALID;
         CData/*0:0*/ top__DOT__u_AXI_arbiter_SRAM__DOT__W_VALID;
         CData/*0:0*/ top__DOT__u_AXI_arbiter_SRAM__DOT__B_READY;
         CData/*0:0*/ top__DOT__u_AXI_arbiter_SRAM__DOT__AR_VALID;
+    };
+    struct {
         CData/*0:0*/ top__DOT__u_AXI_arbiter_SRAM__DOT__R_READY;
         CData/*0:0*/ top__DOT__u_AXI_arbiter_SRAM__DOT__B_VALID;
         CData/*0:0*/ top__DOT__u_AXI_arbiter_SRAM__DOT__AR_READY;
@@ -116,7 +111,7 @@ VL_MODULE(Vtop___024root) {
         QData/*63:0*/ top__DOT__IFU_inst;
         QData/*63:0*/ top__DOT__IDU_inst;
         QData/*63:0*/ top__DOT__imm;
-        QData/*63:0*/ top__DOT__npc;
+        QData/*63:0*/ top__DOT__ifetch_pc;
         QData/*63:0*/ top__DOT__u_IFU__DOT__u1_AXI_master_SRAM__DOT__w_addr_reg;
         QData/*63:0*/ top__DOT__u_IFU__DOT__u1_AXI_master_SRAM__DOT__w_data_reg;
         QData/*63:0*/ top__DOT__u_IFU__DOT__u1_AXI_master_SRAM__DOT__r_addr_reg;

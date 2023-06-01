@@ -71,6 +71,53 @@
 `define     ecall   64'b????????_????????_????????_????????_0000000_00000_00000_000_00000_11100_11
 `define     ebreak  64'b????????_????????_????????_????????_0000000_00001_00000_000_00000_11100_11
 
+
+typedef struct packed {
+    logic        iinst          ;  //integer instruction
+    logic        br             ;  //branch instruction
+    logic        jal            ;  //jal instruction
+    logic        jalr           ;  //jalr instruction
+    logic        lui            ;  //lui instruction
+    logic        auipc          ;  //auipc instruction
+    logic        ecall          ;  //ecall instruction
+    logic        ebreak         ;  //ebreak instruction
+    logic        ld             ;  //load instruction
+    logic        st             ;  //store instruction
+    logic        fence          ;  //fence instruction
+    logic        csr            ;  //csr instruction
+    logic        sign           ;  //instruction is signed/unsigned
+    logic        lgc            ;  //instruction is lgc
+    logic        add            ;  //add instruction
+    logic        shft           ;  //shift instruction
+    logic        mul            ;  //multiply instruction
+    logic        div            ;  //divide instruction
+    logic        w_inst         ;  //half word instruction
+    logic        extra_func_flag;  //When arithemetic right shift and r-type sub happen set 1
+    logic [2:0]  func3          ;  //func3
+    logic [1:0]  cycle          ;  //instruction cycles
+} InstAct;
+
+
+typedef enum [6:0] 
+{
+  RV_IMM       = 7'b00100_11,
+  RV_OP        = 7'b01100_11,
+  RV_LUI       = 7'b01101_11,
+  RV_AUIPC     = 7'b00101_11,
+  RV_JAL       = 7'b11011_11,
+  RV_JALR      = 7'b11001_11,
+  RV_BR        = 7'b11000_11,
+  RV_LD        = 7'b00000_11,
+  RV_ST        = 7'b01000_11,
+  RV_MEM       = 7'b00011_11,
+  RV_SYS       = 7'b11100_11,
+  RV_IMM_32    = 7'b00110_11,
+  RV_OP_32     = 7'b01110_11
+} RV_Op;
+
+
+
+
 //op
 typedef enum  {
     op_inv      ,

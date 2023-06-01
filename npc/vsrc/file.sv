@@ -2,12 +2,10 @@
 `include "vsrc/common/inst.sv"
 `include "vsrc/common/para.sv"
 
-`include "vsrc/ifu/IFU.sv"
 `include "vsrc/ifu/IFU_cache.sv"
 
 `include "vsrc/idu/IDU.sv"
 
-`include "vsrc/exu/EXU.sv"
 `include "vsrc/exu/EXU_cache.sv"
 
 
