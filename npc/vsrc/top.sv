@@ -1,7 +1,5 @@
 `include "vsrc/file.sv"
 
-
-
 //top module
 module top(
 
@@ -16,16 +14,15 @@ output mainUpdate_valid
 
 
 
-wire [`ISA_WIDTH-1:0] IDU_npc, EXU_npc;
 wire [`ISA_WIDTH-1:0] IFU_pc;
 wire [`ISA_WIDTH-1:0] IDU_pc;
 wire [63:0] IFU_inst;
 wire [63:0] IDU_inst;
 
-reg  IFU_valid;
-wire IFU_ready;
-wire IDU_valid, IDU_ready;
-wire EXU_valid, EXU_ready;
+logic IFU_valid;
+logic IFU_ready;
+logic IDU_valid, IDU_ready;
+logic EXU_valid, EXU_ready;
 
 wire [`REG_ADDR_WIDTH-1:0]   rd;
 wire [`REG_ADDR_WIDTH-1:0]   rs1;
@@ -33,27 +30,13 @@ wire [`REG_ADDR_WIDTH-1:0]   rs2;
 wire [`ISA_WIDTH-1:0]   imm;
 opType op;
 
+logic [`IDUf_WIDTH-1:0] flags;
 
-wire EXU_npc_valid, IDU_npc_valid;
-always@(posedge clk)
-  if(~rst_n) IFU_valid <= 0;
-  else if(IFU_ready && IFU_valid) IFU_valid <= 0;
-  else if(EXU_npc_valid | IDU_npc_valid) IFU_valid <= 1;
-  else if(IDU_npc_valid) ;
-  else if(IDU_npc != 0) ;
+logic [`ISA_WIDTH-1:0] npc;
 
 
-reg npc_channel;
-always@(posedge clk)
-    if(~rst_n) npc_channel <= 0;
-    else if(IDU_npc_valid) npc_channel <= 0;
-    else if(EXU_npc_valid) npc_channel <= 1;
 
-reg [`ISA_WIDTH-1:0] npc = npc_channel? EXU_npc: IDU_npc;
-
-//wire [`ISA_WIDTH-1:0] npc = EXU_npc;
-
-IFU u_IFU(
+IFU_cache u_IFU(
     .clk(clk), .rst_n(rst_n), 
     .pc(IFU_pc), .inst(IFU_inst), .IDU_valid(IDU_valid), .IDU_ready(IDU_ready), 
     .npc(npc), .IFU_valid(IFU_valid), .IFU_ready(IFU_ready),
@@ -69,16 +52,19 @@ IFU u_IFU(
 IDU u_IDU(
     .clk(clk), .rst_n(rst_n), 
     .IDU_valid(IDU_valid), .IDU_ready(IDU_ready), .i_inst(IFU_inst), .i_pc(IFU_pc),
-    .npc(IDU_npc), .npc_valid(IDU_npc_valid),
-    .EXU_valid(EXU_valid), .EXU_ready(EXU_ready), .pc(IDU_pc), .inst(IDU_inst), .rd(rd), .rs1(rs1), .rs2(rs2), .imm(imm), .op(op)
-    
+    .pc(IDU_pc), .inst(IDU_inst), .rd(rd), .rs1(rs1), .rs2(rs2), .imm(imm), .op(op),
+    .flags(flags), 
+    .EXU_valid(EXU_valid), .EXU_ready(EXU_ready)
     );
 
-EXU u_EXU(
+EXU_cache u_EXU(
     .clk(clk), .rst_n(rst_n), 
 
-    .EXU_valid(EXU_valid), .EXU_ready(EXU_ready), .i_pc(IDU_pc), .i_inst(IDU_inst), .i_rd(rd), .i_rs1(rs1), .i_rs2(rs2), .i_imm(imm), .i_op(op), 
-    .npc(EXU_npc), .npc_valid(EXU_npc_valid), //.IFU_valid(IFU_valid), .IFU_ready(IFU_ready),
+    .EXU_valid(EXU_valid), .EXU_ready(EXU_ready), 
+    .i_pc(IDU_pc), .i_inst(IDU_inst), .i_rd(rd), .i_rs1(rs1), .i_rs2(rs2), .i_imm(imm), .i_op(op), 
+    .i_flags(flags), 
+
+    .IFU_valid(IFU_valid), .IFU_ready(IFU_ready), .npc(npc),
     .main_valid(main_valid), .main_pc(main_pc), .main_inst(main_inst),
 
     .axi_AW_ADDR(axis2_AW_ADDR), .axi_AW_VALID(axis2_AW_VALID), .axi_AW_READY(axis2_AW_READY),

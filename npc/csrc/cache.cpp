@@ -2,10 +2,6 @@
 #include <inttypes.h>
 
 
-void mem_block_read(uintptr_t block_num, uint8_t *buf);
-void mem_block_write(uintptr_t block_num, const uint8_t *buf);
-
-
 typedef struct cache_line {
     uint8_t valid;
     uint8_t dirty;

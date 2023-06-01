@@ -16,10 +16,10 @@
 #define   CONFIG_ITRACE       
 //#define   CONFIG_FTRACE 
 //#define   CONFIG_MTRACE_OUT  
-#define   CONFIG_MTRACE
+//#define   CONFIG_MTRACE
 //#define   CONFIG_DTRACE
-//#define   CONFIG_DIFFTEST   
-#define   CONFIG_CACHE
+#define   CONFIG_DIFFTEST   
+//#define   CONFIG_CACHE_CPP
 
 //#define   CONFIG_GTK
 
@@ -55,6 +55,12 @@ uint64_t host_to_guest(uint8_t *haddr);
 #define SYNC_ADDR (VGACTL_ADDR + 4)
 #define MMIO_BASE       0xa0000000
 #define FB_ADDR         (MMIO_BASE   + 0x1000000)
+
+void mem_block_read(uintptr_t block_num, uint8_t *buf);
+void mem_block_write(uintptr_t block_num, const uint8_t *buf);
+
+extern "C" void dpi_mem_block_read(long long block_num, uint8_t* buf);
+extern "C" void dpi_mem_block_write(long long block_num, const uint8_t *buf);
 
 extern "C" void pmem_read(long long raddr, long long *rdata );
 extern "C" void pmem_write(long long waddr, long long wdata, char wmask);

@@ -30,6 +30,7 @@ void difftest_memcpy(paddr_t addr, void *buf, size_t n, bool direction) {
   else assert(0);
 }
 
+#include <cpu/ifetch.h>
 
 void difftest_regcpy(void *dut_gpr, void *dut_pc, bool direction) {
   
@@ -42,12 +43,13 @@ void difftest_regcpy(void *dut_gpr, void *dut_pc, bool direction) {
     cpu.pc = *(word_t*)dut_pc;
   }
 
-  else {
+  else {  //DIFFTEST_TO_DUT
     for (size_t i = 0; i < 32; i++)
     {
       g[i] = cpu.gpr[i];
     }
     *(word_t*)dut_pc = cpu.pc;
+
   }
 }
 

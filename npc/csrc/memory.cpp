@@ -43,6 +43,14 @@ void mem_block_write(uintptr_t block_num, const uint8_t *buf) {
   memcpy(pmem - CONFIG_MBASE + (block_num << BLOCK_WIDTH), buf, BLOCK_SIZE);
 }
 
+extern "C" void dpi_mem_block_read(long long block_num, uint8_t* buf){
+  printf("dpi_mem_block_read : block_num = %llx\n", block_num);
+  mem_block_read(block_num, buf);
+}
+extern "C" void dpi_mem_block_write(long long block_num, const uint8_t *buf){
+  printf("dpi_mem_block_write: block_num = %llx\n", block_num);
+  mem_block_write(block_num, buf);
+}
 
 #define likely(cond)   __builtin_expect(cond, 1)
 
@@ -62,6 +70,7 @@ static bool in_vgafb(uint64_t addr) {
 extern int main_time;
 static void out_of_bound(uint64_t addr) {
   Log(ANSI_FMT("time = %d, address = %16lx is out of bound", ANSI_FG_RED),main_time, addr);
+  sim_exit(-1);
   assert(0);
 }
 
@@ -71,7 +80,7 @@ extern "C" void pmem_read(long long raddr, long long *rdata ) {
 
   if (likely(in_pmem(raddr))) {
 
-  #ifdef CONFIG_CACHE
+  #ifdef CONFIG_CACHE_CPP
     *rdata = cache_read(raddr) >> addr_offset_bit(raddr); 
   #else
     *rdata = host_read(guest_to_host(raddr), 8); 
@@ -81,7 +90,7 @@ extern "C" void pmem_read(long long raddr, long long *rdata ) {
     if(top->pc == raddr) return;  //cmd
     mtrace_read(raddr, 8, *rdata);
     char s[128];
-    sprintf(s,"MTRACE--> #%3d, pc = %8lx read : addr = %8lx   data = %16lx\n", main_time, top->pc, raddr, *rdata);
+    sprintf(s,"MTRACE--> #%3d, pc = %8lx read : addr = %8llx   data = %16llx\n", main_time, top->pc, raddr, *rdata);
     mtrace_update_mtracebuf(s);
 
     return;
@@ -100,7 +109,8 @@ extern "C" void pmem_read(long long raddr, long long *rdata ) {
       *rdata = read_key();
       return;
     }
-    assert(0);
+    Log(ANSI_FMT("pmem read: %llx in device not found", ANSI_FG_RED), raddr);
+    return;
   }
 
   *rdata = 0;
@@ -114,7 +124,7 @@ extern "C" void pmem_write(long long waddr, long long wdata, char wmask) {
 
   if (likely(in_pmem(waddr))){
 
-  #ifdef CONFIG_CACHE
+  #ifdef CONFIG_CACHE_CPP
     cache_write(waddr, wdata << addr_offset_bit(waddr), wmask << mask_offset_bit(waddr));
   #else
     uint64_t wtemp = 0;
@@ -140,7 +150,7 @@ extern "C" void pmem_write(long long waddr, long long wdata, char wmask) {
     mtrace_write(waddr-8, len, wdata);
 
     char s[128];
-    sprintf(s,"MTRACE--> #%3d, pc = %8lx write: addr = %8lx  data = %16lx  len = %d\n", main_time, top->pc, waddr, wdata, len);
+    sprintf(s,"MTRACE--> #%3d, pc = %8lx write: addr = %8llx  data = %16llx  len = %d\n", main_time, top->pc, waddr, wdata, len);
     mtrace_update_mtracebuf(s);
 
     return;
@@ -163,7 +173,8 @@ extern "C" void pmem_write(long long waddr, long long wdata, char wmask) {
       write_vgasync(wdata);
       return;
     }
-    assert(0);
+    Log(ANSI_FMT("pmem write: %llx in device not found", ANSI_FG_RED), waddr);
+    return;
   }
 
   else if(likely(in_vgafb(waddr))){

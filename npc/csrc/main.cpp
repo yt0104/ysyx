@@ -88,7 +88,7 @@ extern "C" void sim_exit(int state){
   case 1:
     mtrace_puts_mtracebuf();
     itrace_puts_iringbuf();
-    Log(ANSI_FMT("INST ERROR", ANSI_FG_RED));
+    Log(ANSI_FMT("INST ERROR: 0x%lx", ANSI_FG_RED),top->inst);
     Log(ANSI_FMT("break at: %s", ANSI_FG_RED), logbuf);
     break;
   case 2:
@@ -164,7 +164,7 @@ void cpu_exec(uint64_t n){
 
   while(n > 0)
   { 
-
+    
     /*cpu-exec*/
     step_once();
 
@@ -193,6 +193,12 @@ void cpu_exec(uint64_t n){
 #endif
       n--;
 
+      //if(top->pc == 0x83009168) {
+      //Log(ANSI_FMT("------next pc = 0x83009168 output begin", ANSI_FG_RED));
+      //isa_reg_display();
+      //Log(ANSI_FMT("------next pc = 0x83009168 output end", ANSI_FG_RED));
+      //}
+
     }
 
 
@@ -216,7 +222,7 @@ int main(int argc, char *argv[]) {
 
   init_device();
 
-  #ifdef CONFIG_CACHE
+  #ifdef CONFIG_CACHE_CPP
     init_cache(14, 2);
   #endif
 

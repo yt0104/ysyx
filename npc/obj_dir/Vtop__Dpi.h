@@ -13,15 +13,15 @@ extern "C" {
 
 
     // DPI IMPORTS
-    // DPI import at vsrc/AXI_slave_SRAM.sv:34:30
+    // DPI import at vsrc/AXI_if/AXI_slave_SRAM.sv:34:30
     extern void ifetch(long long pc, long long* inst);
-    // DPI import at vsrc/AXI_slave_SRAM.sv:35:30
+    // DPI import at vsrc/AXI_if/AXI_slave_SRAM.sv:35:30
     extern void pmem_read(long long raddr, long long* rdata);
-    // DPI import at vsrc/AXI_slave_SRAM.sv:37:30
+    // DPI import at vsrc/AXI_if/AXI_slave_SRAM.sv:37:30
     extern void pmem_write(long long waddr, long long wdata, char wmask);
-    // DPI import at vsrc/RegisterFile.sv:21:30
+    // DPI import at vsrc/regfile/RegisterFile.sv:21:30
     extern void set_gpr_ptr(const svOpenArrayHandle a);
-    // DPI import at vsrc/EXU.sv:478:32
+    // DPI import at vsrc/exu/EXU_cache.sv:483:32
     extern void sim_exit(int state);
 
 #ifdef __cplusplus

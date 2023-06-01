@@ -15,7 +15,7 @@ CFLAGS += -CFLAGS -I/usr/lib/llvm-13/include -D_GNU_SOURCE -D__STDC_CONSTANT_MAC
 
 all:
 	@echo "verilator!"
-	verilator -Wall $(VSRC) $(CSRC) --top-module $(TOPNAME) $(LDFLAGS) $(CFLAGS) --cc --trace --exe --build 
+	verilator $(VSRC) $(CSRC) --top-module $(TOPNAME) $(LDFLAGS) $(CFLAGS) --cc --trace --exe --build 
 	
 run:all
 	$(call git_commit, "sim RTL") # DO NOT REMOVE THIS LINE!!!
