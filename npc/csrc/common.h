@@ -18,10 +18,12 @@
 //#define   CONFIG_MTRACE_OUT  
 //#define   CONFIG_MTRACE
 //#define   CONFIG_DTRACE
-#define   CONFIG_DIFFTEST   
+//#define   CONFIG_DIFFTEST   
 //#define   CONFIG_CACHE_CPP
 
 //#define   CONFIG_GTK
+
+#define   CONFIG_PREDICTOR
 
 
 extern Vtop* top;
@@ -163,3 +165,15 @@ void write_vgactl(uint64_t data);
 void write_vgasync(uint64_t data);
 void write_vgafb(uint64_t addr, uint64_t data);
 void init_vga();
+
+
+
+/*predictor*/
+
+#ifdef CONFIG_PREDICTOR
+
+void GshareInit();
+void GsharePredict(uint64_t PC, uint8_t type, bool taken, uint64_t targetPC);
+void GetPredictorReport();
+
+#endif

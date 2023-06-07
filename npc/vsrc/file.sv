@@ -1,5 +1,5 @@
 
-`include "vsrc/common/inst.sv"
+`include "vsrc/common/InstFmt.sv"
 `include "vsrc/common/para.sv"
 
 `include "vsrc/ifu/IFU_cache.sv"

@@ -21,7 +21,10 @@ VL_MODULE(Vtop___024root) {
     // PORTS
     VL_IN8(clk,0,0);
     VL_IN8(rst_n,0,0);
+    VL_OUT8(jmp_type,7,0);
+    VL_OUT8(ifetch_taken,0,0);
     VL_OUT8(mainUpdate_valid,0,0);
+    VL_OUT64(ifetch_pc,63,0);
     VL_OUT64(inst,63,0);
     VL_OUT64(pc,63,0);
 
@@ -30,7 +33,10 @@ VL_MODULE(Vtop___024root) {
     struct {
         CData/*0:0*/ top__DOT__ifetch_req;
         CData/*0:0*/ top__DOT__IDU_vld;
-        CData/*6:0*/ top__DOT__flags;
+        CData/*4:0*/ top__DOT__rd;
+        CData/*4:0*/ top__DOT__rs1;
+        CData/*4:0*/ top__DOT__rs2;
+        CData/*5:0*/ top__DOT__inst_type;
         CData/*0:0*/ top__DOT__axis1_AW_READY;
         CData/*0:0*/ top__DOT__axis1_W_READY;
         CData/*0:0*/ top__DOT__axis1_B_READY;
@@ -57,13 +63,13 @@ VL_MODULE(Vtop___024root) {
         CData/*0:0*/ top__DOT__u_IFU__DOT__u1_AXI_master_SRAM__DOT__w_valid_reg;
         CData/*0:0*/ top__DOT__u_IFU__DOT__u1_AXI_master_SRAM__DOT__ar_valid_reg;
         CData/*0:0*/ top__DOT__u_IFU__DOT__u1_AXI_master_SRAM__DOT__r_ready_reg;
-        CData/*0:0*/ top__DOT__u_IDU__DOT__instR_flag;
+        CData/*5:0*/ top__DOT__u_IDU__DOT__inst_type_pre;
         CData/*4:0*/ top__DOT__u_EXU__DOT__rd_r;
         CData/*4:0*/ top__DOT__u_EXU__DOT__rs1_r;
         CData/*4:0*/ top__DOT__u_EXU__DOT__rs2_r;
-        CData/*6:0*/ top__DOT__u_EXU__DOT__flags_r;
         CData/*4:0*/ top__DOT__u_EXU__DOT__rd;
-        CData/*6:0*/ top__DOT__u_EXU__DOT__flags;
+        CData/*4:0*/ top__DOT__u_EXU__DOT__rs1;
+        CData/*4:0*/ top__DOT__u_EXU__DOT__rs2;
         CData/*0:0*/ top__DOT__u_EXU__DOT__exe_valid;
         CData/*0:0*/ top__DOT__u_EXU__DOT__exe_finish_valid;
         CData/*0:0*/ top__DOT__u_EXU__DOT__wenR;
@@ -89,11 +95,11 @@ VL_MODULE(Vtop___024root) {
         CData/*0:0*/ top__DOT__u_EXU__DOT__u1_AXI_master_SRAM__DOT__ar_valid_reg;
         CData/*0:0*/ top__DOT__u_EXU__DOT__u1_AXI_master_SRAM__DOT__r_ready_reg;
         CData/*0:0*/ top__DOT__u_AXI_arbiter_SRAM__DOT__AW_VALID;
+    };
+    struct {
         CData/*0:0*/ top__DOT__u_AXI_arbiter_SRAM__DOT__W_VALID;
         CData/*0:0*/ top__DOT__u_AXI_arbiter_SRAM__DOT__B_READY;
         CData/*0:0*/ top__DOT__u_AXI_arbiter_SRAM__DOT__AR_VALID;
-    };
-    struct {
         CData/*0:0*/ top__DOT__u_AXI_arbiter_SRAM__DOT__R_READY;
         CData/*0:0*/ top__DOT__u_AXI_arbiter_SRAM__DOT__B_VALID;
         CData/*0:0*/ top__DOT__u_AXI_arbiter_SRAM__DOT__AR_READY;
@@ -102,8 +108,12 @@ VL_MODULE(Vtop___024root) {
         CData/*0:0*/ top__DOT__u_AXI_arbiter_SRAM__DOT__W_READY;
         SData/*11:0*/ top__DOT__u_EXU__DOT__instCSR;
         IData/*31:0*/ top__DOT__op;
+        IData/*23:0*/ top__DOT__inst_act;
+        IData/*23:0*/ top__DOT__u_IDU__DOT__inst_act_pre;
         IData/*31:0*/ top__DOT__u_EXU__DOT__op_r;
+        IData/*23:0*/ top__DOT__u_EXU__DOT__inst_act_r;
         IData/*31:0*/ top__DOT__u_EXU__DOT__op;
+        IData/*23:0*/ top__DOT__u_EXU__DOT__inst_act;
         VlWide<4>/*127:0*/ top__DOT__u_EXU__DOT__u_mul__DOT__result_reg;
         VlWide<3>/*64:0*/ top__DOT__u_EXU__DOT__u_div__DOT__sub_add;
         QData/*63:0*/ top__DOT__IFU_pc;
@@ -111,10 +121,10 @@ VL_MODULE(Vtop___024root) {
         QData/*63:0*/ top__DOT__IFU_inst;
         QData/*63:0*/ top__DOT__IDU_inst;
         QData/*63:0*/ top__DOT__imm;
-        QData/*63:0*/ top__DOT__ifetch_pc;
         QData/*63:0*/ top__DOT__u_IFU__DOT__u1_AXI_master_SRAM__DOT__w_addr_reg;
         QData/*63:0*/ top__DOT__u_IFU__DOT__u1_AXI_master_SRAM__DOT__w_data_reg;
         QData/*63:0*/ top__DOT__u_IFU__DOT__u1_AXI_master_SRAM__DOT__r_addr_reg;
+        QData/*63:0*/ top__DOT__u_IDU__DOT__imm_pre;
         QData/*63:0*/ top__DOT__u_EXU__DOT__imm_r;
         QData/*63:0*/ top__DOT__u_EXU__DOT__pc_r;
         QData/*63:0*/ top__DOT__u_EXU__DOT__inst_r;
@@ -152,7 +162,6 @@ VL_MODULE(Vtop___024root) {
     };
 
     // LOCAL VARIABLES
-    CData/*0:0*/ top__DOT__u_EXU__DOT____Vcellinp__u_div__sign_div;
     CData/*0:0*/ __Vclklast__TOP__clk;
     QData/*63:0*/ __Vtask_top__DOT__u_AXI_arbiter_SRAM__DOT__u_AXI_slave_SRAM__DOT__pmem_read__4__rdata;
     VlUnpacked<CData/*0:0*/, 2> __Vm_traceActivity;

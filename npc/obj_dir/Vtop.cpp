@@ -13,9 +13,12 @@ Vtop::Vtop(VerilatedContext* _vcontextp__, const char* _vcname__)
     : vlSymsp{new Vtop__Syms(_vcontextp__, _vcname__, this)}
     , clk{vlSymsp->TOP.clk}
     , rst_n{vlSymsp->TOP.rst_n}
+    , jmp_type{vlSymsp->TOP.jmp_type}
+    , ifetch_taken{vlSymsp->TOP.ifetch_taken}
+    , ifetch_pc{vlSymsp->TOP.ifetch_pc}
+    , mainUpdate_valid{vlSymsp->TOP.mainUpdate_valid}
     , inst{vlSymsp->TOP.inst}
     , pc{vlSymsp->TOP.pc}
-    , mainUpdate_valid{vlSymsp->TOP.mainUpdate_valid}
     , rootp{&(vlSymsp->TOP)}
 {
 }

@@ -53,6 +53,7 @@ VM_USER_CLASSES = \
 	keyboard \
 	main \
 	memory \
+	predictor \
 	reg \
 	sdb \
 	timer \
@@ -87,6 +88,8 @@ keyboard.o: ./csrc/keyboard.cpp
 main.o: ./csrc/main.cpp
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
 memory.o: ./csrc/memory.cpp
+	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
+predictor.o: ./csrc/predictor.cpp
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<
 reg.o: ./csrc/reg.cpp
 	$(OBJCACHE) $(CXX) $(CXXFLAGS) $(CPPFLAGS) $(OPT_FAST) -c -o $@ $<

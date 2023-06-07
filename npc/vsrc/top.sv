@@ -5,10 +5,16 @@ module top(
 
 input clk,
 input rst_n,
-output [63:0 ] inst,
-output [`ISA_WIDTH-1:0] pc,
 
-output mainUpdate_valid
+//predictor interface
+output byte  jmp_type,
+output logic ifetch_taken,
+output logic [`ISA_WIDTH-1:0] ifetch_pc,
+
+//top interface
+output logic mainUpdate_valid,
+output logic [63:0 ] inst,
+output logic [`ISA_WIDTH-1:0] pc
 
 );
 
@@ -28,9 +34,10 @@ wire [`REG_ADDR_WIDTH-1:0]   rs1;
 wire [`REG_ADDR_WIDTH-1:0]   rs2;
 wire [`ISA_WIDTH-1:0]   imm;
 opType op;
-logic [`IDUf_WIDTH-1:0] flags;
+InstAct  inst_act;
+InstType inst_type;
 
-logic [`ISA_WIDTH-1:0] ifetch_pc;
+
 
 
 
@@ -51,7 +58,7 @@ IDU u_IDU(
     .clk(clk), .rst_n(rst_n), 
     
     .IDU_vld(IDU_vld), .IDU_inst(IDU_inst), .IDU_pc(IDU_pc),
-    .rd(rd), .rs1(rs1), .rs2(rs2), .imm(imm), .op(op), .flags(flags), 
+    .rd(rd), .rs1(rs1), .rs2(rs2), .imm(imm), .op(op), .inst_act(inst_act), .inst_type(inst_type),
 
     .IFU_vld(IFU_vld), .IFU_inst(IFU_inst), .IFU_pc(IFU_pc)
     );
@@ -60,11 +67,9 @@ EXU_cache u_EXU(
     .clk(clk), .rst_n(rst_n), 
 
     .IDU_pc(IDU_pc), .IDU_inst(IDU_inst), .IDU_vld(IDU_vld),
-    .i_rd(rd), .i_rs1(rs1), .i_rs2(rs2), .i_imm(imm), .i_op(op), .i_flags(flags), 
+    .i_rd(rd), .i_rs1(rs1), .i_rs2(rs2), .i_imm(imm), .i_op(op), .i_inst_act(inst_act), 
 
-    .ifetch_req(ifetch_req), .ifetch_pc(ifetch_pc),
-
-    .main_valid(main_valid), .main_pc(main_pc), .main_inst(main_inst),
+    .ifetch_req(ifetch_req), .ifetch_pc(ifetch_pc), .ifetch_taken(ifetch_taken),
 
     .axi_AW_ADDR(axis2_AW_ADDR), .axi_AW_VALID(axis2_AW_VALID), .axi_AW_READY(axis2_AW_READY),
     .axi_W_DATA (axis2_W_DATA),  .axi_W_STRB  (axis2_W_STRB),   .axi_W_VALID (axis2_W_VALID), .axi_W_READY(axis2_W_READY),
@@ -108,18 +113,24 @@ AXI_arbiter_SRAM u_AXI_arbiter_SRAM(
 
 
 
-reg itrace_en;
+logic itrace_en = 0;
 always @(posedge clk) begin
-    if(main_valid) itrace_en <= 1;
+    if(~rst_n) itrace_en <= 0;
+    if(IDU_vld) itrace_en <= 1;
 end
 
-wire main_valid;
-wire [`ISA_WIDTH-1:0] main_pc;
-wire [`ISA_WIDTH-1:0] main_inst;
 
 
-assign mainUpdate_valid = itrace_en? main_valid: 0;
-assign pc =   main_pc;
-assign inst = main_inst;
+assign mainUpdate_valid = itrace_en? IFU_vld: 0;
+assign pc =   IFU_pc;
+assign inst = IFU_inst;
+
+always_ff @( posedge clk ) begin
+    if(IDU_vld) begin
+        jmp_type <= {3'b0, inst_act.call, inst_act.ret, inst_act.jal, inst_act.jalr, inst_act.br};
+    end
+                
+end
+
 
 endmodule

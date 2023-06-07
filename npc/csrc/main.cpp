@@ -7,7 +7,7 @@ VerilatedVcdC* tfp = NULL;
 Vtop* top;
 
 int main_time = 0;      // 仿真时间戳
-long sim_time = 10000000;   // 最大仿真时间戳
+long sim_time = 10000;   // 最大仿真时间戳
 
 uint64_t lpc = 0x80000000;
 uint64_t linst = 0x00000413;
@@ -75,10 +75,13 @@ extern "C" void sim_exit(int state){
     free_cache();
   #endif
 
+
   switch (state)
   {
   case 0: 
-    if(cpu_gpr[10] == 0 ) Log(ANSI_FMT("HIT GOOD TRAP", ANSI_FG_GREEN));
+    if(cpu_gpr[10] == 0 ) {
+      Log(ANSI_FMT("HIT GOOD TRAP", ANSI_FG_GREEN));
+    }
     else  {
       mtrace_puts_mtracebuf();
       itrace_puts_iringbuf();
@@ -88,7 +91,8 @@ extern "C" void sim_exit(int state){
   case 1:
     mtrace_puts_mtracebuf();
     itrace_puts_iringbuf();
-    Log(ANSI_FMT("INST ERROR: 0x%lx", ANSI_FG_RED),top->inst);
+    Log(ANSI_FMT("INST ERROR(OP INV): 0x%lx", ANSI_FG_RED),top->inst);
+    update_logbuff(top->pc, top->inst);
     Log(ANSI_FMT("break at: %s", ANSI_FG_RED), logbuf);
     break;
   case 2:
@@ -114,8 +118,13 @@ extern "C" void sim_exit(int state){
 
   delete top;
 #ifdef CONFIG_GTK
-    tfp->close();
+  tfp->close();
 #endif
+
+#ifdef CONFIG_PREDICTOR
+  GetPredictorReport();
+#endif
+
   delete contextp;
   exit(0);
 }
@@ -180,8 +189,6 @@ void cpu_exec(uint64_t n){
       itrace_update_iringbuf(logbuf);
 
       ftrace_matchFunc(lpc, top->pc, linst);
-      lpc = top->pc;
-      linst = top->inst;
 
       update_device();
 
@@ -191,6 +198,13 @@ void cpu_exec(uint64_t n){
 #ifdef CONFIG_GTK
       if(main_time > sim_time) sim_exit(2);
 #endif
+
+#ifdef CONFIG_PREDICTOR
+      GsharePredict(lpc, top->jmp_type, top->ifetch_taken, top->ifetch_pc);
+#endif
+
+      lpc = top->pc;
+      linst = top->inst;
       n--;
 
       //if(top->pc == 0x83009168) {
@@ -224,6 +238,10 @@ int main(int argc, char *argv[]) {
 
   #ifdef CONFIG_CACHE_CPP
     init_cache(14, 2);
+  #endif
+
+  #ifdef CONFIG_PREDICTOR
+    GshareInit();
   #endif
 
   top->clk = 0;
