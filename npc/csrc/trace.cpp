@@ -5,7 +5,7 @@
 
 #ifdef CONFIG_ITRACE
 
-#define MAX_INST_TO_SAVE 20
+#define MAX_INST_TO_SAVE 50
 static char iringbuf [MAX_INST_TO_SAVE][128];
 static int inst_p = 0;
 
@@ -135,7 +135,7 @@ int ftrace_load_elf(char* elf) {
 }
 
 
-void ftrace_matchFunc( uint64_t pc, uint64_t dnpc, uint32_t inst){
+bool ftrace_matchFunc( uint64_t pc, uint64_t dnpc, uint32_t inst){
 
 	// 重置指针位置到文件流开头
 	rewind(fp);
@@ -162,7 +162,8 @@ void ftrace_matchFunc( uint64_t pc, uint64_t dnpc, uint32_t inst){
 			for(int j=0;j<func_proc;j++){
 				printf("  ");
 			}
-			printf("call<[%s]0x%lx>\n", func, dnpc);	
+			printf("call<[%s]0x%lx>\n", func, dnpc);
+			return true;	
 		}
 		else if(dnpc >= symtab[i].st_value && dnpc < symtab[i].st_value + symtab[i].st_size && inst == 0x00008067) {
 			rewind(fp);
@@ -175,15 +176,18 @@ void ftrace_matchFunc( uint64_t pc, uint64_t dnpc, uint32_t inst){
 				printf("  ");
 			}
 			printf("ret<[%s]0x%lx>\n", func, dnpc);	
+			return true;
 		}
 
 	}
+
+	return false;
 
 }
 
 #else
 int ftrace_load_elf(char* elf) { return 0; }
-void ftrace_matchFunc( uint64_t pc, uint64_t dnpc, uint32_t inst) { }
+bool ftrace_matchFunc( uint64_t pc, uint64_t dnpc, uint32_t inst) { return false; }
 #endif
 
 

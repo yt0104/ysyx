@@ -23,11 +23,11 @@
 
 //#define   CONFIG_GTK
 
-#define   CONFIG_PREDICTOR
+//#define   CONFIG_PREDICTOR
 
 
 extern Vtop* top;
-extern int main_time;
+extern uint64_t main_time;
 
 /*main*/
 void cpu_exec(uint64_t n);
@@ -121,7 +121,7 @@ void itrace_puts_iringbuf();
 
 /*ftrace*/
 int ftrace_load_elf(char* elf);
-void ftrace_matchFunc( uint64_t pc, uint64_t dnpc, uint32_t inst);
+bool ftrace_matchFunc( uint64_t pc, uint64_t dnpc, uint32_t inst);
 
 /*mtrace*/
 void mtrace_read(uint64_t addr, int len, uint64_t data);
@@ -173,7 +173,7 @@ void init_vga();
 #ifdef CONFIG_PREDICTOR
 
 void GshareInit();
-void GsharePredict(uint64_t PC, uint8_t type, bool taken, uint64_t targetPC);
+bool GsharePredict(uint64_t PC, uint8_t type, bool taken, uint64_t targetPC);
 void GetPredictorReport();
 
 #endif

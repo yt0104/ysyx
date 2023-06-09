@@ -64,6 +64,8 @@ VL_MODULE(Vtop___024root) {
         CData/*0:0*/ top__DOT__u_IFU__DOT__u1_AXI_master_SRAM__DOT__ar_valid_reg;
         CData/*0:0*/ top__DOT__u_IFU__DOT__u1_AXI_master_SRAM__DOT__r_ready_reg;
         CData/*5:0*/ top__DOT__u_IDU__DOT__inst_type_pre;
+        CData/*0:0*/ top__DOT__u_IDU__DOT__ras_rd_flag;
+        CData/*0:0*/ top__DOT__u_IDU__DOT__ras_rs1_flag;
         CData/*4:0*/ top__DOT__u_EXU__DOT__rd_r;
         CData/*4:0*/ top__DOT__u_EXU__DOT__rs1_r;
         CData/*4:0*/ top__DOT__u_EXU__DOT__rs2_r;
@@ -93,10 +95,10 @@ VL_MODULE(Vtop___024root) {
         CData/*0:0*/ top__DOT__u_EXU__DOT__u1_AXI_master_SRAM__DOT__aw_valid_reg;
         CData/*0:0*/ top__DOT__u_EXU__DOT__u1_AXI_master_SRAM__DOT__w_valid_reg;
         CData/*0:0*/ top__DOT__u_EXU__DOT__u1_AXI_master_SRAM__DOT__ar_valid_reg;
-        CData/*0:0*/ top__DOT__u_EXU__DOT__u1_AXI_master_SRAM__DOT__r_ready_reg;
-        CData/*0:0*/ top__DOT__u_AXI_arbiter_SRAM__DOT__AW_VALID;
     };
     struct {
+        CData/*0:0*/ top__DOT__u_EXU__DOT__u1_AXI_master_SRAM__DOT__r_ready_reg;
+        CData/*0:0*/ top__DOT__u_AXI_arbiter_SRAM__DOT__AW_VALID;
         CData/*0:0*/ top__DOT__u_AXI_arbiter_SRAM__DOT__W_VALID;
         CData/*0:0*/ top__DOT__u_AXI_arbiter_SRAM__DOT__B_READY;
         CData/*0:0*/ top__DOT__u_AXI_arbiter_SRAM__DOT__AR_VALID;
@@ -108,12 +110,12 @@ VL_MODULE(Vtop___024root) {
         CData/*0:0*/ top__DOT__u_AXI_arbiter_SRAM__DOT__W_READY;
         SData/*11:0*/ top__DOT__u_EXU__DOT__instCSR;
         IData/*31:0*/ top__DOT__op;
-        IData/*23:0*/ top__DOT__inst_act;
-        IData/*23:0*/ top__DOT__u_IDU__DOT__inst_act_pre;
+        IData/*22:0*/ top__DOT__inst_act;
+        IData/*22:0*/ top__DOT__u_IDU__DOT__inst_act_pre;
         IData/*31:0*/ top__DOT__u_EXU__DOT__op_r;
-        IData/*23:0*/ top__DOT__u_EXU__DOT__inst_act_r;
+        IData/*22:0*/ top__DOT__u_EXU__DOT__inst_act_r;
         IData/*31:0*/ top__DOT__u_EXU__DOT__op;
-        IData/*23:0*/ top__DOT__u_EXU__DOT__inst_act;
+        IData/*22:0*/ top__DOT__u_EXU__DOT__inst_act;
         VlWide<4>/*127:0*/ top__DOT__u_EXU__DOT__u_mul__DOT__result_reg;
         VlWide<3>/*64:0*/ top__DOT__u_EXU__DOT__u_div__DOT__sub_add;
         QData/*63:0*/ top__DOT__IFU_pc;

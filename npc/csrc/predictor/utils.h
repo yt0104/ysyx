@@ -66,14 +66,16 @@ typedef struct
 //JD2_17_2016 break down types into COND/UNCOND
 typedef enum {
   OPTYPE_NULL,
-  OPTYPE_CALL,    //jal inst
-  OPTYPE_RET,     //jalr inst
   OPTYPE_BR,      //branch inst
   OPTYPE_JAL,       //jal: rd==0
   OPTYPE_JALR,      //jalr: rd==0
-  
+  OPTYPE_RET,     
+  OPTYPE_CALL,    
+  OPTYPE_RET_CALL,
 }OpType_t;
 
+
+#define BITS(data, i) ((type >> i) & 1)
 
 
 static inline UINT32 SatIncrement(UINT32 x, UINT32 max)

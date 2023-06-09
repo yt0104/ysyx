@@ -22,12 +22,14 @@ class RAS {
 		void DisplayStack();
 		bool IsEmpty() { return top == -1; }
 		bool IsFull() { return top == maxTop; }
-		void Clear() {top = -1; }
+		void Clear() { top = -1; }
+
 	private:
 		int maxTop;// max stack size = size -1
 		int top;// current top of stack
 		rasEntry_t* ras;// element array
 		void ShiftPush(const rasEntry_t entry);
+		
 		
 		
 };
@@ -62,6 +64,8 @@ void RAS::Push(const rasEntry_t entry) {
 
 void RAS::ShiftPush(const rasEntry_t entry) {
 
+	//cout<< "Error: the stack is full." << endl;
+
 	for (size_t i = 0; i < maxTop; i++)
 	{
 		ras[i] = ras[i+1];
@@ -71,8 +75,7 @@ void RAS::ShiftPush(const rasEntry_t entry) {
 }
 
 
-rasEntry_t RAS::Pop() 
-{
+rasEntry_t RAS::Pop() {
 	rasEntry_t entry;
 
 	if (IsEmpty()) {
@@ -82,28 +85,29 @@ rasEntry_t RAS::Pop()
 		entry = ras[top--];
 		entry.pop_vld = 1;
 	}
+	//DisplayStack();
 	return entry;
 }
 
 
-
-
 rasEntry_t RAS::Top() 
 {
-	if (IsEmpty()) 
-	{
-		cout<< "Error: the stack is empty." << endl;
-		rasEntry_t temp;
-		return temp;
+	rasEntry_t entry;
+	if (IsEmpty()) {
+		entry.pop_vld = 0;
 	}
-	else
-		return ras[top];
+	else {
+		entry = ras[top];
+		entry.pop_vld = 1;
+
+		}
+	return entry;
 }
 
 
 void RAS::DisplayStack() 
 {
-	printf("top -->");
+	printf("DisplayStack -->\n");
 	for (int i= top; i>= 0; i--) 
 		printf("\t|\t returnPC = 0x%llx\t|\n", ras[i].returnPC );
 }

@@ -130,8 +130,7 @@ typedef struct packed {
     logic        op32       ;
     logic        br         ;
 
-    logic        j          ;
-    logic        jr         ;
+    logic        ret_call   ;
     logic        call       ;
     logic        ret        ;
 

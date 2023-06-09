@@ -65,22 +65,26 @@ InstType   inst_type_pre;
 always_comb begin : dec_pre
     
     inst_act_pre.imm    = inst[6:0]== RV_IMM;
-    inst_act_pre.jalr   = inst[6:0]== RV_JALR;
+    
     inst_act_pre.ld     = inst[6:0]== RV_LD;
     inst_act_pre.st     = inst[6:0]== RV_ST;
     inst_act_pre.imm32  = inst[6:0]== RV_IMM_32;
     inst_act_pre.sys    = inst[6:0]== RV_SYS;
     inst_act_pre.auipc  = inst[6:0]== RV_AUIPC;
     inst_act_pre.lui    = inst[6:0]== RV_LUI;
-    inst_act_pre.jal    = inst[6:0]== RV_JAL;
+    
     inst_act_pre.op     = inst[6:0]== RV_OP;
     inst_act_pre.op32   = inst[6:0]== RV_OP_32;
     inst_act_pre.br     = inst[6:0]== RV_BR;
 
-    inst_act_pre.j      = inst_act_pre.jal  && rd_pre == 0;
-    inst_act_pre.call   = inst_act_pre.jal & ~inst_act_pre.j;
-    inst_act_pre.jr     = inst_act_pre.jalr && rd_pre == 0 && {{52{inst[31]}},inst[31:20]} == 0;
-    inst_act_pre.ret    = inst_act_pre.jr && rs1_pre ==1;
+    inst_act_pre.jal    = inst[6:0]== RV_JAL;
+    inst_act_pre.jalr   = inst[6:0]== RV_JALR;
+
+    inst_act_pre.call       = (inst_act_pre.jal  && ras_rd_flag)
+                            ||(inst_act_pre.jalr && ras_rd_flag) && ~ras_rs1_flag
+                            ||(inst_act_pre.jalr && ras_rd_flag) && (rs1_pre == rd_pre);
+    inst_act_pre.ret        = (inst_act_pre.jalr && ~ras_rd_flag) && ras_rs1_flag;
+    inst_act_pre.ret_call   = inst_act_pre.jalr && ras_rd_flag && (rs1_pre != rd_pre);
 
     inst_type_pre.instI = inst[6:0]== RV_IMM || inst[6:0]== RV_JALR || inst[6:0]== RV_LD || inst[6:0]== RV_IMM_32 || inst[6:0]==RV_SYS;
     inst_type_pre.instU = inst[6:0]== RV_AUIPC || inst[6:0]== RV_LUI;
@@ -101,6 +105,8 @@ always_comb begin : dec_pre
 
 end
 
+wire ras_rd_flag  = (rd_pre == 1 || rd_pre == 5);
+wire ras_rs1_flag = (rs1_pre == 1 || rs1_pre == 5);
 
 
 logic [63:0]   imm_pre;

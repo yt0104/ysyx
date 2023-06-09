@@ -14,10 +14,14 @@
 
 #define PC_LEN    48
 #define HIST_LEN  32
+
+
+#define RAS_SIZE  12  //SIZE = 18: full 2  SIZE = 15: full 15 COREMARK: RAS: 12-->18  ret miss: 5->2
 #define PHT_LEN   15
 #define BTB_LEN   12
+
 #define TAG_LEN   PC_LEN - BTB_LEN
-#define RAS_SIZE  8
+
 
 
 
@@ -34,8 +38,6 @@ class PREDICTOR{
 
   btbEntry_t *btb;         // branch target table
   UINT32  numBtbEntries; // entries in btb
-
-  RAS *ras;
 
 
   void updatePht(bool predDir);
@@ -55,6 +57,7 @@ class PREDICTOR{
 
  public:
 
+  RAS *ras;
   PREDICTOR(void);
   ~PREDICTOR(void);
   predInfo_t  GetPrediction(UINT64 PC, OpType_t op_type);  
@@ -166,6 +169,10 @@ predInfo_t  PREDICTOR::GetPrediction(UINT64 PC, OpType_t op_type){
       pred_info.predTargetPC = ras_entry.returnPC;
     }
   }
+  else if(op_type == OPTYPE_RET_CALL){  //return pht&btb prediction
+    pred_info.info_vld = 1;
+    rasEntry_t ras_entry = ras->Pop();
+  }
   else{      //return pht&btb prediction
     pred_info.info_vld = 1;
     return pred_info;
@@ -215,18 +222,17 @@ void  PREDICTOR::UpdatePredictor(UINT64 PC, OpType_t op_type, execInfo_t exec_in
   }
 
 
-  // update the RAS: JAL JALR
-  if(op_type == OPTYPE_CALL){  //call
-    rasEntry_t rasEntry;
-    rasEntry.returnPC = PC + 4;
-    ras->Push(rasEntry);
-  }
-  else if(op_type == OPTYPE_RET){  //return
+  // update the RAS: 
+  if(op_type == OPTYPE_RET || op_type == OPTYPE_RET_CALL){  //return
     if(exec_info.mispred) {
       ras->Clear();
     }
   }
-
+  if(op_type == OPTYPE_CALL || op_type == OPTYPE_RET_CALL){  //call
+    rasEntry_t rasEntry;
+    rasEntry.returnPC = PC + 4;
+    ras->Push(rasEntry);
+  }
 
 }
 

@@ -6,8 +6,8 @@ VerilatedVcdC* tfp = NULL;
 
 Vtop* top;
 
-int main_time = 0;      // 仿真时间戳
-long sim_time = 10000;   // 最大仿真时间戳
+uint64_t main_time = 0;      // 仿真时间戳
+uint64_t sim_time = 10000;   // 最大仿真时间戳
 
 uint64_t lpc = 0x80000000;
 uint64_t linst = 0x00000413;
@@ -16,7 +16,7 @@ char logbuf[128];
 
 void update_logbuff(uint64_t logpc, uint64_t loginst){
     char *p = logbuf;
-    p += snprintf(p, sizeof(logbuf), "#%2d  0x%016lx :", main_time, logpc);
+    p += snprintf(p, sizeof(logbuf), "#%2ld  0x%016lx :", main_time, logpc);
     int ilen = 4;
     uint8_t *inst = (uint8_t *)&loginst;
     for (int i = ilen - 1; i >= 0; i --) {
@@ -182,7 +182,7 @@ void cpu_exec(uint64_t n){
 
       /*logbuff*/
       update_logbuff(lpc, linst);
-      if(n <= 20) puts(logbuf);
+      if(n <= 50) puts(logbuf);
 
       if ( trace_point() ){ puts(logbuf); n = 1; }
 
@@ -200,18 +200,14 @@ void cpu_exec(uint64_t n){
 #endif
 
 #ifdef CONFIG_PREDICTOR
-      GsharePredict(lpc, top->jmp_type, top->ifetch_taken, top->ifetch_pc);
+      if( GsharePredict(lpc, top->jmp_type, top->ifetch_taken, top->ifetch_pc)){
+        puts(logbuf);
+      };
 #endif
 
       lpc = top->pc;
       linst = top->inst;
       n--;
-
-      //if(top->pc == 0x83009168) {
-      //Log(ANSI_FMT("------next pc = 0x83009168 output begin", ANSI_FG_RED));
-      //isa_reg_display();
-      //Log(ANSI_FMT("------next pc = 0x83009168 output end", ANSI_FG_RED));
-      //}
 
     }
 

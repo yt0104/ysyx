@@ -67,9 +67,9 @@ static bool in_vgafb(uint64_t addr) {
   return addr - FB_ADDR < screen_size();
 }
 
-extern int main_time;
+
 static void out_of_bound(uint64_t addr) {
-  Log(ANSI_FMT("time = %d, address = %16lx is out of bound", ANSI_FG_RED),main_time, addr);
+  Log(ANSI_FMT("time = %ld, address = %16lx is out of bound", ANSI_FG_RED),main_time, addr);
   sim_exit(-1);
   assert(0);
 }
@@ -90,7 +90,7 @@ extern "C" void pmem_read(long long raddr, long long *rdata ) {
     if(top->pc == raddr) return;  //cmd
     mtrace_read(raddr, 8, *rdata);
     char s[128];
-    sprintf(s,"MTRACE--> #%3d, pc = %8lx read : addr = %8llx   data = %16llx\n", main_time, top->pc, raddr, *rdata);
+    sprintf(s,"MTRACE--> #%3ld, pc = %8lx read : addr = %8llx   data = %16llx\n", main_time, top->pc, raddr, *rdata);
     mtrace_update_mtracebuf(s);
 
     return;
@@ -150,7 +150,7 @@ extern "C" void pmem_write(long long waddr, long long wdata, char wmask) {
     mtrace_write(waddr-8, len, wdata);
 
     char s[128];
-    sprintf(s,"MTRACE--> #%3d, pc = %8lx write: addr = %8llx  data = %16llx  len = %d\n", main_time, top->pc, waddr, wdata, len);
+    sprintf(s,"MTRACE--> #%3ld, pc = %8lx write: addr = %8llx  data = %16llx  len = %d\n", main_time, top->pc, waddr, wdata, len);
     mtrace_update_mtracebuf(s);
 
     return;

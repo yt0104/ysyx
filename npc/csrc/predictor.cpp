@@ -11,20 +11,22 @@ typedef struct{
 
     uint64_t inst_br;
     uint64_t inst_jal  ;
-    uint64_t inst_call ;
     uint64_t inst_jalr ;
+    uint64_t inst_call ;
     uint64_t inst_ret  ;
+    uint64_t inst_ret_call  ;
 
 
     uint64_t exec_taken;
     uint64_t pred_taken;
 
-    uint64_t mis_pred;
-    uint64_t br_miss;
-    uint64_t jal_miss;
-    uint64_t jalr_miss;
-    uint64_t call_miss;
-    uint64_t ret_miss;
+    uint64_t miss_pred; 
+    uint64_t miss_br  ; 
+    uint64_t miss_jal ; 
+    uint64_t miss_jalr; 
+    uint64_t miss_call; 
+    uint64_t miss_ret ; 
+    uint64_t miss_ret_call;
 
 } summary_t;
 
@@ -43,32 +45,35 @@ void GshareInit(){
     summary.inst_call  = 0;
     summary.inst_jalr  = 0;
     summary.inst_ret   = 0;
+    summary.inst_ret_call = 0;
 
     summary.exec_taken = 0;
     summary.pred_taken = 0;
 
-    summary.mis_pred   = 0;
-    summary.br_miss    = 0;
-    summary.jal_miss   = 0;
-    summary.jalr_miss  = 0;
-    summary.call_miss  = 0;
-    summary.ret_miss   = 0;
+    summary.miss_pred  = 0;
+    summary.miss_br    = 0;
+    summary.miss_jal   = 0;
+    summary.miss_jalr  = 0;
+    summary.miss_call  = 0;
+    summary.miss_ret   = 0;
+    summary.miss_ret_call = 0;
     
 }
 
 
-void GsharePredict(uint64_t PC, uint8_t type, bool taken, uint64_t targetPC){
+
+bool GsharePredict(uint64_t PC, uint8_t type, bool taken, uint64_t targetPC){
 
     OpType_t op_type;
 
 
     op_type = OPTYPE_NULL;
-    if((type) & 1) op_type = OPTYPE_BR;
-    if((type >> 1) & 1) op_type = OPTYPE_JALR;
-    if((type >> 2) & 1) op_type = OPTYPE_JAL;
-    if((type >> 3) & 1) op_type = OPTYPE_RET;
-    if((type >> 4) & 1) op_type = OPTYPE_CALL;
-    
+    if(BITS(type, 0)) op_type = OPTYPE_BR;
+    if(BITS(type, 1)) op_type = OPTYPE_JALR;
+    if(BITS(type, 2)) op_type = OPTYPE_JAL;
+    if(BITS(type, 3)) op_type = OPTYPE_RET;
+    if(BITS(type, 4)) op_type = OPTYPE_CALL;
+    if(BITS(type, 5)) op_type = OPTYPE_RET_CALL;
 
 
     predInfo_t predInfo;
@@ -93,11 +98,13 @@ void GsharePredict(uint64_t PC, uint8_t type, bool taken, uint64_t targetPC){
 
     if(op_type != OPTYPE_NULL){
 
-        if(op_type == OPTYPE_RET)  summary.inst_ret++; 
-        if(op_type == OPTYPE_CALL) summary.inst_call++;
-        if(op_type == OPTYPE_BR)  summary.inst_br++;
-        if(op_type == OPTYPE_JAL || op_type == OPTYPE_CALL) summary.inst_jal++;
-        if(op_type == OPTYPE_JALR || op_type == OPTYPE_RET) summary.inst_jalr++;
+        if(BITS(type, 0)) summary.inst_br++;
+        if(BITS(type, 1)) summary.inst_jalr++;
+        if(BITS(type, 2)) summary.inst_jal++;
+        if(BITS(type, 3)) summary.inst_ret++; 
+        if(BITS(type, 4)) summary.inst_call++;
+        if(BITS(type, 5)) summary.inst_ret_call++;
+        
 
 
         summary.inst_jmp = summary.inst_jalr + summary.inst_jal + summary.inst_br;
@@ -107,48 +114,57 @@ void GsharePredict(uint64_t PC, uint8_t type, bool taken, uint64_t targetPC){
 
         if(execInfo.mispred) {
 
-            summary.mis_pred++;
+            summary.miss_pred++;
 
-            if(op_type == OPTYPE_RET) summary.ret_miss++;
-            if(op_type == OPTYPE_CALL) summary.call_miss++;
-            if(op_type == OPTYPE_BR)  summary.br_miss++;
-            if(op_type == OPTYPE_JAL || op_type == OPTYPE_CALL) summary.jal_miss++;
-            if(op_type == OPTYPE_JALR || op_type == OPTYPE_RET) summary.jalr_miss++;
+
+            if(BITS(type, 0)) summary.miss_br++;
+            if(BITS(type, 1)) summary.miss_jalr++;
+            if(BITS(type, 2)) summary.miss_jal++;
+            if(BITS(type, 3)) summary.miss_ret++; 
+            if(BITS(type, 4)) summary.miss_call++;
+            if(BITS(type, 5)) summary.miss_ret_call++;
 
         }
 
 
     }
 
-    //if(predInfo.info_vld && ( op_type == OPTYPE_RET || op_type) ){
-    //    printf("ras_predict--> pc = 0x%lx, type = %d--> exec: %d, 0x%llx --> pred: %d, 0x%llx\n", 
-    //        PC, type, execInfo.execDir, execInfo.execTargetPC, predInfo.predDir, predInfo.predTargetPC);
-    //}
 
+    if( execInfo.mispred && predInfo.info_vld && ( op_type == OPTYPE_RET_CALL) ){
+        //printf("ras_predict--> pc = 0x%lx, type = %d--> exec: %d, 0x%llx --> pred: %d, 0x%llx\n", 
+        //    PC, type, execInfo.execDir, execInfo.execTargetPC, predInfo.predDir, predInfo.predTargetPC);
+        //brpred->ras->DisplayStack();
+        //return true;
+    }
 
+    return false;
 }
 
 
 void GetPredictorReport(){
 
+    printf("-------------- RAS: %d PHT: %d BTB: %d  -------------\n", RAS_SIZE, PHT_LEN, BTB_LEN);
     printf("-------------- PREDICTOR SUMMARY REPORT -------------\n");
     printf("-------------- total  inst:\t %6ld -------------\n", summary.inst_sum );
     printf("-------------- branch inst:\t %6ld -------------\n", summary.inst_jmp );
-    printf("-------------- jalr   type:\t %6ld -------------\n", summary.inst_jalr);
-    printf("-------------- jal    type:\t %6ld -------------\n", summary.inst_jal );
-    printf("-------------- br     type:\t %6ld -------------\n", summary.inst_br  );
-    printf("-------------- call   inst:\t %6ld -------------\n", summary.inst_call);
-    printf("-------------- ret    inst:\t %6ld -------------\n", summary.inst_ret );
-
+    printf("-------------- jalr   inst:\t %6ld -------------\n", summary.inst_jalr);
+    printf("-------------- jal    inst:\t %6ld -------------\n", summary.inst_jal );
+    printf("-------------- br     inst:\t %6ld -------------\n", summary.inst_br  );
+    printf("-------------- call   type:\t %6ld -------------\n", summary.inst_call);
+    printf("-------------- ret    type:\t %6ld -------------\n", summary.inst_ret );
+    printf("-------------- retcal type:\t %6ld -------------\n", summary.inst_ret_call );
+    printf("-----------------------------------------------------\n");
     printf("-------------- exec  taken:\t %6ld -------------\n", summary.exec_taken);
     printf("-------------- pred  taken:\t %6ld -------------\n", summary.pred_taken);
-    printf("-------------- miss   pred:\t %6ld -------------\n", summary.mis_pred );
-    printf("-------------- miss   br  :\t %6ld -------------\n", summary.br_miss);
-    printf("-------------- miss   jal :\t %6ld -------------\n", summary.jal_miss );
-    printf("-------------- miss   jalr:\t %6ld -------------\n", summary.jalr_miss  );
-    printf("-------------- miss   call:\t %6ld -------------\n", summary.call_miss  );
-    printf("-------------- miss   ret :\t %6ld -------------\n", summary.ret_miss );
-    printf("               Accuracy   :\t %6f%%\n", 100.0*(summary.inst_jmp - summary.mis_pred) /summary.inst_jmp );
+    printf("-----------------------------------------------------\n");
+    printf("-------------- miss   pred:\t %6ld -------------\n", summary.miss_pred );
+    printf("-------------- miss   br  :\t %6ld -------------\n", summary.miss_br);
+    printf("-------------- miss   jal :\t %6ld -------------\n", summary.miss_jal);
+    printf("-------------- miss   jalr:\t %6ld -------------\n", summary.miss_jalr );
+    printf("-------------- miss   call:\t %6ld -------------\n", summary.miss_call );
+    printf("-------------- miss   ret :\t %6ld -------------\n", summary.miss_ret );
+    printf("-------------- miss   retcall :\t %6ld -------------\n", summary.miss_ret_call );
+    printf("               Accuracy   :\t %6f%%\n", 100.0*(summary.inst_jmp - summary.miss_pred) /summary.inst_jmp );
 
     //delete brpred; 
 

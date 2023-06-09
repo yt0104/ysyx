@@ -127,7 +127,7 @@ assign inst = IFU_inst;
 
 always_ff @( posedge clk ) begin
     if(IDU_vld) begin
-        jmp_type <= {3'b0, inst_act.call, inst_act.ret, inst_act.jal, inst_act.jalr, inst_act.br};
+        jmp_type <= {2'b0, inst_act.ret_call, inst_act.call, inst_act.ret, inst_act.jal, inst_act.jalr, inst_act.br};
     end
                 
 end
