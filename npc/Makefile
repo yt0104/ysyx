@@ -9,9 +9,10 @@ DIFF = $(NEMU_HOME)/build/riscv64-nemu-interpreter-so
 
 LDFLAGS += -LDFLAGS -lreadline #Linker pre-object arguments for makefile
 LDFLAGS += -LDFLAGS -lLLVM-13
-LDFLAGS += -LDFLAGS -lSDL2 -LDFLAGS -lSDL2_image
+LDFLAGS += -LDFLAGS -lSDL2 -LDFLAGS -lSDL2_image 
 #C++ compiler arguments for makefile
 CFLAGS += -CFLAGS -I/usr/lib/llvm-13/include -D_GNU_SOURCE -D__STDC_CONSTANT_MACROS -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS
+
 
 all:
 	@echo "verilator!"

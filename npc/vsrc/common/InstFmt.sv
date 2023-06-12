@@ -117,6 +117,7 @@ typedef struct packed {
 
 typedef struct packed {
 
+    //func1
     logic        imm        ;
     logic        jalr       ;
     logic        ld         ;
@@ -130,18 +131,29 @@ typedef struct packed {
     logic        op32       ;
     logic        br         ;
 
+
     logic        ret_call   ;
     logic        call       ;
     logic        ret        ;
 
+    logic        mini_alu   ;
     logic        mul        ;  //multiply instruction
     logic        div        ;  //divide instruction
     logic        div_rem    ;  //div reminder instruction
     logic        div_sign   ;  //div sign instruction
 
     logic        w_inst     ;  //half word instruction
+    logic        wb         ;  //write back
+
+    logic        csr        ;  //
+    logic        syscall    ;  //
+    logic        ecall      ;  //
+    logic        mret       ;  //
+    logic        ebreak     ;  //
+
 
     logic [2:0]  func3      ;
+    logic        onecycle ;
 
 } InstAct;
 

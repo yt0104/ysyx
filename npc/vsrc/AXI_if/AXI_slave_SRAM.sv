@@ -31,7 +31,7 @@ module AXI_slave_SRAM #
 		input   R_READY
 	);
 
-import "DPI-C" function void ifetch(input longint pc, output longint inst);
+import "DPI-C" function void ifetch(input longint pc, output longint inst); 
 import "DPI-C" function void pmem_read(
   input longint raddr, output longint rdata);
 import "DPI-C" function void pmem_write(

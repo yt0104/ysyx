@@ -40,11 +40,8 @@ class PREDICTOR{
   UINT32  numBtbEntries; // entries in btb
 
 
-  void updatePht(bool predDir);
-  void updateBtb(bool predDir, UINT64 PC, UINT64 targetPC);
-
-  UINT32 GetPhtHashIndex(UINT64 PC){
-    return (PC^ghr) % (numPhtEntries);
+  UINT32 GetPhtHashIndex(UINT64 PC, UINT32 rollcnt){
+    return (PC^(ghr>>rollcnt)) % (numPhtEntries);
   }
 
   UINT32 GetBtbHashIndex(UINT64 PC){
@@ -61,7 +58,12 @@ class PREDICTOR{
   PREDICTOR(void);
   ~PREDICTOR(void);
   predInfo_t  GetPrediction(UINT64 PC, OpType_t op_type);  
-  void        UpdatePredictor(UINT64 PC, OpType_t op_type, execInfo_t exec_info);
+
+  void        UpdateTable(UINT64 PC, OpType_t op_type, execInfo_t exec_info, UINT32 rollcnt);
+  void        UpdateGHR(OpType_t op_type, bool dir);
+  void        UpdateRAS(UINT64 PC, OpType_t op_type, execInfo_t exec_info);
+  void        RollbackGHR(UINT32 rollcnt);
+
 
 };
 
@@ -74,7 +76,7 @@ class PREDICTOR{
 // GHR size: 17 bits
 // Total Size = PHT size + GHR size + BTB size
 /////////////////////////////////////////////////////////////
-
+/////////////////////////////////////////////////////////////
 
 /////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////
@@ -117,7 +119,7 @@ PREDICTOR::~PREDICTOR(void){
 //NOTE get branch prediction result 
 predInfo_t  PREDICTOR::GetPrediction(UINT64 PC, OpType_t op_type){
 
-  UINT32 phtIndex   = GetPhtHashIndex(PC);
+  UINT32 phtIndex   = GetPhtHashIndex(PC, 0);
   phtEntry_t pht_entry = pht[phtIndex];
 
   UINT32 BtbIndex   = GetBtbHashIndex(PC);
@@ -171,7 +173,15 @@ predInfo_t  PREDICTOR::GetPrediction(UINT64 PC, OpType_t op_type){
   }
   else if(op_type == OPTYPE_RET_CALL){  //return pht&btb prediction
     pred_info.info_vld = 1;
-    rasEntry_t ras_entry = ras->Pop();
+    rasEntry_t rasEntry = ras->Pop();
+    rasEntry.returnPC = PC + 4;
+    ras->Push(rasEntry);
+  }
+  else if(op_type == OPTYPE_CALL){      //return pht&btb prediction
+    pred_info.info_vld = 1;
+    rasEntry_t rasEntry;
+    rasEntry.returnPC = PC + 4;
+    ras->Push(rasEntry);
   }
   else{      //return pht&btb prediction
     pred_info.info_vld = 1;
@@ -186,24 +196,19 @@ predInfo_t  PREDICTOR::GetPrediction(UINT64 PC, OpType_t op_type){
 /////////////////////////////////////////////////////////////
 
 //NOTE update Predictor from execute & prediction info
-//NOTE we assume execute info is right
-void  PREDICTOR::UpdatePredictor(UINT64 PC, OpType_t op_type, execInfo_t exec_info){
 
-  UINT32 phtIndex   = GetPhtHashIndex(PC);
-  UINT32 BtbIndex   = GetBtbHashIndex(PC);
+
+void  PREDICTOR::UpdateTable(UINT64 PC, OpType_t op_type, execInfo_t exec_info, UINT32 rollcnt){
 
   if(op_type == OPTYPE_NULL){
     return;
   }
 
+  UINT32 phtIndex   = GetPhtHashIndex(PC, rollcnt);
+  UINT32 BtbIndex   = GetBtbHashIndex(PC);
+
+
   if(op_type == OPTYPE_BR){
-
-    // update the GHR: BR TAKEN
-    ghr = (ghr << 1);
-
-    if(exec_info.execDir == TAKEN){
-      ghr++; 
-    }
 
     // update the PHT: BR TAKEN
     if(exec_info.execDir == TAKEN){
@@ -222,19 +227,58 @@ void  PREDICTOR::UpdatePredictor(UINT64 PC, OpType_t op_type, execInfo_t exec_in
   }
 
 
-  // update the RAS: 
-  if(op_type == OPTYPE_RET || op_type == OPTYPE_RET_CALL){  //return
+}
+
+
+void  PREDICTOR::UpdateGHR(OpType_t op_type, bool dir){
+
+  if(op_type == OPTYPE_NULL){
+    return;
+  }
+
+  if(op_type == OPTYPE_BR){
+
+    // update the GHR: BR TAKEN
+    ghr = (ghr << 1);
+
+    if(dir == TAKEN){
+      ghr++; 
+    }
+  }
+
+}
+
+
+void  PREDICTOR::RollbackGHR(UINT32 rollcnt){
+
+  ghr = (ghr >> rollcnt);
+
+}
+
+
+
+
+void  PREDICTOR::UpdateRAS(UINT64 PC, OpType_t op_type, execInfo_t exec_info){
+
+  if(op_type == OPTYPE_NULL){
+    return;
+  }
+
+  if(op_type == OPTYPE_RET){  //return
     if(exec_info.mispred) {
       ras->Clear();
     }
   }
-  if(op_type == OPTYPE_CALL || op_type == OPTYPE_RET_CALL){  //call
-    rasEntry_t rasEntry;
-    rasEntry.returnPC = PC + 4;
-    ras->Push(rasEntry);
+  if(op_type == OPTYPE_RET_CALL){  //ret call
+    if(exec_info.mispred) {
+      rasEntry_t rasEntry = ras->Top();
+      ras->Clear();
+      ras->Push(rasEntry);
   }
+}
 
 }
+
 
 
 

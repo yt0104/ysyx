@@ -13,13 +13,12 @@
 
 //#define   CONFIG_AUTO_C
 //#define   CONFIG_WATCHPOINT   
-#define   CONFIG_ITRACE       
-//#define   CONFIG_FTRACE 
+      
+#define   CONFIG_FTRACE 
 //#define   CONFIG_MTRACE_OUT  
 //#define   CONFIG_MTRACE
-//#define   CONFIG_DTRACE
+
 #define   CONFIG_DIFFTEST   
-//#define   CONFIG_CACHE_CPP
 
 //#define   CONFIG_GTK
 
@@ -54,9 +53,7 @@ uint64_t host_to_guest(uint8_t *haddr);
 #define DEVICE_SIZE     0x1000
 #define RTC_ADDR        (DEVICE_BASE + 0x0000048)
 #define SERIAL_PORT     (DEVICE_BASE + 0x00003f8)
-#define KBD_ADDR        (DEVICE_BASE + 0x0000060)
-#define VGACTL_ADDR     (DEVICE_BASE + 0x0000100)
-#define SYNC_ADDR (VGACTL_ADDR + 4)
+
 #define MMIO_BASE       0xa0000000
 #define FB_ADDR         (MMIO_BASE   + 0x1000000)
 
@@ -90,12 +87,6 @@ static inline uint8_t* new_space(int size) {
   return p;
 }
 
-
-/*cache*/
-uint64_t cache_read(uint64_t addr);
-void cache_write(uint64_t addr, uint64_t data, char wmask8);
-void init_cache(int total_size_width, int associativity_width);
-void free_cache();
 
 
 /*reg*/
@@ -131,13 +122,10 @@ void mtrace_write(uint64_t addr, int len, uint64_t data);
 void mtrace_update_mtracebuf(char *s);
 void mtrace_puts_mtracebuf();
 
+
 /*dtrace*/
 void dtrace_read(uint64_t addr, int len, uint64_t data);
 void dtrace_write(uint64_t addr, int len, uint64_t data);
-
-/*disasm*/
-extern "C" void init_disasm(const char *triple);
-extern "C" void disassemble(char *str, int size, uint64_t pc, uint8_t *code, int nbyte);
 
 
 /*difftest*/
@@ -156,18 +144,6 @@ extern void (*ref_difftest_raise_intr)(uint64_t NO);
 
 /*timer*/
 uint64_t get_time();
-
-/*key*/
-void update_key();
-uint32_t read_key();
-void init_key();
-
-/*vga*/
-void vga_update_screen();
-void write_vgactl(uint64_t data);
-void write_vgasync(uint64_t data);
-void write_vgafb(uint64_t addr, uint64_t data);
-void init_vga();
 
 
 

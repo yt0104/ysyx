@@ -67,7 +67,7 @@ EXU_cache u_EXU(
     .clk(clk), .rst_n(rst_n), 
 
     .IDU_pc(IDU_pc), .IDU_inst(IDU_inst), .IDU_vld(IDU_vld),
-    .i_rd(rd), .i_rs1(rs1), .i_rs2(rs2), .i_imm(imm), .i_op(op), .i_inst_act(inst_act), 
+    .i_rd(rd), .i_rs1(rs1), .i_rs2(rs2), .i_imm(imm), .i_op(op), .i_inst_act(inst_act),
 
     .ifetch_req(ifetch_req), .ifetch_pc(ifetch_pc), .ifetch_taken(ifetch_taken),
 
@@ -113,10 +113,13 @@ AXI_arbiter_SRAM u_AXI_arbiter_SRAM(
 
 
 
+
+//TOP interface
+
 logic itrace_en = 0;
 always @(posedge clk) begin
     if(~rst_n) itrace_en <= 0;
-    if(IDU_vld) itrace_en <= 1;
+    if(IFU_vld) itrace_en <= 1;
 end
 
 
@@ -128,6 +131,7 @@ assign inst = IFU_inst;
 always_ff @( posedge clk ) begin
     if(IDU_vld) begin
         jmp_type <= {2'b0, inst_act.ret_call, inst_act.call, inst_act.ret, inst_act.jal, inst_act.jalr, inst_act.br};
+
     end
                 
 end

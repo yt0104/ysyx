@@ -47,6 +47,8 @@ output  			axi_R_READY
 
 );
 
+
+
   //===================================================
   //===control signal
 
@@ -92,151 +94,10 @@ output  			axi_R_READY
 
 
 
-  logic exe_valid;
-  always@(*)
-    if(~rst_n)  exe_valid = 0; 
-    else 
-      case(op)
-      op_lbu   : exe_valid = dataM_valid;
-      op_lhu   : exe_valid = dataM_valid;
-      op_lwu   : exe_valid = dataM_valid;
-      op_ld    : exe_valid = dataM_valid;
-      op_lw    : exe_valid = dataM_valid;
-      op_lh    : exe_valid = dataM_valid;
-      op_lb    : exe_valid = dataM_valid;
-      op_sd    : exe_valid = dataM_valid;
-      op_sw    : exe_valid = dataM_valid;
-      op_sh    : exe_valid = dataM_valid;
-      op_sb    : exe_valid = dataM_valid;
-      op_mul   : exe_valid = mul_out_valid;
-      op_mulw  : exe_valid = mul_out_valid;
-      op_divw  : exe_valid = div_out_valid;
-      op_remw  : exe_valid = div_out_valid;
-      op_divuw : exe_valid = div_out_valid;
-      op_remuw : exe_valid = div_out_valid;
-      op_divu  : exe_valid = div_out_valid;
-      op_remu  : exe_valid = div_out_valid;
-      op_rem   : exe_valid = div_out_valid;
-      op_div   : exe_valid = div_out_valid;
-      op_inv   : exe_valid = 0;
-      default  : exe_valid = IDU_vld;
-      endcase
-
-
-  reg exe_finish_valid;
-  always@(posedge clk)
-    if(~rst_n) exe_finish_valid <= 0;
-    else exe_finish_valid <= exe_valid;
-
-
-  //===================================================
-  //===register block
-
-  /*GPR*/
-  logic [`ISA_WIDTH-1:0] src1,src2;
-  logic [`ISA_WIDTH-1:0] dest;
-  logic wenR;
-
-
-  RegisterFile u_gpr(
-      .clk    (clk),
-      .rdata1 (src1),
-      .raddr1 (rs1),
-      .rdata2 (src2),
-      .raddr2 (rs2),
-      .wdata  (dest),
-      .waddr  (rd),
-      .wen    (wenR)
-  );
-
-
-  logic [63:0] temp;
-
-  assign dest = inst_act.w_inst? { {32{temp[31]}}, temp[31:0] }: temp;
-
-  always@(posedge clk)
-    if(~rst_n)  begin wenR <= 0; temp <= 0;  end
-    else if(exe_valid) begin
-        case(op)
-        op_addi  : begin wenR <= 1; temp <= src1 + imm; end
-        op_ret   : begin wenR <= 1; temp <= pc + 4;     end
-        op_jalr  : begin wenR <= 1; temp <= pc + 4;     end
-        op_lbu   : begin wenR <= 1; temp <= {56'b0, rdataM[ 7:0]};              end
-        op_lhu   : begin wenR <= 1; temp <= {48'b0, rdataM[15:0]};              end
-        op_lwu   : begin wenR <= 1; temp <= {32'b0, rdataM[31:0]};              end
-        op_ld    : begin wenR <= 1; temp <= rdataM;                             end
-        op_lw    : begin wenR <= 1; temp <= { {32{rdataM[31]}}, rdataM[31:0] };  end
-        op_lh    : begin wenR <= 1; temp <= { {48{rdataM[15]}}, rdataM[15:0] };  end
-        op_lb    : begin wenR <= 1; temp <= { {56{rdataM[7 ]}}, rdataM[7 :0] };  end
-        op_slli  : begin wenR <= 1; temp <= src1 <<imm; end
-        op_slti  : begin wenR <= 1; temp <= ($signed(src1) < $signed(imm))? 64'b1: 64'b0;; end
-        op_srli  : begin wenR <= 1; temp <= src1 >>imm; end
-        op_sltiu : begin wenR <= 1; temp <= (src1 < imm)? 64'b1: 64'b0; ; end
-        op_xori  : begin wenR <= 1; temp <= src1 ^ imm; end
-        op_srai  : begin wenR <= 1; temp <= ($signed(src1)) >>> imm[5:0];  end
-        op_andi  : begin wenR <= 1; temp <= src1 & imm; end
-        op_addiw : begin wenR <= 1; temp <= src1 + imm; end
-        op_slliw : begin wenR <= 1; temp <= src1 <<imm; end
-        op_srliw : begin wenR <= 1; temp <= { 32'b0, src1[31:0] >> imm }; end
-        op_sraiw : begin wenR <= 1; temp <= ($signed(src1)) >>> imm[5:0]; end
-        op_ori   : begin wenR <= 1; temp <= src1 | imm; end
-        op_csrrw : begin wenR <= 1; temp <= rCSR; end
-        op_csrrs : begin wenR <= 1; temp <= rCSR; end
-
-        op_auipc : begin wenR <= 1; temp <= pc + imm; end
-        op_lui   : begin wenR <= 1; temp <= { {32{imm[31]}},imm[31:12],12'b0 }; end
-        op_sd    : begin wenR <= 0; temp <= 0; end//***
-        op_sw    : begin wenR <= 0; temp <= 0; end
-        op_sh    : begin wenR <= 0; temp <= 0; end
-        op_sb    : begin wenR <= 0; temp <= 0; end
-        op_jal   : begin wenR <= 1; temp <= pc + 4;  end
-
-        op_add   : begin wenR <= 1; temp <= src1 + src2; end
-        op_sltu  : begin wenR <= 1; temp <= (src1 < src2)? 64'b1: 64'b0; end
-        op_and   : begin wenR <= 1; temp <= src1 & src2; end
-        op_or    : begin wenR <= 1; temp <= src1 | src2; end
-        op_xor   : begin wenR <= 1; temp <= src1 ^ src2; end
-        op_sub   : begin wenR <= 1; temp <= src1 - src2; end
-        op_mul   : begin wenR <= 1; temp <= mul_result;  end
-        op_slt   : begin wenR <= 1; temp <= ($signed(src1) < $signed(src2))? 64'b1: 64'b0; end
-        op_addw  : begin wenR <= 1; temp <= src1 + src2; end
-        op_sllw  : begin wenR <= 1; temp <= src1 << src2[4:0];  end
-        op_srlw  : begin wenR <= 1; temp <= {32'b0, src1[31:0] >> src2[4:0]};  end
-        op_sraw  : begin wenR <= 1; temp <= {32'b0, $signed(src1[31:0]) >>> src2[4:0]};  end
-        op_mulw  : begin wenR <= 1; temp <= mul_result;  end
-        op_subw  : begin wenR <= 1; temp <= src1 - src2; end
-        op_divw  : begin wenR <= 1; temp <= quotient; end
-        op_remw  : begin wenR <= 1; temp <= remainder; end
-        op_divuw : begin wenR <= 1; temp <= quotient;  end
-        op_remuw : begin wenR <= 1; temp <= remainder; end
-        op_divu  : begin wenR <= 1; temp <= quotient; end
-        op_remu  : begin wenR <= 1; temp <= remainder; end
-        op_sll   : begin wenR <= 1; temp <= src1 <<src2; end
-        op_srl   : begin wenR <= 1; temp <= src1 >>src2; end
-        op_div   : begin wenR <= 1; temp <= quotient; end
-        op_rem   : begin wenR <= 1; temp <= remainder; end
-        
-
-        op_beq   : begin wenR <= 0; temp <= 0; end
-        op_bne   : begin wenR <= 0; temp <= 0; end
-        op_bge   : begin wenR <= 0; temp <= 0; end
-        op_blt   : begin wenR <= 0; temp <= 0; end
-        op_bltu  : begin wenR <= 0; temp <= 0; end
-        op_bgeu  : begin wenR <= 0; temp <= 0; end
-
-        op_mret  : begin wenR <= 0; temp <= 0; end
-        op_ecall : begin wenR <= 0; temp <= 0; end
-        op_ebreak: begin wenR <= 0; temp <= 0; end
-        op_inv   : begin wenR <= 0; temp <= 0; end
-        default  : begin wenR <= 0; temp <= 0; end
-        endcase
-      if(rd == 0) temp <= 0; //R(0) = 0;
-    end
-    else begin wenR <= 0; temp <= 0; end
-
 
   //===================================================
   //===ALU
+
 
   logic mul_valid, div_valid;
 
@@ -261,6 +122,7 @@ output  			axi_R_READY
 
   wire div_out_valid;
   wire [63:0] quotient, remainder;
+  wire [63:0] div_result = inst_act.div_rem? remainder : quotient;
 
   div u_div(
     .clk(clk),
@@ -278,55 +140,215 @@ output  			axi_R_READY
     .out_valid(div_out_valid)
     );
 
+
+  logic        alu_vld;
+  logic [63:0] alu_data;
+  logic        mini_alu_vld;
+  logic [63:0] mini_alu_data;
+
+
+  always_ff @( posedge clk ) begin : miniALU
+    if(~rst_n) mini_alu_data <= 0; 
+    else if(IDU_vld & inst_act.mini_alu) begin
+      case(op)
+      op_addi  : begin mini_alu_data <= src1 + imm; end
+      op_ret   : begin mini_alu_data <= pc + 4;     end
+      op_jalr  : begin mini_alu_data <= pc + 4;     end
+      //op_lbu   : begin mini_alu_data <= {56'b0, rdataM[ 7:0]};              end
+      //op_lhu   : begin mini_alu_data <= {48'b0, rdataM[15:0]};              end
+      //op_lwu   : begin mini_alu_data <= {32'b0, rdataM[31:0]};              end
+      //op_ld    : begin mini_alu_data <= rdataM;                             end
+      //op_lw    : begin mini_alu_data <= { {32{rdataM[31]}}, rdataM[31:0] };  end
+      //op_lh    : begin mini_alu_data <= { {48{rdataM[15]}}, rdataM[15:0] };  end
+      //op_lb    : begin mini_alu_data <= { {56{rdataM[7 ]}}, rdataM[7 :0] };  end
+      op_slli  : begin mini_alu_data <= src1 <<imm; end
+      op_slti  : begin mini_alu_data <= ($signed(src1) < $signed(imm))? 64'b1: 64'b0;; end
+      op_srli  : begin mini_alu_data <= src1 >>imm; end
+      op_sltiu : begin mini_alu_data <= (src1 < imm)? 64'b1: 64'b0; ; end
+      op_xori  : begin mini_alu_data <= src1 ^ imm; end
+      op_srai  : begin mini_alu_data <= ($signed(src1)) >>> imm[5:0];  end
+      op_andi  : begin mini_alu_data <= src1 & imm; end
+      op_addiw : begin mini_alu_data <= src1 + imm; end
+      op_slliw : begin mini_alu_data <= src1 <<imm; end
+      op_srliw : begin mini_alu_data <= { 32'b0, src1[31:0] >> imm }; end
+      op_sraiw : begin mini_alu_data <= ($signed(src1)) >>> imm[5:0]; end
+      op_ori   : begin mini_alu_data <= src1 | imm; end
+      //op_csrrw : begin mini_alu_data <= rCSR; end
+      //op_csrrs : begin mini_alu_data <= rCSR; end
+
+      op_auipc : begin mini_alu_data <= pc + imm; end
+      op_lui   : begin mini_alu_data <= { {32{imm[31]}},imm[31:12],12'b0 }; end
+
+      op_jal   : begin mini_alu_data <= pc + 4;  end
+
+      op_add   : begin mini_alu_data <= src1 + src2; end
+      op_sltu  : begin mini_alu_data <= (src1 < src2)? 64'b1: 64'b0; end
+      op_and   : begin mini_alu_data <= src1 & src2; end
+      op_or    : begin mini_alu_data <= src1 | src2; end
+      op_xor   : begin mini_alu_data <= src1 ^ src2; end
+      op_sub   : begin mini_alu_data <= src1 - src2; end
+      //op_mul   : begin mini_alu_data = mul_result;  end
+      op_slt   : begin mini_alu_data <= ($signed(src1) < $signed(src2))? 64'b1: 64'b0; end
+      op_addw  : begin mini_alu_data <= src1 + src2; end
+      op_sllw  : begin mini_alu_data <= src1 << src2[4:0];  end
+      op_srlw  : begin mini_alu_data <= {32'b0, src1[31:0] >> src2[4:0]};  end
+      op_sraw  : begin mini_alu_data <= {32'b0, $signed(src1[31:0]) >>> src2[4:0]};  end
+      //op_mulw  : begin mini_alu_data = mul_result;  end
+      op_subw  : begin mini_alu_data <= src1 - src2; end
+      //op_divw  : begin mini_alu_data = quotient; end
+      //op_remw  : begin mini_alu_data = remainder; end
+      //op_divuw : begin mini_alu_data = quotient;  end
+      //op_remuw : begin mini_alu_data = remainder; end
+      //op_divu  : begin mini_alu_data = quotient; end
+      //op_remu  : begin mini_alu_data = remainder; end
+      op_sll   : begin mini_alu_data <= src1 <<src2; end
+      op_srl   : begin mini_alu_data <= src1 >>src2; end
+      //op_div   : begin mini_alu_data = quotient; end
+      //op_rem   : begin mini_alu_data = remainder; end
+      
+      default  : begin mini_alu_data <= 0; end
+      endcase
+    end
+    else begin mini_alu_data <= 0; end
+  end
+
+
+
+  always_ff @( posedge clk ) begin
+    if(~rst_n) mini_alu_vld <= 0;
+    else mini_alu_vld <= IDU_vld & inst_act.mini_alu;
+  end
+
+
+  assign alu_vld  = mul_out_valid | div_out_valid | mini_alu_vld;
+
+  assign alu_data = mini_alu_vld? mini_alu_data:
+                    mul_out_valid? mul_result:
+                    div_out_valid? div_result:
+                    0;
+
+
+
+
   //===================================================
-  //===ifetch_pc block
+  //===WB
+
+  /*GPR*/
+  logic [`ISA_WIDTH-1:0] src1,src2;
+  logic [`ISA_WIDTH-1:0] dest;
+  logic wb_vld;
+
+
+  always_comb begin : wb
+    
+    if(alu_vld) dest = inst_act.w_inst? { {32{alu_data[31]}}, alu_data[31:0] }: alu_data;
+    else if(lsu_data_vld) dest = lsu_data;
+    else if(csr_rdata_vld) dest = csr_rdata;
+    else dest = 0;
+
+    if(rd == 0) dest = 0;
+  end
+
+
+
+  RegisterFile u_gpr(
+      .clk    (clk),
+      .rdata1 (src1),
+      .raddr1 (rs1),
+      .rdata2 (src2),
+      .raddr2 (rs2),
+      .wdata  (dest),
+      .waddr  (rd),
+      .wen    (wb_vld)
+  );
+
+
   
+  assign wb_vld = inst_act.wb & (alu_vld | lsu_data_vld | csr_rdata_vld);
+  
+
+
+
+  //===================================================
+  //===BMU
+  
+  logic bmu_vld;
+
   initial begin
     ifetch_pc = 64'h80000000;
   end
 
-  always@(posedge clk)
-      if(~rst_n)  begin 
-        ifetch_taken <= 0; ifetch_pc <= 64'h80000000;
-      end
-      else if(IDU_vld) begin   //branch_taken_flag
-          ifetch_taken <= 0; ifetch_pc <= pc + 4;
-          case(op)
-          op_ret   : begin ifetch_taken <= 1; ifetch_pc <= (src1 + imm)&(~64'd1); end
-          op_jalr  : begin ifetch_taken <= 1; ifetch_pc <= (src1 + imm)&(~64'd1); end
 
-          op_jal   : begin ifetch_taken <= 1; ifetch_pc <= pc + imm; end
 
-          op_beq   : if(src1 == src2)                   begin ifetch_taken <= 1; ifetch_pc <= pc + imm; end
-          op_bne   : if(src1 != src2)                   begin ifetch_taken <= 1; ifetch_pc <= pc + imm; end
-          op_bge   : if($signed(src1) >= $signed(src2)) begin ifetch_taken <= 1; ifetch_pc <= pc + imm; end
-          op_blt   : if($signed(src1) <  $signed(src2)) begin ifetch_taken <= 1; ifetch_pc <= pc + imm; end
-          op_bltu  : if(src1 <  src2)                   begin ifetch_taken <= 1; ifetch_pc <= pc + imm; end
-          op_bgeu  : if(src1 >= src2)                   begin ifetch_taken <= 1; ifetch_pc <= pc + imm; end
+always_ff @( posedge clk ) begin
+  if(~rst_n) ifetch_pc <= 64'h80000000;
+  else if(IDU_vld)
+    if(inst_act.jalr) ifetch_pc <= (src1 + imm)&(~64'd1);
+    else if (inst_act.jal) ifetch_pc <= pc + imm;
+    else if(inst_act.br) 
+      case(inst_act.func3)
+        3'b000:  ifetch_pc <= ifetch_taken_pre? pc + imm : pc + 4;
+        3'b001:  ifetch_pc <= ifetch_taken_pre? pc + imm : pc + 4;
+        3'b101:  ifetch_pc <= ifetch_taken_pre? pc + imm : pc + 4;
+        3'b100:  ifetch_pc <= ifetch_taken_pre? pc + imm : pc + 4;
+        3'b110:  ifetch_pc <= ifetch_taken_pre? pc + imm : pc + 4;
+        3'b111:  ifetch_pc <= ifetch_taken_pre? pc + imm : pc + 4;
+        default: ifetch_pc <= pc + 4;
+      endcase
+    else if (inst_act.syscall) ifetch_pc <= rCSR;
+    else ifetch_pc <= pc + 4;
 
-          op_mret  : begin ifetch_taken <= 1; ifetch_pc <= rCSR; end
-          op_ecall : begin ifetch_taken <= 1; ifetch_pc <= rCSR; end
-          op_ebreak: begin ifetch_taken <= 0; ifetch_pc <= pc ;  end
-          op_inv   : begin ifetch_taken <= 0; ifetch_pc <= pc ;  end
-          default  : begin ifetch_taken <= 0; ifetch_pc <= pc + 4; end 
-          endcase
-      end
+end
+
+
+always_ff @( posedge clk ) begin
+  if(~rst_n) ifetch_taken <= 0;
+  else if(IDU_vld) ifetch_taken <= ifetch_taken_pre;
+  
+end
+
+
+logic ifetch_taken_pre;
+
+always_comb begin
+  ifetch_taken_pre = 0;
+  if(IDU_vld)
+    if(inst_act.jalr | inst_act.jal | inst_act.syscall) ifetch_taken_pre = 1;
+    else if(inst_act.br) 
+      case(inst_act.func3)
+        3'b000: ifetch_taken_pre = (src1 == src2);
+        3'b001: ifetch_taken_pre = (src1 != src2);
+        3'b101: ifetch_taken_pre = ($signed(src1) >= $signed(src2));
+        3'b100: ifetch_taken_pre = ($signed(src1) <  $signed(src2));
+        3'b110: ifetch_taken_pre = (src1 <  src2);
+        3'b111: ifetch_taken_pre = (src1 >= src2);
+        default: ifetch_taken_pre = 0;
+      endcase
+
+end
   
 
   always_ff @( posedge clk ) begin
-    if(~rst_n) ifetch_req <= 0;
-    else ifetch_req <= exe_finish_valid;
+    if(~rst_n) bmu_vld <= 0;
+    else bmu_vld <= IDU_vld & (inst_act.jal | inst_act.jalr | inst_act.br | inst_act.syscall);
   end
 
 
+
+  assign ifetch_req = bmu_vld | alu_vld | lsu_data_vld | csr_rdata_vld;
+
+
   //===================================================
-  //===memory block
+  //===LSU
 
   logic [63:0] raddrM, rdataM;
   logic [63:0] waddrM, wdataM;
   logic [7:0]  wmaskM;
   logic wenM,renM;
   logic dataM_valid;
+
+  logic [63:0] lsu_data;
+  logic lsu_data_vld;
 
 
 `ifdef DCACHE_enable
@@ -396,7 +418,7 @@ output  			axi_R_READY
   assign waddrM = src1 + imm;
   assign wdataM = src2;
 
-  always @(*) begin
+  always_comb begin
     case(inst_act.func3[1:0])
     2'b00: wmaskM = 8'b00000001;
     2'b01: wmaskM = 8'b00000011;
@@ -407,9 +429,26 @@ output  			axi_R_READY
   end
 
 
+  always_comb begin
+    case (inst_act.func3)
+      3'b100   : begin lsu_data = {56'b0, rdataM[ 7:0]};              end
+      3'b101   : begin lsu_data = {48'b0, rdataM[15:0]};              end
+      3'b110   : begin lsu_data = {32'b0, rdataM[31:0]};              end
+      3'b011   : begin lsu_data = rdataM;                             end
+      3'b010   : begin lsu_data = { {32{rdataM[31]}}, rdataM[31:0] };  end
+      3'b001   : begin lsu_data = { {48{rdataM[15]}}, rdataM[15:0] };  end
+      3'b000   : begin lsu_data = { {56{rdataM[7 ]}}, rdataM[7 :0] };  end
+      default: lsu_data = 0;
+    endcase
+
+  end
+
+  assign lsu_data_vld = dataM_valid;
+
+
 
   //===================================================
-  //===CSRegister block
+  //===sys
 
   /*CSR*/
   wire [`ISA_WIDTH-1:0] rCSR;
@@ -431,6 +470,21 @@ output  			axi_R_READY
       .wen    (wenC)
 
   );
+
+
+  logic csr_rdata_vld;
+  logic [`ISA_WIDTH-1:0] csr_rdata;
+
+  always_ff @( posedge clk ) begin 
+    if(~rst_n) begin
+      csr_rdata_vld <= 0;
+      csr_rdata <= 0;
+    end
+    else begin
+      csr_rdata_vld <= IDU_vld & inst_act.sys;
+      csr_rdata <= rCSR;
+    end
+  end
 
 
   assign addrCSR = imm[11:0];
@@ -461,8 +515,6 @@ output  			axi_R_READY
       end
 
 
-  //===================================================
-  //===exit block
   import "DPI-C" function void sim_exit(int state);
 
   always@(*)
