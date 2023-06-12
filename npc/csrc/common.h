@@ -11,7 +11,7 @@
 
 #include "util.h"
 
-//#define   CONFIG_AUTO_C
+#define   CONFIG_AUTO_C
 //#define   CONFIG_WATCHPOINT   
 #define   CONFIG_ITRACE       
 //#define   CONFIG_FTRACE 
