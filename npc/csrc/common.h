@@ -23,7 +23,7 @@
 
 //#define   CONFIG_GTK
 
-#define   CONFIG_PREDICTOR
+//#define   CONFIG_PREDICTOR
 
 
 

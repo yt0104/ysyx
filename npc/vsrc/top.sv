@@ -9,7 +9,7 @@ input rst_n,
 //predictor interface
 output byte  jmp_type,
 output logic ifetch_taken,
-output logic [`ISA_WIDTH-1:0] ifetch_pc,
+output logic [`ISA_WIDTH-1:0] ifetch_taken_pc,
 
 //top interface
 output logic mainUpdate_valid,
@@ -44,7 +44,7 @@ InstType inst_type;
 IFU_cache u_IFU(
     .clk(clk), .rst_n(rst_n), 
     .IFU_pc(IFU_pc), .IFU_inst(IFU_inst), .IFU_vld(IFU_vld), 
-    .ifetch_pc(ifetch_pc), .ifetch_req(ifetch_req),
+    .ifetch_req(ifetch_req), .ifetch_taken_pc(ifetch_taken_pc), .ifetch_taken(ifetch_taken),
 
     .axi_AW_ADDR(axis1_AW_ADDR), .axi_AW_VALID(axis1_AW_VALID), .axi_AW_READY(axis1_AW_READY),
     .axi_W_DATA (axis1_W_DATA),  .axi_W_STRB  (axis1_W_STRB),   .axi_W_VALID (axis1_W_VALID), .axi_W_READY(axis1_W_READY),
@@ -69,7 +69,7 @@ EXU_cache u_EXU(
     .IDU_pc(IDU_pc), .IDU_inst(IDU_inst), .IDU_vld(IDU_vld),
     .i_rd(rd), .i_rs1(rs1), .i_rs2(rs2), .i_imm(imm), .i_op(op), .i_inst_act(inst_act),
 
-    .ifetch_req(ifetch_req), .ifetch_pc(ifetch_pc), .ifetch_taken(ifetch_taken),
+    .ifetch_req(ifetch_req), .ifetch_taken_pc(ifetch_taken_pc), .ifetch_taken(ifetch_taken),
 
     .axi_AW_ADDR(axis2_AW_ADDR), .axi_AW_VALID(axis2_AW_VALID), .axi_AW_READY(axis2_AW_READY),
     .axi_W_DATA (axis2_W_DATA),  .axi_W_STRB  (axis2_W_STRB),   .axi_W_VALID (axis2_W_VALID), .axi_W_READY(axis2_W_READY),

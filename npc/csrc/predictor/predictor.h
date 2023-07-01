@@ -42,6 +42,7 @@ class PREDICTOR{
 
   UINT32 GetPhtHashIndex(UINT64 PC, UINT32 rollcnt){
     return (PC^(ghr>>rollcnt)) % (numPhtEntries);
+    //return((((PC>>2)^(ghr>>rollcnt))<<2) + PC%4) % (numPhtEntries);
   }
 
   UINT32 GetBtbHashIndex(UINT64 PC){

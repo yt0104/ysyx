@@ -83,8 +83,6 @@ always_comb begin : dec_pre
     inst_act_pre.br     = inst[6:0]== RV_BR;
 
     
-    
-
     inst_type_pre.instI = inst[6:0]== RV_IMM || inst[6:0]== RV_JALR || inst[6:0]== RV_LD || inst[6:0]== RV_IMM_32 || inst[6:0]==RV_SYS;
     inst_type_pre.instU = inst[6:0]== RV_AUIPC || inst[6:0]== RV_LUI;
     inst_type_pre.instS = inst[6:0]== RV_ST;
@@ -93,21 +91,21 @@ always_comb begin : dec_pre
     inst_type_pre.instB = inst[6:0]== RV_BR;
 
 
-    inst_act_pre.call       = (inst_act_pre.jal  && ras_rd_flag)
-                            ||(inst_act_pre.jalr && ras_rd_flag) && ~ras_rs1_flag
-                            ||(inst_act_pre.jalr && ras_rd_flag) && (rs1_pre == rd_pre);
-    inst_act_pre.ret        = (inst_act_pre.jalr && ~ras_rd_flag) && ras_rs1_flag;
-    inst_act_pre.ret_call   = inst_act_pre.jalr && ras_rd_flag && (rs1_pre != rd_pre);
+    inst_act_pre.call       = (inst_act_pre.jal  && ras_rd_link)
+                            ||(inst_act_pre.jalr && ras_rd_link) && ~ras_rs1_link
+                            ||(inst_act_pre.jalr && ras_rd_link) && (rs1_pre == rd_pre);
+    inst_act_pre.ret        = (inst_act_pre.jalr && ~ras_rd_link) && ras_rs1_link;
+    inst_act_pre.ret_call   = inst_act_pre.jalr && ras_rd_link && (rs1_pre != rd_pre);
 
     
     inst_act_pre.csr        = inst_act_pre.sys &  (|inst[14:12]);
     inst_act_pre.syscall    = inst_act_pre.sys & ~(|inst[14:12]);
-    inst_act_pre.ecall      = inst_act.syscall & (inst[26:25] == 2'b00);
-    inst_act_pre.ebreak     = inst_act.syscall & (inst[26:25] == 2'b01); 
-    inst_act_pre.mret       = inst_act.syscall & (inst[26:25] == 2'b10);
+    inst_act_pre.ecall      = inst_act_pre.syscall & (inst[26:25] == 2'b00);
+    inst_act_pre.ebreak     = inst_act_pre.syscall & (inst[26:25] == 2'b01); 
+    inst_act_pre.mret       = inst_act_pre.syscall & (inst[26:25] == 2'b10);
 
     inst_act_pre.w_inst = (inst[6:0] == RV_OP_32 || inst[6:0] == RV_IMM_32);   
-    inst_act_pre.wb     = inst_type_pre.instR | inst_type_pre.instJ | inst_type_pre.instU | (inst_type_pre.instI & ~inst_act.syscall);
+    inst_act_pre.wb     = inst_type_pre.instR | inst_type_pre.instJ | inst_type_pre.instU | (inst_type_pre.instI & ~inst_act_pre.syscall);
 
 
     inst_act_pre.mini_alu    =(inst_type_pre.instI & ~inst_act_pre.sys & ~inst_act_pre.ld)
@@ -124,8 +122,8 @@ always_comb begin : dec_pre
 
 end
 
-wire ras_rd_flag  = (rd_pre == 1 || rd_pre == 5);
-wire ras_rs1_flag = (rs1_pre == 1 || rs1_pre == 5);
+wire ras_rd_link  = (rd_pre == 1 || rd_pre == 5);
+wire ras_rs1_link = (rs1_pre == 1 || rs1_pre == 5);
 
 
 logic [63:0]   imm_pre;

@@ -32,7 +32,7 @@ class Vtop VL_NOT_FINAL {
     VL_IN8(&rst_n,0,0);
     VL_OUT8(&jmp_type,7,0);
     VL_OUT8(&ifetch_taken,0,0);
-    VL_OUT64(&ifetch_pc,63,0);
+    VL_OUT64(&ifetch_taken_pc,63,0);
     VL_OUT8(&mainUpdate_valid,0,0);
     VL_OUT64(&inst,63,0);
     VL_OUT64(&pc,63,0);

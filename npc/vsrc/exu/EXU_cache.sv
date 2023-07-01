@@ -20,9 +20,8 @@ input [`ISA_WIDTH-1:0]      IDU_inst,
 
 
 output logic                  ifetch_taken,
-output logic [`ISA_WIDTH-1:0] ifetch_pc,
+output logic [`ISA_WIDTH-1:0] ifetch_taken_pc,
 output logic                  ifetch_req,
-
 
 //AXI
 output  [63 : 0] 	axi_AW_ADDR,
@@ -242,7 +241,7 @@ output  			axi_R_READY
   always_comb begin : wb
     
     if(alu_vld) dest = inst_act.w_inst? { {32{alu_data[31]}}, alu_data[31:0] }: alu_data;
-    else if(lsu_data_vld) dest = lsu_data;
+    else if(lsu_data_vld) dest = ld_data_out;
     else if(csr_rdata_vld) dest = csr_rdata;
     else dest = 0;
 
@@ -271,180 +270,133 @@ output  			axi_R_READY
 
   //===================================================
   //===BMU
+
+
+  //always_ff @( posedge clk ) begin
+  //  if(~rst_n) ifetch_taken_pc <= 64'h80000000;
+  //  else if(IDU_vld)
+  //    if(inst_act.jalr) ifetch_taken_pc <= (src1 + imm)&(~64'd1);
+  //    else if (inst_act.jal) ifetch_taken_pc <= pc + imm;
+  //    else if(inst_act.br) 
+  //      case(inst_act.func3)
+  //        3'b000:  ifetch_taken_pc <= ifetch_taken_pre? pc + imm : pc + 4;
+  //        3'b001:  ifetch_taken_pc <= ifetch_taken_pre? pc + imm : pc + 4;
+  //        3'b101:  ifetch_taken_pc <= ifetch_taken_pre? pc + imm : pc + 4;
+  //        3'b100:  ifetch_taken_pc <= ifetch_taken_pre? pc + imm : pc + 4;
+  //        3'b110:  ifetch_taken_pc <= ifetch_taken_pre? pc + imm : pc + 4;
+  //        3'b111:  ifetch_taken_pc <= ifetch_taken_pre? pc + imm : pc + 4;
+  //        default: ifetch_taken_pc <= pc + 4;
+  //      endcase
+  //    else if (inst_act.syscall) ifetch_taken_pc <= rCSR;
+  //    else ifetch_taken_pc <= pc + 4;
+//
+  //end
+//
+//
+  //always_ff @( posedge clk ) begin
+  //  if(~rst_n) ifetch_taken <= 0;
+  //  else if(IDU_vld) ifetch_taken <= ifetch_taken_pre;
+//
+  //end
+//
+//
+  //logic ifetch_taken_pre;
+//
+  //always_comb begin
+  //  ifetch_taken_pre = 0;
+  //  if(IDU_vld)
+  //    if(inst_act.jalr | inst_act.jal | inst_act.syscall) ifetch_taken_pre = 1;
+  //    else if(inst_act.br) 
+  //      case(inst_act.func3)
+  //        3'b000: ifetch_taken_pre = (src1 == src2);
+  //        3'b001: ifetch_taken_pre = (src1 != src2);
+  //        3'b101: ifetch_taken_pre = ($signed(src1) >= $signed(src2));
+  //        3'b100: ifetch_taken_pre = ($signed(src1) <  $signed(src2));
+  //        3'b110: ifetch_taken_pre = (src1 <  src2);
+  //        3'b111: ifetch_taken_pre = (src1 >= src2);
+  //        default: ifetch_taken_pre = 0;
+  //      endcase
+//
+  //end
+  //
+//
+  //logic bmu_vld;
+//
+  //always_ff @( posedge clk ) begin
+  //  if(~rst_n) bmu_vld <= 0;
+  //  else bmu_vld <= IDU_vld & (inst_act.jal | inst_act.jalr | inst_act.br | inst_act.syscall);
+  //end
+//
+  //assign ifetch_req = bmu_vld | alu_vld | lsu_data_vld | csr_rdata_vld;
+
+
+
+  BMU u_BMU(
+
+    .clk(clk), 
+    .rst_n(rst_n), 
+
+    .IDU_vld(IDU_vld),
+    .jal(inst_act.jal),
+    .jalr(inst_act.jalr),
+    .br(inst_act.br),
+    .syscall(inst_act.syscall),
+    .func3(inst_act.func3),
+
+    .pc(pc),
+    .src1(src1),
+    .src2(src2),
+    .imm(imm),
+    .rCSR(rCSR),
+
+    .ifetch_taken(ifetch_taken),
+    .ifetch_taken_pc(ifetch_taken_pc),
+    .bmu_vld(bmu_vld)
+
+    );
+
+  logic            bmu_vld;
   
-  logic bmu_vld;
-
-  initial begin
-    ifetch_pc = 64'h80000000;
-  end
-
-
-
-always_ff @( posedge clk ) begin
-  if(~rst_n) ifetch_pc <= 64'h80000000;
-  else if(IDU_vld)
-    if(inst_act.jalr) ifetch_pc <= (src1 + imm)&(~64'd1);
-    else if (inst_act.jal) ifetch_pc <= pc + imm;
-    else if(inst_act.br) 
-      case(inst_act.func3)
-        3'b000:  ifetch_pc <= ifetch_taken_pre? pc + imm : pc + 4;
-        3'b001:  ifetch_pc <= ifetch_taken_pre? pc + imm : pc + 4;
-        3'b101:  ifetch_pc <= ifetch_taken_pre? pc + imm : pc + 4;
-        3'b100:  ifetch_pc <= ifetch_taken_pre? pc + imm : pc + 4;
-        3'b110:  ifetch_pc <= ifetch_taken_pre? pc + imm : pc + 4;
-        3'b111:  ifetch_pc <= ifetch_taken_pre? pc + imm : pc + 4;
-        default: ifetch_pc <= pc + 4;
-      endcase
-    else if (inst_act.syscall) ifetch_pc <= rCSR;
-    else ifetch_pc <= pc + 4;
-
-end
-
-
-always_ff @( posedge clk ) begin
-  if(~rst_n) ifetch_taken <= 0;
-  else if(IDU_vld) ifetch_taken <= ifetch_taken_pre;
-  
-end
-
-
-logic ifetch_taken_pre;
-
-always_comb begin
-  ifetch_taken_pre = 0;
-  if(IDU_vld)
-    if(inst_act.jalr | inst_act.jal | inst_act.syscall) ifetch_taken_pre = 1;
-    else if(inst_act.br) 
-      case(inst_act.func3)
-        3'b000: ifetch_taken_pre = (src1 == src2);
-        3'b001: ifetch_taken_pre = (src1 != src2);
-        3'b101: ifetch_taken_pre = ($signed(src1) >= $signed(src2));
-        3'b100: ifetch_taken_pre = ($signed(src1) <  $signed(src2));
-        3'b110: ifetch_taken_pre = (src1 <  src2);
-        3'b111: ifetch_taken_pre = (src1 >= src2);
-        default: ifetch_taken_pre = 0;
-      endcase
-
-end
-  
-
-  always_ff @( posedge clk ) begin
-    if(~rst_n) bmu_vld <= 0;
-    else bmu_vld <= IDU_vld & (inst_act.jal | inst_act.jalr | inst_act.br | inst_act.syscall);
-  end
-
-
-
   assign ifetch_req = bmu_vld | alu_vld | lsu_data_vld | csr_rdata_vld;
+    
 
 
   //===================================================
   //===LSU
 
-  logic [63:0] raddrM, rdataM;
-  logic [63:0] waddrM, wdataM;
-  logic [7:0]  wmaskM;
-  logic wenM,renM;
-  logic dataM_valid;
 
-  logic [63:0] lsu_data;
+  logic [63:0] ld_data_out;
   logic lsu_data_vld;
 
+  logic ld_req;
+  logic st_req;
 
-`ifdef DCACHE_enable
+  assign ld_req = IDU_vld & inst_act.ld;
+  assign st_req = IDU_vld & inst_act.st;
 
-  cache d_cache(
-    .clk(clk),
-    .rst_n(rst_n),
- 
-    /*AXI interface*/
-	  .AXI_WREQ(AXI_WREQ), .AXI_WASK(AXI_WASK), .AXI_WADDR(AXI_WADDR), .AXI_WDATA(AXI_WDATA), .AXI_WMASK(AXI_WMASK), 
-	  .AXI_RREQ(AXI_RREQ), .AXI_RASK(AXI_RASK), .AXI_RADDR(AXI_RADDR), .AXI_RDATA(AXI_RDATA),
+  LSU u_LSU(
+    .clk(clk), 
+    .rst_n(rst_n), 
 
-    /*user interface*/
-    .WREQ(wenM), .IN_WADDR(waddrM), .IN_WDATA(wdataM), .IN_WMASK(wmaskM),
-    .RREQ(renM), .IN_RADDR(raddrM), .RDATA_OUT(rdataM),
-    .ASK(dataM_valid),
-    .direct_memory(1)
+    .ld_req(ld_req),
+    .st_req(st_req),
+    .func3(inst_act.func3),
+    .dest(dest), 
+    .src1(src1), 
+    .src2(src2), 
+    .imm(imm), 
+
+    .ld_data_out(ld_data_out),
+    .lsu_data_vld(lsu_data_vld),
+
+
+    .axi_AW_ADDR(axi_AW_ADDR), .axi_AW_VALID(axi_AW_VALID), .axi_AW_READY(axi_AW_READY),
+    .axi_W_DATA (axi_W_DATA),  .axi_W_STRB  (axi_W_STRB),   .axi_W_VALID (axi_W_VALID), .axi_W_READY(axi_W_READY),
+    .axi_B_VALID(axi_B_VALID), .axi_B_READY (axi_B_READY),
+    .axi_AR_ADDR(axi_AR_ADDR), .axi_AR_VALID(axi_AR_VALID), .axi_AR_READY(axi_AR_READY),
+    .axi_R_DATA (axi_R_DATA),  .axi_R_VALID (axi_R_VALID),  .axi_R_READY (axi_R_READY)
+
     );
-
-
-  logic AXI_RREQ, AXI_WREQ;
-  logic AXI_RASK, AXI_WASK;
-  logic [63:0] AXI_RADDR, AXI_WADDR;
-  logic [63:0] AXI_RDATA, AXI_WDATA;
-  logic [7:0] AXI_WMASK;
-
-  assign AXI_RASK = axi_R_VALID & axi_R_READY;
-  assign AXI_WASK = axi_W_VALID & axi_W_READY;
-
-	AXI_master_SRAM u1_AXI_master_SRAM
-	(
-	  //user interface
-	  .WREQ(AXI_WREQ), .IN_WADDR(AXI_WADDR), .IN_WDATA(AXI_WDATA), .IN_WMASK(AXI_WMASK), 
-	  .RREQ(AXI_RREQ), .IN_RADDR(AXI_RADDR), .DATA_OUT(AXI_RDATA),
-
-	  .CLK(clk), .RESETN(rst_n),
-    .AW_ADDR(axi_AW_ADDR), .AW_VALID(axi_AW_VALID), .AW_READY(axi_AW_READY),
-    .W_DATA (axi_W_DATA),  .W_STRB  (axi_W_STRB),   .W_VALID (axi_W_VALID), .W_READY(axi_W_READY),
-    .B_VALID(axi_B_VALID), .B_READY (axi_B_READY),
-    .AR_ADDR(axi_AR_ADDR), .AR_VALID(axi_AR_VALID), .AR_READY(axi_AR_READY),
-    .R_DATA (axi_R_DATA),  .R_VALID (axi_R_VALID),  .R_READY (axi_R_READY)
-	);
-
-`else
-
-  AXI_master_SRAM u1_AXI_master_SRAM(
-    //user interface
-    .WREQ(wenM), .IN_WADDR(waddrM), .IN_WDATA(wdataM), .IN_WMASK(wmaskM), 
-    .RREQ(renM), .IN_RADDR(raddrM), .DATA_OUT(rdataM), 
-
-    .CLK(clk), .RESETN(rst_n),
-    .AW_ADDR(axi_AW_ADDR), .AW_VALID(axi_AW_VALID), .AW_READY(axi_AW_READY),
-    .W_DATA (axi_W_DATA),  .W_STRB  (axi_W_STRB),   .W_VALID (axi_W_VALID), .W_READY(axi_W_READY),
-    .B_VALID(axi_B_VALID), .B_READY (axi_B_READY),
-    .AR_ADDR(axi_AR_ADDR), .AR_VALID(axi_AR_VALID), .AR_READY(axi_AR_READY),
-    .R_DATA (axi_R_DATA),  .R_VALID (axi_R_VALID),  .R_READY (axi_R_READY)
-  );
-
-  assign dataM_valid = (axi_R_READY & axi_R_VALID) | (axi_W_READY & axi_W_VALID);
-
-`endif 
-
-
-  assign renM = IDU_vld & inst_act.ld;
-  assign wenM = IDU_vld & inst_act.st;
-  assign raddrM = src1 + imm;
-  assign waddrM = src1 + imm;
-  assign wdataM = src2;
-
-  always_comb begin
-    case(inst_act.func3[1:0])
-    2'b00: wmaskM = 8'b00000001;
-    2'b01: wmaskM = 8'b00000011;
-    2'b10: wmaskM = 8'b00001111;
-    2'b11: wmaskM = 8'b11111111;
-    default: wmaskM = 0;
-    endcase
-  end
-
-
-  always_comb begin
-    case (inst_act.func3)
-      3'b100   : begin lsu_data = {56'b0, rdataM[ 7:0]};              end
-      3'b101   : begin lsu_data = {48'b0, rdataM[15:0]};              end
-      3'b110   : begin lsu_data = {32'b0, rdataM[31:0]};              end
-      3'b011   : begin lsu_data = rdataM;                             end
-      3'b010   : begin lsu_data = { {32{rdataM[31]}}, rdataM[31:0] };  end
-      3'b001   : begin lsu_data = { {48{rdataM[15]}}, rdataM[15:0] };  end
-      3'b000   : begin lsu_data = { {56{rdataM[7 ]}}, rdataM[7 :0] };  end
-      default: lsu_data = 0;
-    endcase
-
-  end
-
-  assign lsu_data_vld = dataM_valid;
-
 
 
   //===================================================
@@ -502,7 +454,7 @@ end
           //dest = rCSR;
           op_csrrw : begin  wenC <= 1; wCSR1 <= src1; wCSR2 <= 0; end
           op_csrrs : begin  wenC <= 1; wCSR1 <= src1 | rCSR; wCSR2 <= 0; end
-          //ifetch_pc = rCSR;
+          //ifetch_taken_pc = rCSR;
           op_mret  : begin  wenC <= 0; wCSR1 <= 0; wCSR2 <= 0;  end
           op_ecall : begin  wenC <= 1; wCSR1 <= pc; wCSR2 <= 64'hb; end
 
