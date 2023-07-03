@@ -242,7 +242,7 @@ output  			axi_R_READY
     
     if(alu_vld) dest = inst_act.w_inst? { {32{alu_data[31]}}, alu_data[31:0] }: alu_data;
     else if(lsu_data_vld) dest = ld_data_out;
-    else if(csr_rdata_vld) dest = csr_rdata;
+    else if(csr_data_vld) dest = csr_data_out;
     else dest = 0;
 
     if(rd == 0) dest = 0;
@@ -263,73 +263,13 @@ output  			axi_R_READY
 
 
   
-  assign wb_vld = inst_act.wb & (alu_vld | lsu_data_vld | csr_rdata_vld);
+  assign wb_vld = inst_act.wb & (alu_vld | lsu_data_vld | csr_data_vld);
   
 
 
 
   //===================================================
   //===BMU
-
-
-  //always_ff @( posedge clk ) begin
-  //  if(~rst_n) ifetch_taken_pc <= 64'h80000000;
-  //  else if(IDU_vld)
-  //    if(inst_act.jalr) ifetch_taken_pc <= (src1 + imm)&(~64'd1);
-  //    else if (inst_act.jal) ifetch_taken_pc <= pc + imm;
-  //    else if(inst_act.br) 
-  //      case(inst_act.func3)
-  //        3'b000:  ifetch_taken_pc <= ifetch_taken_pre? pc + imm : pc + 4;
-  //        3'b001:  ifetch_taken_pc <= ifetch_taken_pre? pc + imm : pc + 4;
-  //        3'b101:  ifetch_taken_pc <= ifetch_taken_pre? pc + imm : pc + 4;
-  //        3'b100:  ifetch_taken_pc <= ifetch_taken_pre? pc + imm : pc + 4;
-  //        3'b110:  ifetch_taken_pc <= ifetch_taken_pre? pc + imm : pc + 4;
-  //        3'b111:  ifetch_taken_pc <= ifetch_taken_pre? pc + imm : pc + 4;
-  //        default: ifetch_taken_pc <= pc + 4;
-  //      endcase
-  //    else if (inst_act.syscall) ifetch_taken_pc <= rCSR;
-  //    else ifetch_taken_pc <= pc + 4;
-//
-  //end
-//
-//
-  //always_ff @( posedge clk ) begin
-  //  if(~rst_n) ifetch_taken <= 0;
-  //  else if(IDU_vld) ifetch_taken <= ifetch_taken_pre;
-//
-  //end
-//
-//
-  //logic ifetch_taken_pre;
-//
-  //always_comb begin
-  //  ifetch_taken_pre = 0;
-  //  if(IDU_vld)
-  //    if(inst_act.jalr | inst_act.jal | inst_act.syscall) ifetch_taken_pre = 1;
-  //    else if(inst_act.br) 
-  //      case(inst_act.func3)
-  //        3'b000: ifetch_taken_pre = (src1 == src2);
-  //        3'b001: ifetch_taken_pre = (src1 != src2);
-  //        3'b101: ifetch_taken_pre = ($signed(src1) >= $signed(src2));
-  //        3'b100: ifetch_taken_pre = ($signed(src1) <  $signed(src2));
-  //        3'b110: ifetch_taken_pre = (src1 <  src2);
-  //        3'b111: ifetch_taken_pre = (src1 >= src2);
-  //        default: ifetch_taken_pre = 0;
-  //      endcase
-//
-  //end
-  //
-//
-  //logic bmu_vld;
-//
-  //always_ff @( posedge clk ) begin
-  //  if(~rst_n) bmu_vld <= 0;
-  //  else bmu_vld <= IDU_vld & (inst_act.jal | inst_act.jalr | inst_act.br | inst_act.syscall);
-  //end
-//
-  //assign ifetch_req = bmu_vld | alu_vld | lsu_data_vld | csr_rdata_vld;
-
-
 
   BMU u_BMU(
 
@@ -347,7 +287,7 @@ output  			axi_R_READY
     .src1(src1),
     .src2(src2),
     .imm(imm),
-    .rCSR(rCSR),
+    .rCSR(csrf_rdata),
 
     .ifetch_taken(ifetch_taken),
     .ifetch_taken_pc(ifetch_taken_pc),
@@ -357,7 +297,7 @@ output  			axi_R_READY
 
   logic            bmu_vld;
   
-  assign ifetch_req = bmu_vld | alu_vld | lsu_data_vld | csr_rdata_vld;
+  assign ifetch_req = bmu_vld | alu_vld | lsu_data_vld | csr_data_vld;
     
 
 
@@ -402,81 +342,54 @@ output  			axi_R_READY
   //===================================================
   //===sys
 
-  /*CSR*/
-  wire [`ISA_WIDTH-1:0] rCSR;
-  reg  [`ISA_WIDTH-1:0] wCSR1, wCSR2;
-  reg  [11:0] instCSR;
-  wire [11:0] addrCSR;
-  reg   wenC;
+  logic sys_req;
+  logic [63:0] csr_data_out;
+  logic csr_data_vld;
 
-  RegisterCSFile u_csr(
-      .clk    (clk),
+  assign sys_req = IDU_vld & inst_act.sys;
 
-      .op_addr(addrCSR),
-      .op_inst(instCSR),
+  SYS_control u_sysc (
 
-      .rdata  (rCSR),
+    .clk(clk),
+    .rst_n(rst_n),
 
-      .wdata1 (wCSR1),
-      .wdata2 (wCSR2),
-      .wen    (wenC)
+    .sys_req(sys_req),
+
+    .csr(inst_act.csr),    
+    .ecall(inst_act.ecall),  
+    .ebreak(inst_act.ebreak),
+    .mret(inst_act.mret),  
+    .func3(inst_act.func3), 
+    .pc(pc),
+    .src1(src1),
+    .imm(imm),
+
+    .csr_data_out(csr_data_out),
+    .csr_vld(csr_data_vld),
+
+    //CSRegisterFile
+    .csrf_rdata(csrf_rdata),
+    .csrf_raddr(csrf_raddr),
+    .csrf_wdata(csrf_wdata),
+    .csrf_waddr(csrf_waddr),
+    .csrf_wen(csrf_wen)
 
   );
 
+  logic [63:0] csrf_rdata;
+  logic [ 1:0] csrf_raddr;
+  logic [63:0] csrf_wdata;
+  logic [ 1:0] csrf_waddr;
+  logic csrf_wen;
 
-  logic csr_rdata_vld;
-  logic [`ISA_WIDTH-1:0] csr_rdata;
-
-  always_ff @( posedge clk ) begin 
-    if(~rst_n) begin
-      csr_rdata_vld <= 0;
-      csr_rdata <= 0;
-    end
-    else begin
-      csr_rdata_vld <= IDU_vld & inst_act.sys;
-      csr_rdata <= rCSR;
-    end
-  end
-
-
-  assign addrCSR = imm[11:0];
-  always@(*)
-    case(op)
-    op_mret  : instCSR = inst_mret;
-    op_ecall : instCSR = inst_ecall;
-    default:   instCSR = 0;
-    endcase
-
-  always@(posedge clk)
-      if(~rst_n)  begin  wenC <= 0; wCSR1 <= 0; wCSR2 <= 0; end
-      else if(IDU_vld) begin
-          case(op)  
-          //dest = rCSR;
-          op_csrrw : begin  wenC <= 1; wCSR1 <= src1; wCSR2 <= 0; end
-          op_csrrs : begin  wenC <= 1; wCSR1 <= src1 | rCSR; wCSR2 <= 0; end
-          //ifetch_taken_pc = rCSR;
-          op_mret  : begin  wenC <= 0; wCSR1 <= 0; wCSR2 <= 0;  end
-          op_ecall : begin  wenC <= 1; wCSR1 <= pc; wCSR2 <= 64'hb; end
-
-          op_inv   : begin  wenC <= 0; wCSR1 <= 0; wCSR2 <= 0; end
-          default  : begin  wenC <= 0; wCSR1 <= 0; wCSR2 <= 0; end
-          endcase
-      end
-      else begin
-        wenC <= 0; wCSR1 <= 0; wCSR2 <= 0;
-      end
-
-
-  import "DPI-C" function void sim_exit(int state);
-
-  always@(*)
-      if(IDU_vld) begin
-          case(op) 
-          op_ebreak: begin sim_exit(0); end   //exit program
-          op_inv   : begin sim_exit(1); end   //inst error
-          default  : begin end
-          endcase
-      end
+  CSRegisterFile u_csrf(
+      .clk    (clk),
+      .rdata  (csrf_rdata),
+      .raddr  (csrf_raddr),
+      .wdata  (csrf_wdata),
+      .waddr  (csrf_waddr),
+      .wen    (csrf_wen)
+  );
 
 
 

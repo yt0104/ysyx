@@ -70,7 +70,7 @@ static bool in_vgafb(uint64_t addr) {
 
 static void out_of_bound(uint64_t addr) {
   Log(ANSI_FMT("time = %ld, address = %16lx is out of bound", ANSI_FG_RED),main_time, addr);
-  sim_exit(-1);
+  sim_exit(5);
   assert(0);
 }
 

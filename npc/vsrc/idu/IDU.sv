@@ -100,9 +100,9 @@ always_comb begin : dec_pre
     
     inst_act_pre.csr        = inst_act_pre.sys &  (|inst[14:12]);
     inst_act_pre.syscall    = inst_act_pre.sys & ~(|inst[14:12]);
-    inst_act_pre.ecall      = inst_act_pre.syscall & (inst[26:25] == 2'b00);
-    inst_act_pre.ebreak     = inst_act_pre.syscall & (inst[26:25] == 2'b01); 
-    inst_act_pre.mret       = inst_act_pre.syscall & (inst[26:25] == 2'b10);
+    inst_act_pre.ecall      = inst_act_pre.sys & ~(|inst[14:12]) & (inst[21:20] == 2'b00);
+    inst_act_pre.ebreak     = inst_act_pre.sys & ~(|inst[14:12]) & (inst[21:20] == 2'b01); 
+    inst_act_pre.mret       = inst_act_pre.sys & ~(|inst[14:12]) & (inst[21:20] == 2'b10);
 
     inst_act_pre.w_inst = (inst[6:0] == RV_OP_32 || inst[6:0] == RV_IMM_32);   
     inst_act_pre.wb     = inst_type_pre.instR | inst_type_pre.instJ | inst_type_pre.instU | (inst_type_pre.instI & ~inst_act_pre.syscall);
@@ -162,9 +162,24 @@ always_ff @( posedge clk ) begin : dec_ff
 end
 
 
+
+//--------------------------------------------
+//------for test
+
+import "DPI-C" function void sim_exit(int state);
+always@(*)
+  if(IDU_vld) begin
+    case(op) 
+    op_ebreak: begin $display("ebreak"); sim_exit(0); end   //exit program
+    op_inv   : begin sim_exit(1); end   //inst error
+    endcase
+  end
+
+
+
 always@(posedge clk)
     if(~rst_n) begin 
-        imm <= 0; op <= 0; 
+        op <= 0; 
     end
     else if(IFU_vld) begin
         casez(IFU_inst)

@@ -7,7 +7,7 @@ VerilatedVcdC* tfp = NULL;
 Vtop* top;
 
 uint64_t main_time = 0;      // 仿真时间戳
-uint64_t sim_time = 10000;   // 最大仿真时间戳
+uint64_t sim_time = 1200000;   // 最大仿真时间戳
 
 uint64_t lpc = 0x80000000;
 uint64_t linst = 0x00000413;
@@ -107,6 +107,12 @@ extern "C" void sim_exit(int state){
     mtrace_puts_mtracebuf();
     itrace_puts_iringbuf();
     Log(ANSI_FMT("DIFFTEST ERROR", ANSI_FG_RED));
+    Log(ANSI_FMT("break at: %s", ANSI_FG_RED), logbuf);
+    break; 
+  case 5:
+    mtrace_puts_mtracebuf();
+    itrace_puts_iringbuf();
+    Log(ANSI_FMT("MEMORY ERROR", ANSI_FG_RED));
     Log(ANSI_FMT("break at: %s", ANSI_FG_RED), logbuf);
     break; 
   default:

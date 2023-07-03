@@ -40,8 +40,6 @@ VL_MODULE(Vtop___024root) {
         CData/*0:0*/ top__DOT__axis1_AW_READY;
         CData/*0:0*/ top__DOT__axis1_W_READY;
         CData/*0:0*/ top__DOT__axis1_B_READY;
-        CData/*0:0*/ top__DOT__axis1_AR_VALID;
-        CData/*0:0*/ top__DOT__axis1_AR_READY;
         CData/*0:0*/ top__DOT__axis1_R_VALID;
         CData/*0:0*/ top__DOT__axis1_R_READY;
         CData/*0:0*/ top__DOT__axis2_AW_VALID;
@@ -50,7 +48,6 @@ VL_MODULE(Vtop___024root) {
         CData/*0:0*/ top__DOT__axis2_W_READY;
         CData/*0:0*/ top__DOT__axis2_B_READY;
         CData/*0:0*/ top__DOT__axis2_AR_VALID;
-        CData/*0:0*/ top__DOT__axis2_AR_READY;
         CData/*0:0*/ top__DOT__axis2_R_VALID;
         CData/*0:0*/ top__DOT__axis2_R_READY;
         CData/*0:0*/ top__DOT__in_channel;
@@ -81,8 +78,9 @@ VL_MODULE(Vtop___024root) {
         CData/*0:0*/ top__DOT__u_EXU__DOT__bmu_vld;
         CData/*0:0*/ top__DOT__u_EXU__DOT__ld_req;
         CData/*0:0*/ top__DOT__u_EXU__DOT__st_req;
-        CData/*0:0*/ top__DOT__u_EXU__DOT__wenC;
-        CData/*0:0*/ top__DOT__u_EXU__DOT__csr_rdata_vld;
+        CData/*0:0*/ top__DOT__u_EXU__DOT__sys_req;
+        CData/*0:0*/ top__DOT__u_EXU__DOT__csr_data_vld;
+        CData/*1:0*/ top__DOT__u_EXU__DOT__csrf_raddr;
         CData/*6:0*/ top__DOT__u_EXU__DOT__u_mul__DOT__cnt;
         CData/*5:0*/ top__DOT__u_EXU__DOT__u_div__DOT__count;
         CData/*0:0*/ top__DOT__u_EXU__DOT__u_div__DOT__r_sign;
@@ -95,11 +93,14 @@ VL_MODULE(Vtop___024root) {
         CData/*0:0*/ top__DOT__u_EXU__DOT__u_LSU__DOT__dataM_valid;
         CData/*7:0*/ top__DOT__u_EXU__DOT__u_LSU__DOT__u1_AXI_master_SRAM__DOT__w_strb_reg;
         CData/*0:0*/ top__DOT__u_EXU__DOT__u_LSU__DOT__u1_AXI_master_SRAM__DOT__aw_valid_reg;
-    };
-    struct {
         CData/*0:0*/ top__DOT__u_EXU__DOT__u_LSU__DOT__u1_AXI_master_SRAM__DOT__w_valid_reg;
         CData/*0:0*/ top__DOT__u_EXU__DOT__u_LSU__DOT__u1_AXI_master_SRAM__DOT__ar_valid_reg;
+    };
+    struct {
         CData/*0:0*/ top__DOT__u_EXU__DOT__u_LSU__DOT__u1_AXI_master_SRAM__DOT__r_ready_reg;
+        CData/*0:0*/ top__DOT__u_EXU__DOT__u_sysc__DOT__wen;
+        CData/*1:0*/ top__DOT__u_EXU__DOT__u_sysc__DOT__state;
+        CData/*1:0*/ top__DOT__u_EXU__DOT__u_sysc__DOT__nstate;
         CData/*0:0*/ top__DOT__u_AXI_arbiter_SRAM__DOT__AW_VALID;
         CData/*0:0*/ top__DOT__u_AXI_arbiter_SRAM__DOT__W_VALID;
         CData/*0:0*/ top__DOT__u_AXI_arbiter_SRAM__DOT__B_READY;
@@ -110,7 +111,8 @@ VL_MODULE(Vtop___024root) {
         CData/*0:0*/ top__DOT__u_AXI_arbiter_SRAM__DOT__R_VALID;
         CData/*0:0*/ top__DOT__u_AXI_arbiter_SRAM__DOT__AW_READY;
         CData/*0:0*/ top__DOT__u_AXI_arbiter_SRAM__DOT__W_READY;
-        SData/*11:0*/ top__DOT__u_EXU__DOT__instCSR;
+        SData/*11:0*/ top__DOT__u_EXU__DOT__u_sysc__DOT__raddr;
+        SData/*11:0*/ top__DOT__u_EXU__DOT__u_sysc__DOT__waddr;
         IData/*31:0*/ top__DOT__op;
         IData/*30:0*/ top__DOT__inst_act;
         IData/*30:0*/ top__DOT__u_IDU__DOT__inst_act_pre;
@@ -124,8 +126,8 @@ VL_MODULE(Vtop___024root) {
         QData/*63:0*/ top__DOT__IDU_pc;
         QData/*63:0*/ top__DOT__IDU_inst;
         QData/*63:0*/ top__DOT__imm;
+        QData/*63:0*/ top__DOT__axis1_R_DATA;
         QData/*63:0*/ top__DOT__u_IFU__DOT__ifetch_pc;
-        QData/*63:0*/ top__DOT__u_IFU__DOT__mem_inst64;
         QData/*63:0*/ top__DOT__u_IFU__DOT__u1_AXI_master_SRAM__DOT__w_addr_reg;
         QData/*63:0*/ top__DOT__u_IFU__DOT__u1_AXI_master_SRAM__DOT__w_data_reg;
         QData/*63:0*/ top__DOT__u_IFU__DOT__u1_AXI_master_SRAM__DOT__r_addr_reg;
@@ -141,10 +143,9 @@ VL_MODULE(Vtop___024root) {
         QData/*63:0*/ top__DOT__u_EXU__DOT__src1;
         QData/*63:0*/ top__DOT__u_EXU__DOT__src2;
         QData/*63:0*/ top__DOT__u_EXU__DOT__dest;
-        QData/*63:0*/ top__DOT__u_EXU__DOT__rCSR;
-        QData/*63:0*/ top__DOT__u_EXU__DOT__wCSR1;
-        QData/*63:0*/ top__DOT__u_EXU__DOT__wCSR2;
-        QData/*63:0*/ top__DOT__u_EXU__DOT__csr_rdata;
+        QData/*63:0*/ top__DOT__u_EXU__DOT__ld_data_out;
+        QData/*63:0*/ top__DOT__u_EXU__DOT__csr_data_out;
+        QData/*63:0*/ top__DOT__u_EXU__DOT__csrf_rdata;
         QData/*63:0*/ top__DOT__u_EXU__DOT__u_mul__DOT__multiplicand_r;
         QData/*63:0*/ top__DOT__u_EXU__DOT__u_mul__DOT__multiplier_r;
         QData/*63:0*/ top__DOT__u_EXU__DOT__u_div__DOT__reg_q;
@@ -157,19 +158,15 @@ VL_MODULE(Vtop___024root) {
         QData/*63:0*/ top__DOT__u_EXU__DOT__u_BMU__DOT__add_src1;
         QData/*63:0*/ top__DOT__u_EXU__DOT__u_BMU__DOT__add_sum;
         QData/*63:0*/ top__DOT__u_EXU__DOT__u_LSU__DOT__raddrM;
-        QData/*63:0*/ top__DOT__u_EXU__DOT__u_LSU__DOT__rdataM;
         QData/*63:0*/ top__DOT__u_EXU__DOT__u_LSU__DOT__waddrM;
         QData/*63:0*/ top__DOT__u_EXU__DOT__u_LSU__DOT__u1_AXI_master_SRAM__DOT__w_addr_reg;
         QData/*63:0*/ top__DOT__u_EXU__DOT__u_LSU__DOT__u1_AXI_master_SRAM__DOT__w_data_reg;
     };
     struct {
         QData/*63:0*/ top__DOT__u_EXU__DOT__u_LSU__DOT__u1_AXI_master_SRAM__DOT__r_addr_reg;
-        QData/*63:0*/ top__DOT__u_EXU__DOT__u_csr__DOT__mcause;
-        QData/*63:0*/ top__DOT__u_EXU__DOT__u_csr__DOT__mstatus;
-        QData/*63:0*/ top__DOT__u_EXU__DOT__u_csr__DOT__mepc;
-        QData/*63:0*/ top__DOT__u_EXU__DOT__u_csr__DOT__mtvec;
         QData/*63:0*/ top__DOT__u_AXI_arbiter_SRAM__DOT__R_DATA;
         VlUnpacked<QData/*63:0*/, 32> top__DOT__u_EXU__DOT__u_gpr__DOT__rf;
+        VlUnpacked<QData/*63:0*/, 4> top__DOT__u_EXU__DOT__u_csrf__DOT__csrf;
     };
 
     // LOCAL VARIABLES

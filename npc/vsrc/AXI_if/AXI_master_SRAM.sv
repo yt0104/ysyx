@@ -133,12 +133,10 @@ assign AR_VALID = RREQ | ar_valid_reg;
 always@(posedge CLK)
   if(~RESETN)
     r_addr_reg <= 'd0;
-  else if(AR_VALID && AR_READY)
-    r_addr_reg <= 'd0;  
   else if(RREQ)
     r_addr_reg <= IN_RADDR;
 
-assign AR_ADDR = RREQ? IN_RADDR: (ar_valid_reg? r_addr_reg : 'd0);
+assign AR_ADDR = RREQ? IN_RADDR: r_addr_reg;
 
 //====== 读数据通道
 
@@ -153,7 +151,7 @@ always@(posedge CLK)
 
 assign R_READY = RREQ | r_ready_reg;
 
-assign DATA_OUT = (R_VALID && R_READY)? R_DATA : 'd0;
+assign DATA_OUT = R_DATA;
 //assign DATA_OUT_VALID = R_VALID && R_READY;
 
 //error判断

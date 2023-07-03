@@ -9,12 +9,13 @@
 `include "vsrc/exu/EXU_cache.sv"
 `include "vsrc/exu/LSU.sv"
 `include "vsrc/exu/BMU.sv"
+`include "vsrc/exu/SYS_control.sv"
 
 `include "vsrc/alu/mul.sv"
 `include "vsrc/alu/div.sv"
 
 `include "vsrc/regfile/RegisterFile.sv"
-`include "vsrc/regfile/RegisterCSFile.sv"
+`include "vsrc/regfile/CSRegisterFile.sv"
 
 `include "vsrc/AXI_if/AXI_slave_SRAM.sv"
 `include "vsrc/AXI_if/AXI_slave_ifench.sv"
