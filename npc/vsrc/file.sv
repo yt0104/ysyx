@@ -7,6 +7,9 @@
 `include "vsrc/idu/IDU.sv"
 
 `include "vsrc/alu/ALU.sv"
+`include "vsrc/alu/shifter.sv"
+`include "vsrc/alu/adder.sv"
+
 
 `include "vsrc/exu/EXU_cache.sv"
 `include "vsrc/exu/LSU.sv"

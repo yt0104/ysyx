@@ -128,7 +128,7 @@ always_comb begin : dec_pre
     inst_act_pre.div_rem    = inst_type_pre.instR & inst[25] & inst[14] & inst[13];
     inst_act_pre.sign       = ! ( inst_type_pre.LD    & inst[14] 
                                 | inst_type_pre.BR    & (inst[14:13] == 2'b11)
-                                | inst_type_pre.IMM   & (inst[14:12]==3'b001)
+                                | inst_type_pre.IMM   & (inst[14:12]==3'b011)
                                 | inst_type_pre.OP    & (inst[14:12]==3'b011 || inst_act_pre.div & inst[14] & inst[12])
                                 | inst_type_pre.OP_32 & (inst_act_pre.div & inst[14] & inst[12])
                                 );
@@ -136,17 +136,26 @@ always_comb begin : dec_pre
                             | inst_type_pre.IMM_32& (inst[14:12]==3'b001 || inst[14:12]==3'b101)
                             | inst_type_pre.OP    & (inst[14:12]==3'b001 || inst[14:12]==3'b101)
                             | inst_type_pre.OP_32 & (inst[14:12]==3'b001 || inst[14:12]==3'b101);
+    inst_act_pre.shift_arth = inst_act_pre.shift & inst[30];
 
-    inst_act_pre.func3      = inst[14:12];
-    inst_act_pre.add        = inst_type_pre.JALR 
+    inst_act_pre.add_slt    = inst_type_pre.IMM   & (inst[14:12]==3'b010 | inst[14:12]==3'b011)
+                            | inst_type_pre.OP    & (inst[14:12]==3'b010 | inst[14:12]==3'b011);
+    inst_act_pre.add        = inst_act_pre.add_slt
+                            | inst_type_pre.JALR 
                             | inst_type_pre.JAL
                             | inst_type_pre.AUIPC
-                            | inst_type_pre.IMM & (inst[14:12]==3'b000 );
-    inst_act_pre.lgc        = 1;
-    inst_act_pre.extra_func = 1;
+                            | inst_type_pre.IMM    & (inst[14:12]==3'b000 )
+                            | inst_type_pre.IMM_32 & (inst[14:12]==3'b000 )
+                            | inst_type_pre.OP     & (inst[14:12]==3'b000 & ~inst[25])
+                            | inst_type_pre.OP_32  & (inst[14:12]==3'b000 & ~inst[25]);
+    inst_act_pre.add_sub    = inst_act_pre.add & inst[30] & (inst_type_pre.OP | inst_type_pre.OP_32);                     
+
+
+    inst_act_pre.func3      = inst[14:12];
 
     inst_act_pre.wb     = inst_type_pre.instR | inst_type_pre.instJ | inst_type_pre.instU | (inst_type_pre.instI & ~inst_act_pre.syscall);
-
+    inst_act_pre.imm_vld = !(inst_type_pre.OP | inst_type_pre.OP_32 | (inst_type_pre.SYS & ~inst[14]) );
+                           
 end
 
 wire ras_rd_link  = (rd_pre == 1 || rd_pre == 5);
@@ -210,8 +219,7 @@ always@(posedge clk)
     end
     else if(IFU_vld) begin
         casez(IFU_inst)
-        `addi  : begin op <= op_addi  ; end
-        `ret   : begin op <= op_ret   ; end
+        
         `jalr  : begin op <= op_jalr  ; end
         `lbu   : begin op <= op_lbu   ; end
         `lhu   : begin op <= op_lhu   ; end
@@ -220,6 +228,7 @@ always@(posedge clk)
         `lw    : begin op <= op_lw    ; end
         `lh    : begin op <= op_lh    ; end
         `lb    : begin op <= op_lb    ; end
+        `addi  : begin op <= op_addi  ; end
         `slli  : begin op <= op_slli  ; end
         `slti  : begin op <= op_slti  ; end
         `srli  : begin op <= op_srli  ; end
