@@ -62,27 +62,23 @@ wire [63:0 ] inst = IFU_inst;
 InstAct    inst_act_pre;
 InstType   inst_type_pre;
 
-always_comb begin : dec_pre
-    
-    inst_act_pre.imm    = inst[6:0]== RV_IMM;
-    inst_act_pre.jalr   = inst[6:0]== RV_JALR;
-    inst_act_pre.ld     = inst[6:0]== RV_LD;
-    inst_act_pre.imm32  = inst[6:0]== RV_IMM_32;
-    inst_act_pre.sys    = inst[6:0]== RV_SYS;
 
-    inst_act_pre.auipc  = inst[6:0]== RV_AUIPC;
-    inst_act_pre.lui    = inst[6:0]== RV_LUI;
+always_comb begin : type_pre
 
-    inst_act_pre.st     = inst[6:0]== RV_ST;
+    inst_type_pre.IMM    = inst[6:0]== RV_IMM;
+    inst_type_pre.JALR   = inst[6:0]== RV_JALR;
+    inst_type_pre.LD     = inst[6:0]== RV_LD;
+    inst_type_pre.IMM_32 = inst[6:0]== RV_IMM_32;
+    inst_type_pre.SYS    = inst[6:0]== RV_SYS;
+    inst_type_pre.AUIPC  = inst[6:0]== RV_AUIPC;
+    inst_type_pre.LUI    = inst[6:0]== RV_LUI;
+    inst_type_pre.ST     = inst[6:0]== RV_ST;
+    inst_type_pre.JAL    = inst[6:0]== RV_JAL;
+    inst_type_pre.OP     = inst[6:0]== RV_OP;
+    inst_type_pre.OP_32  = inst[6:0]== RV_OP_32;
+    inst_type_pre.BR     = inst[6:0]== RV_BR;
 
-    inst_act_pre.jal    = inst[6:0]== RV_JAL;
-    
-    inst_act_pre.op     = inst[6:0]== RV_OP;
-    inst_act_pre.op32   = inst[6:0]== RV_OP_32;
-
-    inst_act_pre.br     = inst[6:0]== RV_BR;
-
-    
+    //type
     inst_type_pre.instI = inst[6:0]== RV_IMM || inst[6:0]== RV_JALR || inst[6:0]== RV_LD || inst[6:0]== RV_IMM_32 || inst[6:0]==RV_SYS;
     inst_type_pre.instU = inst[6:0]== RV_AUIPC || inst[6:0]== RV_LUI;
     inst_type_pre.instS = inst[6:0]== RV_ST;
@@ -90,35 +86,66 @@ always_comb begin : dec_pre
     inst_type_pre.instR = inst[6:0]== RV_OP || inst[6:0]== RV_OP_32;
     inst_type_pre.instB = inst[6:0]== RV_BR;
 
+end
 
-    inst_act_pre.call       = (inst_act_pre.jal  && ras_rd_link)
-                            ||(inst_act_pre.jalr && ras_rd_link) && ~ras_rs1_link
-                            ||(inst_act_pre.jalr && ras_rd_link) && (rs1_pre == rd_pre);
-    inst_act_pre.ret        = (inst_act_pre.jalr && ~ras_rd_link) && ras_rs1_link;
-    inst_act_pre.ret_call   = inst_act_pre.jalr && ras_rd_link && (rs1_pre != rd_pre);
 
+always_comb begin : dec_pre
     
-    inst_act_pre.csr        = inst_act_pre.sys &  (|inst[14:12]);
-    inst_act_pre.syscall    = inst_act_pre.sys & ~(|inst[14:12]);
-    inst_act_pre.ecall      = inst_act_pre.sys & ~(|inst[14:12]) & (inst[21:20] == 2'b00);
-    inst_act_pre.ebreak     = inst_act_pre.sys & ~(|inst[14:12]) & (inst[21:20] == 2'b01); 
-    inst_act_pre.mret       = inst_act_pre.sys & ~(|inst[14:12]) & (inst[21:20] == 2'b10);
+    
 
-    inst_act_pre.w_inst = (inst[6:0] == RV_OP_32 || inst[6:0] == RV_IMM_32);   
-    inst_act_pre.wb     = inst_type_pre.instR | inst_type_pre.instJ | inst_type_pre.instU | (inst_type_pre.instI & ~inst_act_pre.syscall);
+    //for bmu
+    inst_act_pre.jalr   = inst_type_pre.JALR;
+    inst_act_pre.jal    = inst_type_pre.JAL;
+    inst_act_pre.br     = inst_type_pre.BR;
+    inst_act_pre.call       = (inst_type_pre.JAL  && ras_rd_link)
+                            ||(inst_type_pre.JALR && ras_rd_link) && ~ras_rs1_link
+                            ||(inst_type_pre.JALR && ras_rd_link) && (rs1_pre == rd_pre);
+    inst_act_pre.ret        = (inst_type_pre.JALR && ~ras_rd_link) && ras_rs1_link;
+    inst_act_pre.ret_call   =  inst_type_pre.JALR && ras_rd_link && (rs1_pre != rd_pre);
 
+    //for lsu
+    inst_act_pre.st     = inst_type_pre.ST;
+    inst_act_pre.ld     = inst_type_pre.LD;
 
-    inst_act_pre.mini_alu    =(inst_type_pre.instI & ~inst_act_pre.sys & ~inst_act_pre.ld)
-                            |  inst_type_pre.instU | inst_type_pre.instJ
-                            | (inst_type_pre.instR & ~inst[25]);
+    //for syscontrol
+    inst_act_pre.sys        = inst_type_pre.SYS;
+    inst_act_pre.csr        = inst_type_pre.SYS &  (|inst[14:12]);
+    inst_act_pre.syscall    = inst_type_pre.SYS & ~(|inst[14:12]);
+    inst_act_pre.ecall      = inst_type_pre.SYS & ~(|inst[14:12]) & (inst[21:20] == 2'b00);
+    inst_act_pre.ebreak     = inst_type_pre.SYS & ~(|inst[14:12]) & (inst[21:20] == 2'b01); 
+    inst_act_pre.mret       = inst_type_pre.SYS & ~(|inst[14:12]) & (inst[21:20] == 2'b10);
+
+    //for alu
+    inst_act_pre.auipc  = inst_type_pre.AUIPC;
+    inst_act_pre.lui    = inst_type_pre.LUI;
+    inst_act_pre.w_inst = (inst_type_pre.OP_32 | inst_type_pre.IMM_32);   
+
+    inst_act_pre.mini_alu    =(inst_type_pre.instI & ~inst_type_pre.SYS & ~inst_type_pre.LD)
+                                |  inst_type_pre.instU | inst_type_pre.instJ
+                                | (inst_type_pre.instR & ~inst[25]);
     inst_act_pre.mul        = inst_type_pre.instR & inst[25] & ~inst[14];
     inst_act_pre.div        = inst_type_pre.instR & inst[25] & inst[14];
     inst_act_pre.div_rem    = inst_type_pre.instR & inst[25] & inst[14] & inst[13];
-    inst_act_pre.div_sign   = inst_type_pre.instR & inst[25] & ~inst[12];
+    inst_act_pre.sign       = ! ( inst_type_pre.LD    & inst[14] 
+                                | inst_type_pre.BR    & (inst[14:13] == 2'b11)
+                                | inst_type_pre.IMM   & (inst[14:12]==3'b001)
+                                | inst_type_pre.OP    & (inst[14:12]==3'b011 || inst_act_pre.div & inst[14] & inst[12])
+                                | inst_type_pre.OP_32 & (inst_act_pre.div & inst[14] & inst[12])
+                                );
+    inst_act_pre.shift      = inst_type_pre.IMM   & (inst[14:12]==3'b001 || inst[14:12]==3'b101)
+                            | inst_type_pre.IMM_32& (inst[14:12]==3'b001 || inst[14:12]==3'b101)
+                            | inst_type_pre.OP    & (inst[14:12]==3'b001 || inst[14:12]==3'b101)
+                            | inst_type_pre.OP_32 & (inst[14:12]==3'b001 || inst[14:12]==3'b101);
 
     inst_act_pre.func3      = inst[14:12];
-    inst_act_pre.onecycle   = ~(inst_act_pre.mul | inst_act_pre.div | inst_act_pre.ld);
+    inst_act_pre.add        = inst_type_pre.JALR 
+                            | inst_type_pre.JAL
+                            | inst_type_pre.AUIPC
+                            | inst_type_pre.IMM & (inst[14:12]==3'b000 );
+    inst_act_pre.lgc        = 1;
+    inst_act_pre.extra_func = 1;
 
+    inst_act_pre.wb     = inst_type_pre.instR | inst_type_pre.instJ | inst_type_pre.instU | (inst_type_pre.instI & ~inst_act_pre.syscall);
 
 end
 

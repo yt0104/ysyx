@@ -5,15 +5,18 @@ module LSU(
 
     input           ld_req,
     input           st_req,
-    input  [2:0]     func3,
+    input  [2:0]    func3,
     input  [63:0]   src1,
     input  [63:0]   src2,
-    input  [63:0]   dest,
     input  [63:0]   imm,
+    input   [4:0]   dst_id,
 
 
-    output logic [63:0]  ld_data_out,
     output logic         lsu_data_vld,
+
+    output logic         lsu_wb_vld,
+    output logic  [4:0]  lsu_wb_addr,
+    output logic [63:0]  lsu_wb_data,
 
     //AXI
     output  [63 : 0] 	axi_AW_ADDR,
@@ -59,21 +62,34 @@ module LSU(
   end
 
 
+  assign lsu_data_vld = dataM_valid;
+
+
   always_comb begin
     case (func3)
-      3'b100   : begin ld_data_out = {56'b0, rdataM[ 7:0]};              end
-      3'b101   : begin ld_data_out = {48'b0, rdataM[15:0]};              end
-      3'b110   : begin ld_data_out = {32'b0, rdataM[31:0]};              end
-      3'b011   : begin ld_data_out = rdataM;                             end
-      3'b010   : begin ld_data_out = { {32{rdataM[31]}}, rdataM[31:0] };  end
-      3'b001   : begin ld_data_out = { {48{rdataM[15]}}, rdataM[15:0] };  end
-      3'b000   : begin ld_data_out = { {56{rdataM[7 ]}}, rdataM[7 :0] };  end
-      default: ld_data_out = 0;
+      3'b100   : begin lsu_wb_data = {56'b0, rdataM[ 7:0]};              end
+      3'b101   : begin lsu_wb_data = {48'b0, rdataM[15:0]};              end
+      3'b110   : begin lsu_wb_data = {32'b0, rdataM[31:0]};              end
+      3'b011   : begin lsu_wb_data = rdataM;                             end
+      3'b010   : begin lsu_wb_data = { {32{rdataM[31]}}, rdataM[31:0] };  end
+      3'b001   : begin lsu_wb_data = { {48{rdataM[15]}}, rdataM[15:0] };  end
+      3'b000   : begin lsu_wb_data = { {56{rdataM[7 ]}}, rdataM[7 :0] };  end
+      default: lsu_wb_data = 0;
     endcase
 
-    lsu_data_vld = dataM_valid;
+    lsu_wb_vld = dataM_valid & ld_req_r;
+    lsu_wb_addr = dst_id_r;
 
+    lsu_data_vld = dataM_valid;
   end
+
+  logic ld_req_r, st_req_r;
+  logic [4:0] dst_id_r;
+  always_ff @( posedge clk ) begin 
+    {ld_req_r, st_req_r, dst_id_r} <= {ld_req, st_req, dst_id};
+  end
+
+
 
 
 

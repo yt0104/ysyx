@@ -14,9 +14,15 @@ module SYS_control#(ADDR_WIDTH = 2, DATA_WIDTH = 64) (
   input logic [63:0] pc,
   input logic [63:0] src1,
   input logic [63:0] imm,
+  input logic [4:0]  dst_id,
 
-  output logic [63:0] csr_data_out,
   output logic csr_vld,
+
+  //wb
+  output logic [63:0] csr_wb_data,
+  output logic [ 4:0] csr_wb_addr,
+  output logic        csr_wb_vld,
+
 
   //CSRegisterFile
   input  logic [DATA_WIDTH -1:0] csrf_rdata,
@@ -44,6 +50,20 @@ always_ff @( posedge clk ) begin
 end
 
 
+always_ff @( posedge clk ) begin 
+  if(~rst_n) begin
+    csr_wb_vld <= 0;
+    csr_wb_data <= 0;
+    csr_wb_addr <= 0;
+  end
+  else begin
+    csr_wb_vld <= sys_req & csr;
+    csr_wb_data <= csrf_rdata;
+    csr_wb_addr <= dst_id;
+  end
+end
+
+
 //--------------------------------------
 //------CSR read block
 
@@ -60,15 +80,6 @@ end
     endcase
 
   end
-
-always_ff @( posedge clk ) begin 
-  if(~rst_n) begin
-    csr_data_out <= 0;
-  end
-  else if(sys_req)begin
-    csr_data_out <= csrf_rdata;
-  end
-end
 
 
 //--------------------------------------

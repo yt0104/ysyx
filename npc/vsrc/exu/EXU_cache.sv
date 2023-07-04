@@ -51,7 +51,6 @@ output  			axi_R_READY
   //===================================================
   //===control signal
 
-    
 
   reg [`REG_ADDR_WIDTH-1:0] rd_r;
   reg [`REG_ADDR_WIDTH-1:0] rs1_r;
@@ -98,134 +97,35 @@ output  			axi_R_READY
   //===ALU
 
 
-  logic mul_valid, div_valid;
 
-  assign mul_valid = IDU_vld & inst_act.mul;
-  assign div_valid = IDU_vld & inst_act.div;
+logic          alu_wb_vld;
+logic  [4:0]   alu_wb_addr;
+logic  [63:0]  alu_wb_data;
 
+logic alu_req;
+assign alu_req = IDU_vld & (inst_act.mini_alu | inst_act.div | inst_act.mul);
 
-  wire mul_out_valid;
-  wire [63:0] mul_result_h, mul_result_l;
-  wire [63:0] mul_result = (mul_result_h==0)? mul_result_l: mul_result_l;
+ALU u_alu(
 
-  mul u_mul(
   .clk(clk),
   .rst_n(rst_n),
-  .mul_valid(mul_valid),
-  .multiplicand(src1),
-  .multiplier(src2),
-  .out_valid(mul_out_valid),
-  .result_h(mul_result_h),
-  .result_l(mul_result_l)
-  );
+  .alu_req(alu_req),
+  .op(op),
+  .inst_act(inst_act),
+ 
+  //.dst_vld(),
+  .dst_id(rd),
 
-  wire div_out_valid;
-  wire [63:0] quotient, remainder;
-  wire [63:0] div_result = inst_act.div_rem? remainder : quotient;
+  .src1(src1),
+  .src2(src2),
+  .imm(imm),
+  .pc(pc),
 
-  div u_div(
-    .clk(clk),
-    .rst_n(rst_n),
+  .alu_wb_vld(alu_wb_vld),
+  .alu_wb_addr(alu_wb_addr),
+  .alu_wb_data(alu_wb_data)
 
-    .sign_div(inst_act.div_sign),
-    .divw(inst_act.w_inst),
-
-    .div_valid(div_valid),
-    .dividend(src1),
-    .divisor(src2),
-    
-    .quotient(quotient),
-    .remainder(remainder),
-    .out_valid(div_out_valid)
-    );
-
-
-  logic        alu_vld;
-  logic [63:0] alu_data;
-  logic        mini_alu_vld;
-  logic [63:0] mini_alu_data;
-
-
-  always_ff @( posedge clk ) begin : miniALU
-    if(~rst_n) mini_alu_data <= 0; 
-    else if(IDU_vld & inst_act.mini_alu) begin
-      case(op)
-      op_addi  : begin mini_alu_data <= src1 + imm; end
-      op_ret   : begin mini_alu_data <= pc + 4;     end
-      op_jalr  : begin mini_alu_data <= pc + 4;     end
-      //op_lbu   : begin mini_alu_data <= {56'b0, rdataM[ 7:0]};              end
-      //op_lhu   : begin mini_alu_data <= {48'b0, rdataM[15:0]};              end
-      //op_lwu   : begin mini_alu_data <= {32'b0, rdataM[31:0]};              end
-      //op_ld    : begin mini_alu_data <= rdataM;                             end
-      //op_lw    : begin mini_alu_data <= { {32{rdataM[31]}}, rdataM[31:0] };  end
-      //op_lh    : begin mini_alu_data <= { {48{rdataM[15]}}, rdataM[15:0] };  end
-      //op_lb    : begin mini_alu_data <= { {56{rdataM[7 ]}}, rdataM[7 :0] };  end
-      op_slli  : begin mini_alu_data <= src1 <<imm; end
-      op_slti  : begin mini_alu_data <= ($signed(src1) < $signed(imm))? 64'b1: 64'b0;; end
-      op_srli  : begin mini_alu_data <= src1 >>imm; end
-      op_sltiu : begin mini_alu_data <= (src1 < imm)? 64'b1: 64'b0; ; end
-      op_xori  : begin mini_alu_data <= src1 ^ imm; end
-      op_srai  : begin mini_alu_data <= ($signed(src1)) >>> imm[5:0];  end
-      op_andi  : begin mini_alu_data <= src1 & imm; end
-      op_addiw : begin mini_alu_data <= src1 + imm; end
-      op_slliw : begin mini_alu_data <= src1 <<imm; end
-      op_srliw : begin mini_alu_data <= { 32'b0, src1[31:0] >> imm }; end
-      op_sraiw : begin mini_alu_data <= ($signed(src1)) >>> imm[5:0]; end
-      op_ori   : begin mini_alu_data <= src1 | imm; end
-      //op_csrrw : begin mini_alu_data <= rCSR; end
-      //op_csrrs : begin mini_alu_data <= rCSR; end
-
-      op_auipc : begin mini_alu_data <= pc + imm; end
-      op_lui   : begin mini_alu_data <= { {32{imm[31]}},imm[31:12],12'b0 }; end
-
-      op_jal   : begin mini_alu_data <= pc + 4;  end
-
-      op_add   : begin mini_alu_data <= src1 + src2; end
-      op_sltu  : begin mini_alu_data <= (src1 < src2)? 64'b1: 64'b0; end
-      op_and   : begin mini_alu_data <= src1 & src2; end
-      op_or    : begin mini_alu_data <= src1 | src2; end
-      op_xor   : begin mini_alu_data <= src1 ^ src2; end
-      op_sub   : begin mini_alu_data <= src1 - src2; end
-      //op_mul   : begin mini_alu_data = mul_result;  end
-      op_slt   : begin mini_alu_data <= ($signed(src1) < $signed(src2))? 64'b1: 64'b0; end
-      op_addw  : begin mini_alu_data <= src1 + src2; end
-      op_sllw  : begin mini_alu_data <= src1 << src2[4:0];  end
-      op_srlw  : begin mini_alu_data <= {32'b0, src1[31:0] >> src2[4:0]};  end
-      op_sraw  : begin mini_alu_data <= {32'b0, $signed(src1[31:0]) >>> src2[4:0]};  end
-      //op_mulw  : begin mini_alu_data = mul_result;  end
-      op_subw  : begin mini_alu_data <= src1 - src2; end
-      //op_divw  : begin mini_alu_data = quotient; end
-      //op_remw  : begin mini_alu_data = remainder; end
-      //op_divuw : begin mini_alu_data = quotient;  end
-      //op_remuw : begin mini_alu_data = remainder; end
-      //op_divu  : begin mini_alu_data = quotient; end
-      //op_remu  : begin mini_alu_data = remainder; end
-      op_sll   : begin mini_alu_data <= src1 <<src2; end
-      op_srl   : begin mini_alu_data <= src1 >>src2; end
-      //op_div   : begin mini_alu_data = quotient; end
-      //op_rem   : begin mini_alu_data = remainder; end
-      
-      default  : begin mini_alu_data <= 0; end
-      endcase
-    end
-    else begin mini_alu_data <= 0; end
-  end
-
-
-
-  always_ff @( posedge clk ) begin
-    if(~rst_n) mini_alu_vld <= 0;
-    else mini_alu_vld <= IDU_vld & inst_act.mini_alu;
-  end
-
-
-  assign alu_vld  = mul_out_valid | div_out_valid | mini_alu_vld;
-
-  assign alu_data = mini_alu_vld? mini_alu_data:
-                    mul_out_valid? mul_result:
-                    div_out_valid? div_result:
-                    0;
-
+);
 
 
 
@@ -234,20 +134,34 @@ output  			axi_R_READY
 
   /*GPR*/
   logic [`ISA_WIDTH-1:0] src1,src2;
-  logic [`ISA_WIDTH-1:0] dest;
-  logic wb_vld;
 
+  logic          wb_vld;
+  logic  [4:0]   wb_addr;
+  logic  [63:0]  wb_data;
 
   always_comb begin : wb
     
-    if(alu_vld) dest = inst_act.w_inst? { {32{alu_data[31]}}, alu_data[31:0] }: alu_data;
-    else if(lsu_data_vld) dest = ld_data_out;
-    else if(csr_data_vld) dest = csr_data_out;
-    else dest = 0;
+    if(alu_wb_vld) begin
+      wb_data = inst_act.w_inst? { {32{alu_wb_data[31]}}, alu_wb_data[31:0] }: alu_wb_data;
+      wb_addr = alu_wb_addr;
+    end
+    else if(lsu_wb_vld) begin 
+      wb_data = lsu_wb_data;
+      wb_addr = lsu_wb_addr;
+    end
+    else if(csr_wb_vld) begin
+      wb_data = csr_wb_data;
+      wb_addr = csr_wb_addr;
+    end
+    else begin
+      wb_data = 0;
+      wb_addr = 0;
+    end
 
-    if(rd == 0) dest = 0;
+    if(rd == 0) wb_data = 0;
   end
 
+  assign wb_vld = (alu_wb_vld | lsu_wb_vld | csr_wb_vld);
 
 
   RegisterFile u_gpr(
@@ -256,15 +170,14 @@ output  			axi_R_READY
       .raddr1 (rs1),
       .rdata2 (src2),
       .raddr2 (rs2),
-      .wdata  (dest),
-      .waddr  (rd),
+
+      .wdata  (wb_data),
+      .waddr  (wb_addr),
       .wen    (wb_vld)
   );
 
 
-  
-  assign wb_vld = inst_act.wb & (alu_vld | lsu_data_vld | csr_data_vld);
-  
+
 
 
 
@@ -297,15 +210,17 @@ output  			axi_R_READY
 
   logic            bmu_vld;
   
-  assign ifetch_req = bmu_vld | alu_vld | lsu_data_vld | csr_data_vld;
+  assign ifetch_req = bmu_vld | alu_wb_vld | lsu_data_vld | csr_data_vld;
     
 
 
   //===================================================
   //===LSU
 
+  logic        lsu_wb_vld;
+  logic  [4:0] lsu_wb_addr;
+  logic [63:0] lsu_wb_data;
 
-  logic [63:0] ld_data_out;
   logic lsu_data_vld;
 
   logic ld_req;
@@ -321,13 +236,15 @@ output  			axi_R_READY
     .ld_req(ld_req),
     .st_req(st_req),
     .func3(inst_act.func3),
-    .dest(dest), 
     .src1(src1), 
     .src2(src2), 
     .imm(imm), 
+    .dst_id(rd),
 
-    .ld_data_out(ld_data_out),
     .lsu_data_vld(lsu_data_vld),
+    .lsu_wb_vld(lsu_wb_vld),
+    .lsu_wb_addr(lsu_wb_addr),
+    .lsu_wb_data(lsu_wb_data),
 
 
     .axi_AW_ADDR(axi_AW_ADDR), .axi_AW_VALID(axi_AW_VALID), .axi_AW_READY(axi_AW_READY),
@@ -343,8 +260,11 @@ output  			axi_R_READY
   //===sys
 
   logic sys_req;
-  logic [63:0] csr_data_out;
   logic csr_data_vld;
+
+  logic [63:0] csr_wb_data;
+  logic [ 4:0] csr_wb_addr;
+  logic        csr_wb_vld;
 
   assign sys_req = IDU_vld & inst_act.sys;
 
@@ -363,9 +283,13 @@ output  			axi_R_READY
     .pc(pc),
     .src1(src1),
     .imm(imm),
+    .dst_id(rd),
 
-    .csr_data_out(csr_data_out),
     .csr_vld(csr_data_vld),
+
+    .csr_wb_data(csr_wb_data),
+    .csr_wb_addr(csr_wb_addr),
+    .csr_wb_vld(csr_wb_vld)  ,  
 
     //CSRegisterFile
     .csrf_rdata(csrf_rdata),

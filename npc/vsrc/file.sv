@@ -6,6 +6,8 @@
 
 `include "vsrc/idu/IDU.sv"
 
+`include "vsrc/alu/ALU.sv"
+
 `include "vsrc/exu/EXU_cache.sv"
 `include "vsrc/exu/LSU.sv"
 `include "vsrc/exu/BMU.sv"
