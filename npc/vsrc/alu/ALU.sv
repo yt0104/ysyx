@@ -228,6 +228,18 @@ end
   end
 
 
+
+`define FOR_TEST
+
+`ifdef FOR_TEST
+
+  always_ff @( posedge clk ) begin : fake_mult
+    mult_data_vld <= mult_req;
+    mult_data_out <= mult_src0 * mult_src1;
+  end
+
+`else
+
   mult_wallace alu_mult(
 	  .clk(clk),
 	  .mult_req(mult_req),
@@ -238,6 +250,8 @@ end
 	  .mult_data_out(mult_data_out),
 	  .mult_data_vld(mult_data_vld)
 	);
+
+`endif
 
 
 //--------------------------------------------------------
@@ -267,8 +281,7 @@ end
     .quotient(quotient),
     .remainder(remainder),
     .out_valid(div_out_valid)
-    );
-
+  );
 
 
 
