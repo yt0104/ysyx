@@ -67,7 +67,11 @@ EXU_cache u_EXU(
     .clk(clk), .rst_n(rst_n), 
 
     .IDU_pc(IDU_pc), .IDU_inst(IDU_inst), .IDU_vld(IDU_vld),
-    .i_rd(rd), .i_rs1(rs1), .i_rs2(rs2), .i_imm(imm), .i_op(op), .i_inst_act(inst_act),
+    .rd(rd), 
+    .rs1(rs1), 
+    .rs2(rs2), 
+    .imm(imm), 
+    .inst_act(inst_act),
 
     .ifetch_req(ifetch_req), .ifetch_taken_pc(ifetch_taken_pc), .ifetch_taken(ifetch_taken),
 

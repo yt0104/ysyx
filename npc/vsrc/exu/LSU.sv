@@ -62,11 +62,13 @@ module LSU(
   end
 
 
-  assign lsu_data_vld = dataM_valid;
+  logic [2:0] func3_d;
+  always_ff @( posedge clk ) begin
+    if(ld_req) func3_d <= func3;
+  end
 
-
-  always_comb begin
-    case (func3)
+  always_comb begin: OUT_BLOCK
+    case (func3_d)
       3'b100   : begin lsu_wb_data = {56'b0, rdataM[ 7:0]};              end
       3'b101   : begin lsu_wb_data = {48'b0, rdataM[15:0]};              end
       3'b110   : begin lsu_wb_data = {32'b0, rdataM[31:0]};              end

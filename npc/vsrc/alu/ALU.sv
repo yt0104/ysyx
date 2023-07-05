@@ -5,7 +5,6 @@ module ALU(
 
   input logic           IDU_vld,
 
-  input opType          op,
   input InstAct         inst_act,
  
   //input logic           dst_vld,
@@ -24,30 +23,6 @@ module ALU(
 
 );
 
-  logic mini_alu_valid;
-
-  assign mini_alu_valid = IDU_vld & (inst_act.shift | inst_act.lgc | inst_act.add);
-
-
-  logic        alu_vld;
-  logic [63:0] alu_data;
-  logic        mini_alu_out_vld;
-  logic [63:0] mini_alu_result;
-
-
-  always_ff @( posedge clk ) begin : miniALU
-    if(~rst_n) begin
-      mini_alu_result <= 0; 
-      mini_alu_out_vld <= 0;
-    end
-    else if(mini_alu_valid) begin
-      mini_alu_out_vld <= 1;
-      mini_alu_result <= add_result | shift_result | lgc_result;
-    end
-    else begin 
-      mini_alu_out_vld <= 0;
-    end
-  end
 
   logic shift_out_vld;
   logic lgc_out_vld;
@@ -85,7 +60,15 @@ module ALU(
   end
 
 
+  logic w_inst_d;
+  always_ff @( posedge clk ) begin 
+    if(IDU_vld) w_inst_d <= inst_act.w_inst;
+  end
 
+  reg div_rem_d;
+  always_ff @( posedge clk ) begin
+    if(IDU_vld) div_rem_d <= inst_act.div_rem;
+  end
 
 //--------------------------------------------------------
 //------shifter
@@ -210,26 +193,40 @@ end
 //--------------------------------------------------------
 //------mult
 
-  logic mul_req;
+
   logic mul_out_valid;
-  logic [63:0] mul_result_h, mul_result_l;
   logic [63:0] mul_result;
 
+  logic mult_req;
+  logic [63:0] mult_src0;
+  logic [63:0] mult_src1;
+  logic mult_sign;
+  logic [127:0] mult_data_out;
+  logic mult_data_vld;
+
+
   always_comb begin : mul_control
-    mul_req = IDU_vld & inst_act.mul;
-    mul_result = (mul_result_h==0)? mul_result_l: mul_result_l;
+
+    mult_req = IDU_vld & inst_act.mul;
+    mult_src0 = src1;
+    mult_src1 = src2;
+    mult_sign = inst_act.sign;
+
+    mul_result = w_inst_d? {{32{mult_data_out[31]}}, mult_data_out[31:0]}: mult_data_out[63:0];
+    mul_out_valid = mult_data_vld;
   end
 
-  mul u_mul(
-  .clk(clk),
-  .rst_n(rst_n),
-  .mul_valid(mul_req),
-  .multiplicand(src1),
-  .multiplier(src2),
-  .out_valid(mul_out_valid),
-  .result_h(mul_result_h),
-  .result_l(mul_result_l)
-  );
+
+  mult_wallace alu_mult(
+	  .clk(clk),
+	  .mult_req(mult_req),
+	  .mult_src0(mult_src0),
+	  .mult_src1(mult_src1),
+	  .mult_sign(mult_sign),
+
+	  .mult_data_out(mult_data_out),
+	  .mult_data_vld(mult_data_vld)
+	);
 
 
 //--------------------------------------------------------
@@ -242,7 +239,7 @@ end
 
   always_comb begin : div_control
     div_req = IDU_vld & inst_act.div;
-    div_result = inst_act.div_rem? remainder : quotient;
+    div_result = div_rem_d? remainder : quotient;
   end
 
   div u_div(

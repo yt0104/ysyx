@@ -21,7 +21,7 @@ module div(
     reg [63:0] reg_b;
     reg r_sign;
     reg dividend_sign, divisor_sign;
-
+    
     wire [63:0] op_dividend = divw? sign_div? { {32{dividend[31]}}, dividend[31:0] } : { 32'b0, dividend[31:0] } : dividend;
     wire [63:0] op_divisor  = divw? sign_div? { {32{divisor [31]}}, divisor [31:0] } : { 32'b0, divisor [31:0] } : divisor ;
 

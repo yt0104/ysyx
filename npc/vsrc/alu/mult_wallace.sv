@@ -78,12 +78,12 @@ module mult_wallace #( WIDTH = 64) (
 		logic [EXTWIDTH-1:0] mult_src1;
 		} all_group_all_bit_input_strt_t;
 
-	typedef struct  {
-		one_group_all_bit_output_strt_t  one_group_all_bit_outputs [HALFEXTWIDTH-1:0];
+	typedef struct packed {
+		one_group_all_bit_output_strt_t [HALFEXTWIDTH-1:0] one_group_all_bit_outputs;
 		} all_group_all_bit_output_strt_t;
 
 	function automatic all_group_all_bit_output_strt_t all_group_all_bit_f(all_group_all_bit_input_strt_t f_input); 
-		one_group_all_bit_input_strt_t one_group_all_bit_inputs[HALFEXTWIDTH-1:0];
+		one_group_all_bit_input_strt_t [HALFEXTWIDTH-1:0] one_group_all_bit_inputs;
 		all_group_all_bit_output_strt_t f_output;
 
 		logic [EXTWIDTH:0] y_in;
@@ -103,8 +103,8 @@ module mult_wallace #( WIDTH = 64) (
 		return f_output;	
 	endfunction
 
-	typedef struct  {
-		logic [2*EXTWIDTH-1:0] sfted_part_prods [HALFEXTWIDTH:0];
+	typedef struct packed {
+		logic [HALFEXTWIDTH:0] [2*EXTWIDTH-1:0]  sfted_part_prods ;
 		} part_prod_array_strt_t;
 
 	function automatic part_prod_array_strt_t part_prod_array_f (all_group_all_bit_output_strt_t f_input);
@@ -268,8 +268,8 @@ module mult_wallace #( WIDTH = 64) (
 	endfunction
 
 
-	typedef struct {
-		logic [HALFEXTWIDTH:0]  wallace_tree_34b_to_2b_1_bit_src_ins[2*EXTWIDTH-1:0];
+	typedef struct packed {
+		logic [2*EXTWIDTH-1:0] [HALFEXTWIDTH:0] wallace_tree_34b_to_2b_1_bit_src_ins;
 		} wallace_tree_34b_to_2b_132_bit_intput_strt_t;
 
 	typedef struct packed{

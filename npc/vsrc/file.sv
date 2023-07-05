@@ -9,7 +9,7 @@
 `include "vsrc/alu/ALU.sv"
 `include "vsrc/alu/shifter.sv"
 `include "vsrc/alu/adder.sv"
-
+`include "vsrc/alu/mult_wallace.sv"
 
 `include "vsrc/exu/EXU_cache.sv"
 `include "vsrc/exu/LSU.sv"

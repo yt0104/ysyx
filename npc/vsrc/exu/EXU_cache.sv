@@ -6,13 +6,11 @@ input clk,
 input rst_n,
 
 
-input [`REG_ADDR_WIDTH-1:0] i_rd,
-input [`REG_ADDR_WIDTH-1:0] i_rs1,
-input [`REG_ADDR_WIDTH-1:0] i_rs2,
-input [`ISA_WIDTH-1:0]      i_imm,
-
-input opType                i_op,
-input InstAct               i_inst_act,
+input [`REG_ADDR_WIDTH-1:0] rd,
+input [`REG_ADDR_WIDTH-1:0] rs1,
+input [`REG_ADDR_WIDTH-1:0] rs2,
+input [`ISA_WIDTH-1:0]      imm,
+input InstAct               inst_act,
 
 input                       IDU_vld,
 input [`ISA_WIDTH-1:0]      IDU_pc,
@@ -48,67 +46,22 @@ output  			axi_R_READY
 
 
 
-  //===================================================
-  //===control signal
-
-
-  reg [`REG_ADDR_WIDTH-1:0] rd_r;
-  reg [`REG_ADDR_WIDTH-1:0] rs1_r;
-  reg [`REG_ADDR_WIDTH-1:0] rs2_r;
-  reg [`ISA_WIDTH-1:0]      imm_r;
-  opType                    op_r;
-  InstAct                   inst_act_r;
-  reg [`ISA_WIDTH-1:0]      pc_r;
-  reg [`ISA_WIDTH-1:0]      inst_r;
-
-
-
-  initial pc_r = 64'h80000000;
-  always@(posedge clk)
-    if(~rst_n) pc_r <= 64'h80000000;
-    else pc_r <= IDU_pc;
-
-  always@(posedge clk)
-    if(~rst_n)   {rd_r, rs1_r, rs2_r, imm_r, op_r, inst_r, inst_act_r} <= 0; 
-    else if(IDU_vld) 
-      {rd_r, rs1_r, rs2_r, imm_r, op_r, inst_r, inst_act_r} <= {i_rd, i_rs1, i_rs2, i_imm, i_op, IDU_inst, i_inst_act};
-
-
-  reg [`REG_ADDR_WIDTH-1:0] rd;
-  reg [`REG_ADDR_WIDTH-1:0] rs1;
-  reg [`REG_ADDR_WIDTH-1:0] rs2;
-  reg [`ISA_WIDTH-1:0]      imm;
-  opType                    op;
-  InstAct                   inst_act;
-  reg [`ISA_WIDTH-1:0]      pc;
-  reg [`ISA_WIDTH-1:0]      inst;
-
-  
-  always @(*) 
-    if(IDU_vld) 
-      {rd, rs1, rs2, imm, op, pc, inst, inst_act} = {i_rd, i_rs1, i_rs2, i_imm, i_op, IDU_pc, IDU_inst, i_inst_act};
-    else 
-      {rd, rs1, rs2, imm, op, pc, inst, inst_act} = {rd_r, rs1_r, rs2_r, imm_r, op_r, pc_r, inst_r, inst_act_r};
-
-
-
 
   //===================================================
   //===ALU
 
 
 
-logic          alu_wb_vld;
-logic  [4:0]   alu_wb_addr;
-logic  [63:0]  alu_wb_data;
+  logic          alu_wb_vld;
+  logic  [4:0]   alu_wb_addr;
+  logic  [63:0]  alu_wb_data;
 
 
-ALU u_alu(
+  ALU u_alu(
 
   .clk(clk),
   .rst_n(rst_n),
   .IDU_vld(IDU_vld),
-  .op(op),
   .inst_act(inst_act), 
  
   //.dst_vld(),
@@ -117,13 +70,13 @@ ALU u_alu(
   .src1(src1),
   .src2(src2),
   .imm(imm),
-  .pc(pc),
+  .pc(IDU_pc),
 
   .alu_wb_vld(alu_wb_vld),
   .alu_wb_addr(alu_wb_addr),
   .alu_wb_data(alu_wb_data)
 
-);
+  );
 
 
 
@@ -140,7 +93,7 @@ ALU u_alu(
   always_comb begin : wb
     
     if(alu_wb_vld) begin
-      wb_data = inst_act.w_inst? { {32{alu_wb_data[31]}}, alu_wb_data[31:0] }: alu_wb_data;
+      wb_data = alu_wb_data;
       wb_addr = alu_wb_addr;
     end
     else if(lsu_wb_vld) begin 
@@ -156,7 +109,7 @@ ALU u_alu(
       wb_addr = 0;
     end
 
-    if(rd == 0) wb_data = 0;
+    if(wb_addr == 0) wb_data = 0;
   end
 
   assign wb_vld = (alu_wb_vld | lsu_wb_vld | csr_wb_vld);
@@ -188,13 +141,13 @@ ALU u_alu(
     .rst_n(rst_n), 
 
     .IDU_vld(IDU_vld),
-    .jal(inst_act.jal),
-    .jalr(inst_act.jalr),
-    .br(inst_act.br),
+    .jal    (inst_act.jal),
+    .jalr   (inst_act.jalr),
+    .br     (inst_act.br),
     .syscall(inst_act.syscall),
-    .func3(inst_act.func3),
+    .func3  (inst_act.func3),
 
-    .pc(pc),
+    .pc(IDU_pc),
     .src1(src1),
     .src2(src2),
     .imm(imm),
@@ -274,16 +227,16 @@ ALU u_alu(
 
     .sys_req(sys_req),
 
-    .csr(inst_act.csr),    
-    .ecall(inst_act.ecall),  
-    .ebreak(inst_act.ebreak),
-    .mret(inst_act.mret),  
+    .csr    (inst_act.csr),    
+    .ecall  (inst_act.ecall),  
+    .ebreak (inst_act.ebreak),
+    .mret   (inst_act.mret),  
     .dst_vld(inst_act.dst_vld),
-    .func3(inst_act.func3), 
-    .pc(pc),
-    .src1(src1),
-    .imm(imm),
-    .dst_id(rd),
+    .func3  (inst_act.func3), 
+    .pc     (IDU_pc),
+    .src1   (src1),
+    .imm    (imm),
+    .dst_id (rd),
 
     .csr_vld(csr_data_vld),
 
