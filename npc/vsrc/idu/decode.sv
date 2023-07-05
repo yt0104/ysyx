@@ -9,14 +9,14 @@
 
 
 //负责对当前指令进行译码, 准备执行阶段需要使用的数据和控制信号
-module IDU(
+module decode(
 
     input clk,
     input rst_n,
 
-    input       IFU_vld,
-    input [63:0 ] IFU_inst,
-    input      [63:0] IFU_pc,
+    input               ifetch_inst_vld,
+    input       [63:0 ] ifetch_inst,
+    input       [63:0]  ifetch_inst_pc,
 
     output logic [4:0]   rd,
     output logic [4:0]   rs1,
@@ -29,9 +29,9 @@ module IDU(
     output opType op,
 
 
-    output logic IDU_vld,
-    output logic [63:0] IDU_pc,
-    output logic [63:0] IDU_inst
+    output logic dec_inst_vld,
+    output logic [63:0] dec_inst_pc,
+    output logic [63:0] dec_inst
 
     );
 
@@ -39,25 +39,25 @@ module IDU(
   //===control
 
 always_ff @( posedge clk ) begin
-    if(~rst_n) IDU_vld <= 0;
-    else IDU_vld <= IFU_vld;
+    if(~rst_n) dec_inst_vld <= 0;
+    else dec_inst_vld <= ifetch_inst_vld;
     
 end
 
-initial IDU_pc = 64'h80000000;
+initial dec_inst_pc = 64'h80000000;
 always_ff @(posedge clk) begin
     if(~rst_n) begin 
-        IDU_pc <= 64'h80000000; IDU_inst <= 0; 
+        dec_inst_pc <= 64'h80000000; dec_inst <= 0; 
         end
     else begin     
-        IDU_inst <= IFU_inst;
-        IDU_pc <= IFU_pc;
+        dec_inst <= ifetch_inst;
+        dec_inst_pc <= ifetch_inst_pc;
     end
 end
 
 
 
-wire [63:0 ] inst = IFU_inst;
+wire [63:0 ] inst = ifetch_inst;
 
 InstAct    inst_act_pre;
 InstType   inst_type_pre;
@@ -202,7 +202,7 @@ end
 
 import "DPI-C" function void sim_exit(int state);
 always@(*)
-  if(IDU_vld) begin
+  if(dec_inst_vld) begin
     case(op) 
     op_ebreak: begin $display("ebreak"); sim_exit(0); end   //exit program
     op_inv   : begin sim_exit(1); end   //inst error
@@ -215,8 +215,8 @@ always@(posedge clk)
     if(~rst_n) begin 
         op <= 0; 
     end
-    else if(IFU_vld) begin
-        casez(IFU_inst)
+    else if(ifetch_inst_vld) begin
+        casez(ifetch_inst)
         
         `jalr  : begin op <= op_jalr  ; end
         `lbu   : begin op <= op_lbu   ; end

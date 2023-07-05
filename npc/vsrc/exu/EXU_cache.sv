@@ -7,19 +7,35 @@ input rst_n,
 
 
 input [`REG_ADDR_WIDTH-1:0] rd,
-input [`REG_ADDR_WIDTH-1:0] rs1,
-input [`REG_ADDR_WIDTH-1:0] rs2,
+input [`ISA_WIDTH-1:0]      src1,
+input [`ISA_WIDTH-1:0]      src2,
 input [`ISA_WIDTH-1:0]      imm,
 input InstAct               inst_act,
 
-input                       IDU_vld,
-input [`ISA_WIDTH-1:0]      IDU_pc,
-input [`ISA_WIDTH-1:0]      IDU_inst,
+input                       dec_inst_vld,
+input [`ISA_WIDTH-1:0]      dec_inst_pc,
+input [`ISA_WIDTH-1:0]      dec_inst,
 
 
 output logic                  ifetch_taken,
 output logic [`ISA_WIDTH-1:0] ifetch_taken_pc,
 output logic                  ifetch_req,
+
+//alu
+output logic           alu_wb_vld,
+output logic   [4:0]   alu_wb_addr,
+output logic   [63:0]  alu_wb_data,
+
+//sys
+output logic           csr_wb_vld,
+output logic   [63:0]  csr_wb_data,
+output logic   [ 4:0]  csr_wb_addr,
+
+//lsu
+output logic           lsu_wb_vld,
+output logic    [4:0]  lsu_wb_addr,
+output logic   [63:0]  lsu_wb_data,
+
 
 //AXI
 output  [63 : 0] 	axi_AW_ADDR,
@@ -50,18 +66,13 @@ output  			axi_R_READY
   //===================================================
   //===ALU
 
-
-
-  logic          alu_wb_vld;
-  logic  [4:0]   alu_wb_addr;
-  logic  [63:0]  alu_wb_data;
-
+  logic alu_stall;
 
   ALU u_alu(
 
   .clk(clk),
   .rst_n(rst_n),
-  .IDU_vld(IDU_vld),
+  .dec_inst_vld(dec_inst_vld),
   .inst_act(inst_act), 
  
   //.dst_vld(),
@@ -70,65 +81,15 @@ output  			axi_R_READY
   .src1(src1),
   .src2(src2),
   .imm(imm),
-  .pc(IDU_pc),
+  .pc(dec_inst_pc),
 
   .alu_wb_vld(alu_wb_vld),
   .alu_wb_addr(alu_wb_addr),
-  .alu_wb_data(alu_wb_data)
+  .alu_wb_data(alu_wb_data),
+
+  .alu_stall(alu_stall)
 
   );
-
-
-
-  //===================================================
-  //===WB
-
-  /*GPR*/
-  logic [`ISA_WIDTH-1:0] src1,src2;
-
-  logic          wb_vld;
-  logic  [4:0]   wb_addr;
-  logic  [63:0]  wb_data;
-
-  always_comb begin : wb
-    
-    if(alu_wb_vld) begin
-      wb_data = alu_wb_data;
-      wb_addr = alu_wb_addr;
-    end
-    else if(lsu_wb_vld) begin 
-      wb_data = lsu_wb_data;
-      wb_addr = lsu_wb_addr;
-    end
-    else if(csr_wb_vld) begin
-      wb_data = csr_wb_data;
-      wb_addr = csr_wb_addr;
-    end
-    else begin
-      wb_data = 0;
-      wb_addr = 0;
-    end
-
-    if(wb_addr == 0) wb_data = 0;
-  end
-
-  assign wb_vld = (alu_wb_vld | lsu_wb_vld | csr_wb_vld);
-
-
-  RegisterFile u_gpr(
-      .clk    (clk),
-      .rdata1 (src1),
-      .raddr1 (rs1),
-      .rdata2 (src2),
-      .raddr2 (rs2),
-
-      .wdata  (wb_data),
-      .waddr  (wb_addr),
-      .wen    (wb_vld)
-  );
-
-
-
 
 
 
@@ -140,14 +101,14 @@ output  			axi_R_READY
     .clk(clk), 
     .rst_n(rst_n), 
 
-    .IDU_vld(IDU_vld),
+    .dec_inst_vld(dec_inst_vld),
     .jal    (inst_act.jal),
     .jalr   (inst_act.jalr),
     .br     (inst_act.br),
     .syscall(inst_act.syscall),
     .func3  (inst_act.func3),
 
-    .pc(IDU_pc),
+    .pc(dec_inst_pc),
     .src1(src1),
     .src2(src2),
     .imm(imm),
@@ -168,17 +129,14 @@ output  			axi_R_READY
   //===================================================
   //===LSU
 
-  logic        lsu_wb_vld;
-  logic  [4:0] lsu_wb_addr;
-  logic [63:0] lsu_wb_data;
 
   logic lsu_data_vld;
 
   logic ld_req;
   logic st_req;
 
-  assign ld_req = IDU_vld & inst_act.ld;
-  assign st_req = IDU_vld & inst_act.st;
+  assign ld_req = dec_inst_vld & inst_act.ld;
+  assign st_req = dec_inst_vld & inst_act.st;
 
   LSU u_LSU(
     .clk(clk), 
@@ -214,11 +172,8 @@ output  			axi_R_READY
   logic sys_req;
   logic csr_data_vld;
 
-  logic [63:0] csr_wb_data;
-  logic [ 4:0] csr_wb_addr;
-  logic        csr_wb_vld;
 
-  assign sys_req = IDU_vld & inst_act.sys;
+  assign sys_req = dec_inst_vld & inst_act.sys;
 
   SYS_control u_sysc (
 
@@ -233,7 +188,7 @@ output  			axi_R_READY
     .mret   (inst_act.mret),  
     .dst_vld(inst_act.dst_vld),
     .func3  (inst_act.func3), 
-    .pc     (IDU_pc),
+    .pc     (dec_inst_pc),
     .src1   (src1),
     .imm    (imm),
     .dst_id (rd),

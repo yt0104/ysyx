@@ -1,12 +1,12 @@
 //负责根据当前PC从存储器中取出一条指令
-module IFU_cache(
+module ifetch_cache(
 
 input clk,
 input rst_n,
 
-output  	IFU_vld,
-output logic [63:0 ] IFU_pc,
-output logic [63:0 ] IFU_inst,
+output  	ifetch_inst_vld,
+output logic [63:0 ] ifetch_inst_pc,
+output logic [63:0 ] ifetch_inst,
 
 input  [63:0 ]  ifetch_taken_pc,
 input      	    ifetch_taken,
@@ -36,7 +36,7 @@ output  			axi_R_READY
 
 );
 
-	logic [63:0 ] ifetch_pc;
+	logic [63:0 ] pc_raddr;
 
   //===================================================
   //===control
@@ -49,21 +49,21 @@ output  			axi_R_READY
 
 
     always_comb begin
-        ifetch_pc = 64'h80000000;
-        if(ifetch_req) ifetch_pc = ifetch_taken? ifetch_taken_pc: IFU_pc +4;
+        pc_raddr = 64'h80000000;
+        if(ifetch_req) pc_raddr = ifetch_taken? ifetch_taken_pc: ifetch_inst_pc +4;
         rreq = ifetch_req || (pre_cnt == 6'd9);
     end
 
 
-    initial IFU_pc = 64'h80000000;
+    initial ifetch_inst_pc = 64'h80000000;
     always_ff @( posedge clk ) begin
-    	if(~rst_n) IFU_pc <= 64'h80000000;
-    	else if(ifetch_req) IFU_pc <= ifetch_pc;
+    	if(~rst_n) ifetch_inst_pc <= 64'h80000000;
+    	else if(ifetch_req) ifetch_inst_pc <= pc_raddr;
     end 
 
 
-    assign IFU_vld = rask;
-    assign IFU_inst = mem_inst64 & 64'h00000000ffffffff;
+    assign ifetch_inst_vld = rask;
+    assign ifetch_inst = mem_inst64 & 64'h00000000ffffffff;
 
 
   //===================================================
@@ -85,7 +85,7 @@ output  			axi_R_READY
 
     /*user interface*/
     .WREQ(0), .IN_WADDR(0), .IN_WDATA(0), .IN_WMASK(0),
-    .RREQ(rreq), .IN_RADDR(ifetch_pc), .RDATA_OUT(mem_inst64),
+    .RREQ(rreq), .IN_RADDR(pc_raddr), .RDATA_OUT(mem_inst64),
     .ASK(rask),
     .direct_memory(0)
     );
@@ -120,7 +120,7 @@ output  			axi_R_READY
 	(
 	//user interface
 	.WREQ(0), .IN_WADDR(0), .IN_WDATA(0), .IN_WMASK(0), 
-	.RREQ(rreq), .IN_RADDR(ifetch_pc), .DATA_OUT(mem_inst64),
+	.RREQ(rreq), .IN_RADDR(pc_raddr), .DATA_OUT(mem_inst64),
 
 	.CLK(clk), .RESETN(rst_n),
     .AW_ADDR(axi_AW_ADDR), .AW_VALID(axi_AW_VALID), .AW_READY(axi_AW_READY),

@@ -136,7 +136,8 @@ always@(posedge CLK)
   else if(RREQ)
     r_addr_reg <= IN_RADDR;
 
-assign AR_ADDR = RREQ? IN_RADDR: r_addr_reg;
+//assign AR_ADDR = RREQ? IN_RADDR: r_addr_reg;
+assign AR_ADDR = r_addr_reg;
 
 //====== 读数据通道
 

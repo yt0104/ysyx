@@ -2,9 +2,9 @@
 `include "vsrc/common/InstFmt.sv"
 `include "vsrc/common/para.sv"
 
-`include "vsrc/ifu/IFU_cache.sv"
+`include "vsrc/ifu/ifetch_cache.sv"
 
-`include "vsrc/idu/IDU.sv"
+`include "vsrc/idu/decode.sv"
 
 `include "vsrc/alu/ALU.sv"
 `include "vsrc/alu/shifter.sv"
@@ -21,6 +21,7 @@
 
 `include "vsrc/regfile/RegisterFile.sv"
 `include "vsrc/regfile/CSRegisterFile.sv"
+`include "vsrc/regfile/RMU.sv"
 
 `include "vsrc/AXI_if/AXI_slave_SRAM.sv"
 `include "vsrc/AXI_if/AXI_slave_ifench.sv"

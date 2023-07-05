@@ -3,7 +3,7 @@ module ALU(
   input clk,
   input rst_n,
 
-  input logic           IDU_vld,
+  input logic           dec_inst_vld,
 
   input InstAct         inst_act,
  
@@ -19,9 +19,20 @@ module ALU(
 
   output logic          alu_wb_vld,
   output logic  [4:0]   alu_wb_addr,
-  output logic  [63:0]  alu_wb_data
+  output logic  [63:0]  alu_wb_data,
+
+  output logic          alu_stall
 
 );
+
+  reg dec_inst_vld_d;
+  always_ff @( posedge clk ) begin : STALL
+    if(~rst_n) dec_inst_vld_d <= 0;
+    else if(mul_out_valid | div_out_valid| shift_out_vld | lgc_out_vld | add_out_vld) dec_inst_vld_d <= 0;
+    else if(shift_req | lgc_req | add_req | mult_req | div_req) dec_inst_vld_d <= 1;
+  end
+
+  assign alu_stall = dec_inst_vld_d & ~(mul_out_valid | div_out_valid| shift_out_vld | lgc_out_vld | add_out_vld);
 
 
   logic shift_out_vld;
@@ -54,7 +65,7 @@ module ALU(
 
   always_ff @( posedge clk ) begin
     if(~rst_n) alu_wb_addr <= 0;
-    else if(IDU_vld) begin
+    else if(dec_inst_vld) begin
       alu_wb_addr <= dst_id;
     end
   end
@@ -62,12 +73,12 @@ module ALU(
 
   logic w_inst_d;
   always_ff @( posedge clk ) begin 
-    if(IDU_vld) w_inst_d <= inst_act.w_inst;
+    if(dec_inst_vld) w_inst_d <= inst_act.w_inst;
   end
 
   reg div_rem_d;
   always_ff @( posedge clk ) begin
-    if(IDU_vld) div_rem_d <= inst_act.div_rem;
+    if(dec_inst_vld) div_rem_d <= inst_act.div_rem;
   end
 
 //--------------------------------------------------------
@@ -82,7 +93,7 @@ logic [63:0] shift_result;
 always_comb begin : shifter_control
   shift_dir  = inst_act.shift & inst_act.func3[2];            //1: sr
   shift_mode = inst_act.shift_arth;                           //1: sra
-  shift_req  = IDU_vld & inst_act.shift;
+  shift_req  = dec_inst_vld & inst_act.shift;
 
   case({inst_act.w_inst, inst_act.imm_vld})
     2'b00: shift_shamt = src2[5:0];
@@ -125,7 +136,7 @@ always_comb begin : adder_control
   adder_src0  = (inst_act.auipc| inst_act.jal| inst_act.jalr)? pc: inst_act.lui? 64'b0: src1;
   adder_src1  = (inst_act.jal| inst_act.jalr)? 4: inst_act.imm_vld? imm: src2;
   adder_AorS  = inst_act.add_sub | inst_act.add_slt;
-  add_req     = IDU_vld & inst_act.add;
+  add_req     = dec_inst_vld & inst_act.add;
   
 end
 
@@ -173,7 +184,7 @@ logic [63:0] lgc_src1;
 always_comb begin: lgc_control
   lgc_src0 = src1;
   lgc_src1 = inst_act.imm_vld? imm: src2;
-  lgc_req  = IDU_vld & inst_act.lgc;
+  lgc_req  = dec_inst_vld & inst_act.lgc;
 
 end
 
@@ -207,7 +218,7 @@ end
 
   always_comb begin : mul_control
 
-    mult_req = IDU_vld & inst_act.mul;
+    mult_req = dec_inst_vld & inst_act.mul;
     mult_src0 = src1;
     mult_src1 = src2;
     mult_sign = inst_act.sign;
@@ -238,7 +249,7 @@ end
   logic [63:0] div_result;
 
   always_comb begin : div_control
-    div_req = IDU_vld & inst_act.div;
+    div_req = dec_inst_vld & inst_act.div;
     div_result = div_rem_d? remainder : quotient;
   end
 

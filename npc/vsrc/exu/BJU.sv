@@ -3,7 +3,7 @@ module BJU(
     input clk,
     input rst_n,
 
-    input  logic            IDU_vld,
+    input  logic            dec_inst_vld,
 
     input  logic            jal,
     input  logic            jalr,
@@ -65,7 +65,7 @@ always_ff @( posedge clk ) begin
     ifetch_taken <= 0;
     ifetch_taken_pc <= 0;
   end
-  else if(IDU_vld) begin
+  else if(dec_inst_vld) begin
     ifetch_taken <= ifetch_taken_pre;
     ifetch_taken_pc <= ifetch_taken_pc_pre;
   end
@@ -75,7 +75,7 @@ end
 
 always_ff @( posedge clk ) begin
   if(~rst_n) bmu_vld <= 0;
-  else bmu_vld <= IDU_vld & (jal | jalr | br | syscall);
+  else bmu_vld <= dec_inst_vld & (jal | jalr | br | syscall);
 end
 
 
