@@ -10,3 +10,4 @@
 !*.cpp
 !.gitignore
 !README.md
+obj_dir
