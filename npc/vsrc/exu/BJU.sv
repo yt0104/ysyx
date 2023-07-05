@@ -1,4 +1,4 @@
-module BMU(
+module BJU(
 
     input clk,
     input rst_n,

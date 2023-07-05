@@ -10,6 +10,7 @@ module SYS_control#(ADDR_WIDTH = 2, DATA_WIDTH = 64) (
   input logic ebreak,
   input logic mret,  
   input logic [2:0] func3, 
+  input logic dst_vld,
 
   input logic [63:0] pc,
   input logic [63:0] src1,
@@ -57,7 +58,7 @@ always_ff @( posedge clk ) begin
     csr_wb_addr <= 0;
   end
   else begin
-    csr_wb_vld <= sys_req & csr;
+    csr_wb_vld <= sys_req & dst_vld;
     csr_wb_data <= csrf_rdata;
     csr_wb_addr <= dst_id;
   end

@@ -13,7 +13,7 @@
 
 `include "vsrc/exu/EXU_cache.sv"
 `include "vsrc/exu/LSU.sv"
-`include "vsrc/exu/BMU.sv"
+`include "vsrc/exu/BJU.sv"
 `include "vsrc/exu/SYS_control.sv"
 
 `include "vsrc/alu/mul.sv"

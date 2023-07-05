@@ -74,32 +74,6 @@
 `define     bltu    64'b????????_????????_????????_????????_???????_?????_?????_110_?????_11000_11
 `define     bgeu    64'b????????_????????_????????_????????_???????_?????_?????_111_?????_11000_11
 
-/*
-typedef struct packed {
-    logic        iinst          ;  //integer instruction
-    logic        br             ;  //branch instruction
-    logic        jal            ;  //jal instruction
-    logic        jalr           ;  //jalr instruction
-    logic        lui            ;  //lui instruction
-    logic        auipc          ;  //auipc instruction
-    logic        ecall          ;  //ecall instruction
-    logic        ebreak         ;  //ebreak instruction
-    logic        ld             ;  //load instruction
-    logic        st             ;  //store instruction
-    logic        fence          ;  //fence instruction
-    logic        csr            ;  //csr instruction
-    logic        sign           ;  //instruction is signed/unsigned
-    logic        lgc            ;  //instruction is lgc
-    logic        add            ;  //add instruction
-    logic        shft           ;  //shift instruction
-    logic        mul            ;  //multiply instruction
-    logic        div            ;  //divide instruction
-    logic        w_inst         ;  //half word instruction
-    logic        extra_func_flag;  //When arithemetic right shift and r-type sub happen set 1
-    logic [2:0]  func3          ;  //func3
-    logic [1:0]  cycle          ;  //instruction cycles
-} InstAct;
-*/
 
 
 typedef struct packed {
@@ -147,19 +121,18 @@ typedef struct packed {
     logic        ret        ;
 
     //alu
-    logic        mini_alu   ;
     logic        mul        ;  //multiply instruction
     logic        div        ;  //divide instruction
     logic        div_rem    ;  //div reminder instruction
-    logic        sign       ;  //div sign instruction
+    
     logic        add        ;
     logic        add_sub    ;
     logic        add_slt    ;
-    logic        w_inst     ;  //half word instruction
-    logic        wb         ;  //write back
     logic        shift      ;
     logic        shift_arth ;
-
+    logic        lgc        ;
+    logic        sign       ;  //div sign instruction
+    logic        w_inst     ;  //half word instruction
     //sys
     logic        sys        ;
     logic        csr        ;  //
@@ -172,6 +145,7 @@ typedef struct packed {
     logic [2:0]  func3      ;
     logic        onecycle   ;
 
+    logic        dst_vld    ;
     logic        imm_vld    ;
 
 } InstAct;

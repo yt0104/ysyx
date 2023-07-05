@@ -8,6 +8,7 @@ Vtop* top;
 
 uint64_t main_time = 0;      // 仿真时间戳
 uint64_t sim_time = 1200000;   // 最大仿真时间戳
+uint64_t cycle_num = 0;       // cycle mount
 
 uint64_t lpc = 0x80000000;
 uint64_t linst = 0x00000413;
@@ -81,6 +82,7 @@ extern "C" void sim_exit(int state){
   case 0: 
     if(cpu_gpr[10] == 0 ) {
       Log(ANSI_FMT("HIT GOOD TRAP", ANSI_FG_GREEN));
+      Log(ANSI_FMT("Instruction: %ld, Cycle: %ld --> IPC: %ld", ANSI_FG_GREEN), main_time, cycle_num, 1000* cycle_num/main_time);
     }
     else  {
       mtrace_puts_mtracebuf();
@@ -141,6 +143,7 @@ static void step_and_dump_wave(){
 #ifdef CONFIG_GTK
   tfp->dump(contextp->time());
 #endif
+  cycle_num ++;
 }
 
 static void step_once(){

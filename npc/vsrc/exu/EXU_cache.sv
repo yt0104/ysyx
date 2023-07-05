@@ -102,16 +102,14 @@ logic          alu_wb_vld;
 logic  [4:0]   alu_wb_addr;
 logic  [63:0]  alu_wb_data;
 
-logic alu_req;
-assign alu_req = IDU_vld & (inst_act.mini_alu | inst_act.div | inst_act.mul);
 
 ALU u_alu(
 
   .clk(clk),
   .rst_n(rst_n),
-  .alu_req(alu_req),
+  .IDU_vld(IDU_vld),
   .op(op),
-  .inst_act(inst_act),
+  .inst_act(inst_act), 
  
   //.dst_vld(),
   .dst_id(rd),
@@ -182,9 +180,9 @@ ALU u_alu(
 
 
   //===================================================
-  //===BMU
+  //===BJU
 
-  BMU u_BMU(
+  BJU u_BJU(
 
     .clk(clk), 
     .rst_n(rst_n), 
@@ -240,6 +238,7 @@ ALU u_alu(
     .src2(src2), 
     .imm(imm), 
     .dst_id(rd),
+    .dst_vld(inst_act.dst_vld),
 
     .lsu_data_vld(lsu_data_vld),
     .lsu_wb_vld(lsu_wb_vld),
@@ -279,6 +278,7 @@ ALU u_alu(
     .ecall(inst_act.ecall),  
     .ebreak(inst_act.ebreak),
     .mret(inst_act.mret),  
+    .dst_vld(inst_act.dst_vld),
     .func3(inst_act.func3), 
     .pc(pc),
     .src1(src1),

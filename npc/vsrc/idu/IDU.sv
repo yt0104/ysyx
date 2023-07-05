@@ -118,11 +118,7 @@ always_comb begin : dec_pre
     //for alu
     inst_act_pre.auipc  = inst_type_pre.AUIPC;
     inst_act_pre.lui    = inst_type_pre.LUI;
-    inst_act_pre.w_inst = (inst_type_pre.OP_32 | inst_type_pre.IMM_32);   
-
-    inst_act_pre.mini_alu    =(inst_type_pre.instI & ~inst_type_pre.SYS & ~inst_type_pre.LD)
-                                |  inst_type_pre.instU | inst_type_pre.instJ
-                                | (inst_type_pre.instR & ~inst[25]);
+    
     inst_act_pre.mul        = inst_type_pre.instR & inst[25] & ~inst[14];
     inst_act_pre.div        = inst_type_pre.instR & inst[25] & inst[14];
     inst_act_pre.div_rem    = inst_type_pre.instR & inst[25] & inst[14] & inst[13];
@@ -132,29 +128,31 @@ always_comb begin : dec_pre
                                 | inst_type_pre.OP    & (inst[14:12]==3'b011 || inst_act_pre.div & inst[14] & inst[12])
                                 | inst_type_pre.OP_32 & (inst_act_pre.div & inst[14] & inst[12])
                                 );
+    inst_act_pre.w_inst = (inst_type_pre.OP_32 | inst_type_pre.IMM_32);   
     inst_act_pre.shift      = inst_type_pre.IMM   & (inst[14:12]==3'b001 || inst[14:12]==3'b101)
                             | inst_type_pre.IMM_32& (inst[14:12]==3'b001 || inst[14:12]==3'b101)
-                            | inst_type_pre.OP    & (inst[14:12]==3'b001 || inst[14:12]==3'b101)
-                            | inst_type_pre.OP_32 & (inst[14:12]==3'b001 || inst[14:12]==3'b101);
+                            | inst_type_pre.OP    & (inst[14:12]==3'b001 || inst[14:12]==3'b101) & ~inst[25]
+                            | inst_type_pre.OP_32 & (inst[14:12]==3'b001 || inst[14:12]==3'b101) & ~inst[25];
     inst_act_pre.shift_arth = inst_act_pre.shift & inst[30];
 
     inst_act_pre.add_slt    = inst_type_pre.IMM   & (inst[14:12]==3'b010 | inst[14:12]==3'b011)
                             | inst_type_pre.OP    & (inst[14:12]==3'b010 | inst[14:12]==3'b011);
     inst_act_pre.add        = inst_act_pre.add_slt
-                            | inst_type_pre.JALR 
-                            | inst_type_pre.JAL
-                            | inst_type_pre.AUIPC
+                            | inst_type_pre.JALR  | inst_type_pre.JAL
+                            | inst_type_pre.AUIPC | inst_type_pre.LUI
                             | inst_type_pre.IMM    & (inst[14:12]==3'b000 )
                             | inst_type_pre.IMM_32 & (inst[14:12]==3'b000 )
                             | inst_type_pre.OP     & (inst[14:12]==3'b000 & ~inst[25])
                             | inst_type_pre.OP_32  & (inst[14:12]==3'b000 & ~inst[25]);
-    inst_act_pre.add_sub    = inst_act_pre.add & inst[30] & (inst_type_pre.OP | inst_type_pre.OP_32);                     
+    inst_act_pre.add_sub    = inst_act_pre.add & inst[30] & (inst_type_pre.OP | inst_type_pre.OP_32); 
 
+    inst_act_pre.lgc        = inst_type_pre.IMM    & ~inst_act_pre.add & ~inst_act_pre.shift                   
+                            | inst_type_pre.OP     & ~inst_act_pre.add & ~inst_act_pre.shift & ~inst[25]; 
 
     inst_act_pre.func3      = inst[14:12];
 
-    inst_act_pre.wb     = inst_type_pre.instR | inst_type_pre.instJ | inst_type_pre.instU | (inst_type_pre.instI & ~inst_act_pre.syscall);
-    inst_act_pre.imm_vld = !(inst_type_pre.OP | inst_type_pre.OP_32 | (inst_type_pre.SYS & ~inst[14]) );
+    inst_act_pre.dst_vld    = !(inst_type_pre.ST | inst_type_pre.BR | inst_act_pre.syscall);
+    inst_act_pre.imm_vld    = !(inst_type_pre.OP | inst_type_pre.OP_32 | (inst_type_pre.SYS & ~inst[14]) );
                            
 end
 

@@ -10,7 +10,7 @@ module LSU(
     input  [63:0]   src2,
     input  [63:0]   imm,
     input   [4:0]   dst_id,
-
+    input           dst_vld,
 
     output logic         lsu_data_vld,
 
@@ -77,16 +77,16 @@ module LSU(
       default: lsu_wb_data = 0;
     endcase
 
-    lsu_wb_vld = dataM_valid & ld_req_r;
+    lsu_wb_vld = dataM_valid & dst_vld_r;
     lsu_wb_addr = dst_id_r;
 
     lsu_data_vld = dataM_valid;
   end
 
-  logic ld_req_r, st_req_r;
+  logic dst_vld_r;
   logic [4:0] dst_id_r;
   always_ff @( posedge clk ) begin 
-    {ld_req_r, st_req_r, dst_id_r} <= {ld_req, st_req, dst_id};
+    {dst_vld_r, dst_id_r} <= {dst_vld, dst_id};
   end
 
 

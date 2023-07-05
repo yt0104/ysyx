@@ -6,7 +6,7 @@ module adder #(parameter WIDTH = 64)(
     input  logic             sign           ,
     input  logic             w_inst         ,
 		input  logic             adder_AorS    ,
-    input  logic             exe_add        ,
+    input  logic             add_req        ,
 		output logic [WIDTH-1:0] adder_sum     ,
 		output logic             adder_co      ,
 		output logic             adder_sign    
@@ -30,7 +30,7 @@ module adder #(parameter WIDTH = 64)(
 	assign addend.addend0 = {{H_WIDTH{!w_inst}},{H_WIDTH{1'b1}}} & {WIDTH{adder_src0_vld}} & adder_src0;
  
 
-	assign {adder_co, adder_sign, adder_sum_temp, s0} = exe_add ? ({1'b0, addend.addend0[WIDTH-1], addend.addend0,addend.ci} + {1'b0, addend.addend1[WIDTH-1], addend.addend1, addend.ci}) : 'b0;
+	assign {adder_co, adder_sign, adder_sum_temp, s0} = add_req ? ({1'b0, addend.addend0[WIDTH-1], addend.addend0,addend.ci} + {1'b0, addend.addend1[WIDTH-1], addend.addend1, addend.ci}) : 'b0;
   assign adder_sum = w_inst ? {{32{adder_sum_temp[31]}},adder_sum_temp[31:0]} : adder_sum_temp;
 
 endmodule

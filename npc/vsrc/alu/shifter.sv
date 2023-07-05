@@ -1,4 +1,5 @@
 module shifter(
+	input  logic 				shift_req,
 	input  logic [63:0] shift_data_in,
 	input  logic        shift_data_tc, //sign unsign
 	input  logic [ 5:0] shift_sh,
@@ -50,6 +51,6 @@ module shifter(
 		end
 	end
 	
-	assign shift_data_out = w_inst? ({{32{w_inst_shift_res[31]}},w_inst_shift_res}) : shift_res;
+	assign shift_data_out = shift_req? w_inst? ({{32{w_inst_shift_res[31]}},w_inst_shift_res}) : shift_res : 64'b0;
 
 	endmodule

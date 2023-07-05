@@ -3,7 +3,7 @@ module ALU(
   input clk,
   input rst_n,
 
-  input logic           alu_req,
+  input logic           IDU_vld,
 
   input opType          op,
   input InstAct         inst_act,
@@ -24,46 +24,9 @@ module ALU(
 
 );
 
-  logic mul_valid, div_valid, mini_alu_valid;
+  logic mini_alu_valid;
 
-  assign mul_valid = alu_req & inst_act.mul;
-  assign div_valid = alu_req & inst_act.div;
-  assign mini_alu_valid = alu_req & inst_act.mini_alu;
-
-  wire mul_out_valid;
-  wire [63:0] mul_result_h, mul_result_l;
-  wire [63:0] mul_result = (mul_result_h==0)? mul_result_l: mul_result_l;
-
-  mul u_mul(
-  .clk(clk),
-  .rst_n(rst_n),
-  .mul_valid(mul_valid),
-  .multiplicand(src1),
-  .multiplier(src2),
-  .out_valid(mul_out_valid),
-  .result_h(mul_result_h),
-  .result_l(mul_result_l)
-  );
-
-  wire div_out_valid;
-  wire [63:0] quotient, remainder;
-  wire [63:0] div_result = inst_act.div_rem? remainder : quotient;
-
-  div u_div(
-    .clk(clk),
-    .rst_n(rst_n),
-
-    .sign_div(inst_act.sign),
-    .divw(inst_act.w_inst),
-
-    .div_valid(div_valid),
-    .dividend(src1),
-    .divisor(src2),
-    
-    .quotient(quotient),
-    .remainder(remainder),
-    .out_valid(div_out_valid)
-    );
+  assign mini_alu_valid = IDU_vld & (inst_act.shift | inst_act.lgc | inst_act.add);
 
 
   logic        alu_vld;
@@ -79,81 +42,55 @@ module ALU(
     end
     else if(mini_alu_valid) begin
       mini_alu_out_vld <= 1;
-      case(op)
-      op_jalr  : begin mini_alu_result <= add_result;     end
-
-      op_addi  : begin mini_alu_result <= add_result; end
-      op_slli  : begin mini_alu_result <= shift_result; end
-      op_slti  : begin mini_alu_result <= add_result; end
-      op_srli  : begin mini_alu_result <= shift_result; end
-      op_sltiu : begin mini_alu_result <= add_result; end
-      op_xori  : begin mini_alu_result <= src1 ^ imm; end
-      op_srai  : begin mini_alu_result <= shift_result;  end
-      op_andi  : begin mini_alu_result <= src1 & imm; end
-      op_addiw : begin mini_alu_result <= add_result; end
-      op_slliw : begin mini_alu_result <= shift_result; end
-      op_srliw : begin mini_alu_result <= shift_result; end
-      op_sraiw : begin mini_alu_result <= shift_result; end
-      op_ori   : begin mini_alu_result <= src1 | imm; end
-
-      op_auipc : begin mini_alu_result <= add_result; end
-      op_lui   : begin mini_alu_result <= { {32{imm[31]}},imm[31:12],12'b0 }; end
-
-      op_jal   : begin mini_alu_result <= add_result;  end
-
-      op_add   : begin mini_alu_result <= add_result; end
-      op_sltu  : begin mini_alu_result <= add_result; end
-      op_and   : begin mini_alu_result <= src1 & src2; end
-      op_or    : begin mini_alu_result <= src1 | src2; end
-      op_xor   : begin mini_alu_result <= src1 ^ src2; end
-      op_sub   : begin mini_alu_result <= add_result; end
-      //op_mul   : begin mini_alu_result = mul_result;  end
-      op_slt   : begin mini_alu_result <= add_result; end
-      op_addw  : begin mini_alu_result <= add_result; end
-      op_sllw  : begin mini_alu_result <= shift_result;  end
-      op_srlw  : begin mini_alu_result <= shift_result;  end
-      op_sraw  : begin mini_alu_result <= shift_result; end
-      //op_mulw  : begin mini_alu_result = mul_result;  end
-      op_subw  : begin mini_alu_result <= add_result; end
-      //op_divw  : begin mini_alu_result = quotient; end
-      //op_remw  : begin mini_alu_result = remainder; end
-      //op_divuw : begin mini_alu_result = quotient;  end
-      //op_remuw : begin mini_alu_result = remainder; end
-      //op_divu  : begin mini_alu_result = quotient; end
-      //op_remu  : begin mini_alu_result = remainder; end
-      op_sll   : begin mini_alu_result <= shift_result; end
-      op_srl   : begin mini_alu_result <= shift_result; end
-      //op_div   : begin mini_alu_result = quotient; end
-      //op_rem   : begin mini_alu_result = remainder; end
-
-      default  : begin mini_alu_result <= 0; end
-      endcase
+      mini_alu_result <= add_result | shift_result | lgc_result;
     end
     else begin 
       mini_alu_out_vld <= 0;
     end
   end
 
+  logic shift_out_vld;
+  logic lgc_out_vld;
+  logic add_out_vld;
+
+  logic [63:0] shift_data_out;
+  logic [63:0] lgc_data_out;
+  logic [63:0] add_data_out;
+
+  always_ff @( posedge clk ) begin
+    shift_out_vld <= shift_req;
+    lgc_out_vld   <= lgc_req;
+    add_out_vld   <= add_req;
+    if(shift_req) shift_data_out <= shift_result;
+    if(lgc_req)   lgc_data_out   <= lgc_result;
+    if(add_req)   add_data_out   <= add_result;
+  end
 
 
-  assign alu_wb_vld  = mul_out_valid | div_out_valid | mini_alu_out_vld;
+  assign alu_wb_vld  = mul_out_valid | div_out_valid| shift_out_vld | lgc_out_vld | add_out_vld;
 
-  assign alu_wb_data = mini_alu_out_vld? mini_alu_result:
-                          mul_out_valid? mul_result:
-                          div_out_valid? div_result:
-                          0;
+
+  assign alu_wb_data =  shift_out_vld? shift_data_out:
+                        lgc_out_vld? lgc_data_out:
+                        add_out_vld? add_data_out:
+                        mul_out_valid? mul_result:
+                        div_out_valid? div_result:
+                        0;
 
   always_ff @( posedge clk ) begin
     if(~rst_n) alu_wb_addr <= 0;
-    else if(alu_req) begin
+    else if(IDU_vld) begin
       alu_wb_addr <= dst_id;
     end
   end
 
 
+
+
 //--------------------------------------------------------
 //------shifter
 
+logic shift_req;
 logic shift_dir;
 logic shift_mode;
 logic [5:0] shift_shamt;
@@ -162,6 +99,7 @@ logic [63:0] shift_result;
 always_comb begin : shifter_control
   shift_dir  = inst_act.shift & inst_act.func3[2];            //1: sr
   shift_mode = inst_act.shift_arth;                           //1: sra
+  shift_req  = IDU_vld & inst_act.shift;
 
   case({inst_act.w_inst, inst_act.imm_vld})
     2'b00: shift_shamt = src2[5:0];
@@ -173,6 +111,7 @@ always_comb begin : shifter_control
 end
 
 shifter alu_shift(
+  .shift_req      (shift_req),
 	.shift_data_in  (src1),
 	.shift_data_tc  (1'b1),
 	.shift_sh       (shift_shamt),
@@ -191,7 +130,7 @@ logic [63:0] add_result;
 logic [63:0]  adder_src0;
 logic [63:0]  adder_src1;
 logic         adder_AorS;
-logic         exe_add;
+logic         add_req;
 
 
 logic [63:0]      adder_sum     ;
@@ -200,10 +139,10 @@ logic             adder_sign    ;
 
 
 always_comb begin : adder_control
-  adder_src0  = (inst_act.auipc| inst_act.jal| inst_act.jalr)? pc: src1;
+  adder_src0  = (inst_act.auipc| inst_act.jal| inst_act.jalr)? pc: inst_act.lui? 64'b0: src1;
   adder_src1  = (inst_act.jal| inst_act.jalr)? 4: inst_act.imm_vld? imm: src2;
   adder_AorS  = inst_act.add_sub | inst_act.add_slt;
-  exe_add     = inst_act.add;
+  add_req     = IDU_vld & inst_act.add;
   
 end
 
@@ -232,41 +171,97 @@ adder alu_add(
   .sign          (inst_act.sign),
   .w_inst        (inst_act.w_inst),
 	.adder_AorS    (adder_AorS),
-  .exe_add       (exe_add),
+  .add_req       (add_req),
 	.adder_sum     (adder_sum),
 	.adder_co      (adder_co),
 	.adder_sign    (adder_sign)
 );
 
 
+//--------------------------------------------------------
+//------logic
 
-//mul u_mul(
-//  .clk(clk),
-//  .rst_n(rst_n),
-//  .mul_valid(mul_valid),
-//  .multiplicand(src1),
-//  .multiplier(src2),
-//  .out_valid(mul_out_valid),
-//  .result_h(mul_result_h),
-//  .result_l(mul_result_l)
-//);
-//
-//
-//div u_div(
-//  .clk(clk),
-//  .rst_n(rst_n),
-//
-//  .sign_div(inst_act.div_sign),
-//  .divw(inst_act.w_inst),
-//
-//  .div_valid(div_valid),
-//  .dividend(src1),
-//  .divisor(src2),
-//    
-//  .quotient(quotient),
-//  .remainder(remainder),
-//  .out_valid(div_out_valid)
-//);
+logic [63:0] lgc_result;
+
+logic        lgc_req;
+logic [63:0] lgc_src0;
+logic [63:0] lgc_src1;
+
+always_comb begin: lgc_control
+  lgc_src0 = src1;
+  lgc_src1 = inst_act.imm_vld? imm: src2;
+  lgc_req  = IDU_vld & inst_act.lgc;
+
+end
+
+always_comb begin: lgc
+  if(lgc_req)
+    case(inst_act.func3)
+      3'b111: lgc_result = lgc_src0 & lgc_src1; //and
+      3'b110: lgc_result = lgc_src0 | lgc_src1; //or
+      3'b100: lgc_result = lgc_src0 ^ lgc_src1; //xor
+      default: lgc_result = 0;
+    endcase
+  else lgc_result = 0;
+
+end
+
+
+//--------------------------------------------------------
+//------mult
+
+  logic mul_req;
+  logic mul_out_valid;
+  logic [63:0] mul_result_h, mul_result_l;
+  logic [63:0] mul_result;
+
+  always_comb begin : mul_control
+    mul_req = IDU_vld & inst_act.mul;
+    mul_result = (mul_result_h==0)? mul_result_l: mul_result_l;
+  end
+
+  mul u_mul(
+  .clk(clk),
+  .rst_n(rst_n),
+  .mul_valid(mul_req),
+  .multiplicand(src1),
+  .multiplier(src2),
+  .out_valid(mul_out_valid),
+  .result_h(mul_result_h),
+  .result_l(mul_result_l)
+  );
+
+
+//--------------------------------------------------------
+//------div
+
+  logic div_req;
+  logic div_out_valid;
+  logic [63:0] quotient, remainder;
+  logic [63:0] div_result;
+
+  always_comb begin : div_control
+    div_req = IDU_vld & inst_act.div;
+    div_result = inst_act.div_rem? remainder : quotient;
+  end
+
+  div u_div(
+    .clk(clk),
+    .rst_n(rst_n),
+
+    .sign_div(inst_act.sign),
+    .divw(inst_act.w_inst),
+
+    .div_valid(div_req),
+    .dividend(src1),
+    .divisor(src2),
+    
+    .quotient(quotient),
+    .remainder(remainder),
+    .out_valid(div_out_valid)
+    );
+
+
 
 
 endmodule
