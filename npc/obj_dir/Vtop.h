@@ -34,7 +34,6 @@ class Vtop VL_NOT_FINAL {
     VL_OUT8(&ifetch_taken,0,0);
     VL_OUT64(&ifetch_taken_pc,63,0);
     VL_OUT8(&mainUpdate_valid,0,0);
-    VL_OUT64(&inst,63,0);
     VL_OUT64(&pc,63,0);
 
     // CELLS

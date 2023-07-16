@@ -19,7 +19,12 @@ input [`ISA_WIDTH-1:0]      dec_inst,
 
 output logic                  ifetch_taken,
 output logic [`ISA_WIDTH-1:0] ifetch_taken_pc,
-output logic                  ifetch_req,
+
+output logic                  exu_inst_vld,
+output logic [`ISA_WIDTH-1:0] exu_inst_pc,
+output logic [`ISA_WIDTH-1:0] exu_inst,
+
+output logic                  exu_stall,
 
 //alu
 output logic           alu_wb_vld,
@@ -62,6 +67,15 @@ output  			axi_R_READY
 
 
 
+  assign exu_inst_vld = bju_data_vld | alu_data_vld | lsu_data_vld | csr_data_vld;
+  
+  always_ff @( posedge clk ) begin
+    if(~rst_n) {exu_inst_pc, exu_inst} <= 0;
+    else if(dec_inst_vld) {exu_inst_pc, exu_inst} <= {dec_inst_pc, dec_inst};
+  end
+  
+  assign exu_stall = alu_stall;
+
 
   //===================================================
   //===ALU
@@ -91,7 +105,8 @@ output  			axi_R_READY
 
   );
 
-
+  logic alu_data_vld;
+  assign alu_data_vld = alu_wb_vld;
 
   //===================================================
   //===BJU
@@ -116,15 +131,12 @@ output  			axi_R_READY
 
     .ifetch_taken(ifetch_taken),
     .ifetch_taken_pc(ifetch_taken_pc),
-    .bmu_vld(bmu_vld)
+    .bmu_vld(bju_data_vld)
 
     );
 
-  logic            bmu_vld;
-  
-  assign ifetch_req = bmu_vld | alu_wb_vld | lsu_data_vld | csr_data_vld;
+  logic            bju_data_vld;
     
-
 
   //===================================================
   //===LSU

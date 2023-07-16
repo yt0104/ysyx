@@ -68,7 +68,7 @@ extern "C" void dpi_mem_block_write(long long block_num, const uint8_t *buf);
 
 extern "C" void pmem_read(long long raddr, long long *rdata );
 extern "C" void pmem_write(long long waddr, long long wdata, char wmask);
-extern "C" void ifetch(long long pc, long long* inst);
+extern "C" void ifetch(long long pc, uint64_t* inst);
 
 #define PAGE_SHIFT        12
 #define PAGE_SIZE         (1ul << PAGE_SHIFT)

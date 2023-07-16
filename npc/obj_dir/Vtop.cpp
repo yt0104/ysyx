@@ -17,7 +17,6 @@ Vtop::Vtop(VerilatedContext* _vcontextp__, const char* _vcname__)
     , ifetch_taken{vlSymsp->TOP.ifetch_taken}
     , ifetch_taken_pc{vlSymsp->TOP.ifetch_taken_pc}
     , mainUpdate_valid{vlSymsp->TOP.mainUpdate_valid}
-    , inst{vlSymsp->TOP.inst}
     , pc{vlSymsp->TOP.pc}
     , rootp{&(vlSymsp->TOP)}
 {

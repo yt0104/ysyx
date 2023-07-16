@@ -188,10 +188,11 @@ extern "C" void pmem_write(long long waddr, long long wdata, char wmask) {
 }
 
 
-extern "C" void ifetch(long long pc, long long* inst) {
+extern "C" void ifetch(long long pc, uint64_t* inst) {
   
   if (likely(in_pmem(pc))) {
-    *inst = host_read(guest_to_host(pc), 8);
+    *inst = host_read(guest_to_host(pc), 4);
+
     return;
   }
   Log(ANSI_FMT("ifetch", ANSI_FG_RED));  

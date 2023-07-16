@@ -14,25 +14,25 @@ module decode(
     input clk,
     input rst_n,
 
-    input               ifetch_inst_vld,
-    input       [63:0 ] ifetch_inst,
-    input       [63:0]  ifetch_inst_pc,
+    input                ifetch_inst_vld,
+    input       [63:0 ]  ifetch_inst,
+    input       [63:0]   ifetch_inst_pc,
 
     output logic [4:0]   rd,
     output logic [4:0]   rs1,
     output logic [4:0]   rs2,
-    output reg [63:0]   imm,
+    output reg [63:0]    imm,
 
 
-    output InstAct  inst_act,
-    output InstType inst_type,
-    output opType op,
+    output InstAct      inst_act,
+    output InstType     inst_type,
+    output opType       op,
 
 
-    output logic dec_inst_vld,
+    output logic        dec_inst_vld,
     output logic [63:0] dec_inst_pc,
     output logic [63:0] dec_inst
-
+    
     );
 
   //===================================================

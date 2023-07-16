@@ -13,7 +13,6 @@ output logic [`ISA_WIDTH-1:0] ifetch_taken_pc,
 
 //top interface
 output logic mainUpdate_valid,
-output logic [63:0 ] inst,
 output logic [`ISA_WIDTH-1:0] pc
 
 );
@@ -28,8 +27,10 @@ logic [`ISA_WIDTH-1:0] dec_inst_pc;
 logic [63:0] dec_inst;
 
 
-logic ifetch_req;
-
+logic exu_inst_vld;
+logic [`ISA_WIDTH-1:0] exu_inst_pc;
+logic [63:0] exu_inst;
+logic exu_stall;
 
 
 logic [`REG_ADDR_WIDTH-1:0]   rd;
@@ -54,6 +55,8 @@ logic    [4:0]  lsu_wb_addr;
 logic   [63:0]  lsu_wb_data;
 
 
+logic ifetch_req;
+assign ifetch_req = exu_inst_vld;
 
 ifetch_cache u_ifetch(
     .clk(clk), .rst_n(rst_n), 
@@ -98,7 +101,13 @@ EXU_cache u_EXU(
     .lsu_wb_addr(lsu_wb_addr),
     .lsu_wb_data(lsu_wb_data),
 
-    .ifetch_req(ifetch_req), .ifetch_taken_pc(ifetch_taken_pc), .ifetch_taken(ifetch_taken),
+    .ifetch_taken_pc(ifetch_taken_pc), .ifetch_taken(ifetch_taken),
+
+    .exu_inst_pc(exu_inst_pc), 
+    .exu_inst(exu_inst), 
+    .exu_inst_vld(exu_inst_vld),
+    
+    .exu_stall(exu_stall),
 
     .axi_AW_ADDR(axis2_AW_ADDR), .axi_AW_VALID(axis2_AW_VALID), .axi_AW_READY(axis2_AW_READY),
     .axi_W_DATA (axis2_W_DATA),  .axi_W_STRB  (axis2_W_STRB),   .axi_W_VALID (axis2_W_VALID), .axi_W_READY(axis2_W_READY),
@@ -177,9 +186,25 @@ end
 
 
 
+logic commit_vld;
+logic [`ISA_WIDTH-1:0] commit_inst_pc;
+logic [63:0] commit_inst;
+
+always_ff @( posedge clk ) begin
+    commit_vld <= exu_inst_vld;
+end
+
+always_ff @( posedge clk ) begin
+  if(~rst_n) {commit_inst_pc, commit_inst} <= 0;
+  else if(exu_inst_vld) {commit_inst_pc, commit_inst} <= {exu_inst_pc, exu_inst};
+end
+
+
+
+
 assign mainUpdate_valid = itrace_en? ifetch_inst_vld: 0;
 assign pc =   ifetch_inst_pc;
-assign inst = ifetch_inst;
+
 
 always_ff @( posedge clk ) begin
     if(dec_inst_vld) begin

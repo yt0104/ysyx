@@ -13,6 +13,8 @@ uint64_t cycle_num = 0;       // cycle mount
 uint64_t lpc = 0x80000000;
 uint64_t linst = 0x00000413;
 
+uint64_t top_inst;
+
 char logbuf[128];       
 
 void update_logbuff(uint64_t logpc, uint64_t loginst){
@@ -93,8 +95,8 @@ extern "C" void sim_exit(int state){
   case 1:
     mtrace_puts_mtracebuf();
     itrace_puts_iringbuf();
-    Log(ANSI_FMT("INST ERROR(OP INV): 0x%lx", ANSI_FG_RED),top->inst);
-    update_logbuff(top->pc, top->inst);
+    Log(ANSI_FMT("INST ERROR(OP INV): 0x%lx", ANSI_FG_RED),top_inst);
+    update_logbuff(top->pc, top_inst);
     Log(ANSI_FMT("break at: %s", ANSI_FG_RED), logbuf);
     break;
   case 2:
@@ -189,6 +191,8 @@ void cpu_exec(uint64_t n){
     /*debug*/
     if(top->mainUpdate_valid){
 
+      ifetch(top->pc, &top_inst);
+
       /*logbuff*/
       update_logbuff(lpc, linst);
       if(n <= 50) puts(logbuf);
@@ -209,13 +213,13 @@ void cpu_exec(uint64_t n){
 #endif
 
 #ifdef CONFIG_PREDICTOR
-      if( GsharePredict(lpc, top->jmp_type, top->ifetch_taken, top->ifetch_pc)){
+      if( GsharePredict(lpc, top->jmp_type, top->ifetch_taken, top->ifetch_taken_pc)){
         puts(logbuf);
       };
 #endif
 
       lpc = top->pc;
-      linst = top->inst;
+      linst = top_inst;
       n--;
 
     }
